@@ -1,4 +1,6 @@
 <?php
+print '<pre>';
+print_r([1111]);exit;
 
 use EstaleiroWeb\ED\IO\_;
 use EstaleiroWeb\ED\Db\Conn\Conn;
@@ -6,6 +8,7 @@ use EstaleiroWeb\ED\Ext\Bootstrap;
 use EstaleiroWeb\ED\IO\Vault;
 
 require '../vendor/autoload.php';
+
 
 $sql =[
 	0=>"create or replace table tb_Types (

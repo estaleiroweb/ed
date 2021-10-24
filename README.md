@@ -22,11 +22,11 @@ You can do it for 2 ways.
 
 ### 1 - Direcly
 ```bash
-php -r "require 'vendor/autoload.php'; new EstaleiroWeb\ED\Admin(true);"
+php -r "require 'vendor/autoload.php'; new EstaleiroWeb\ED\IO\Admin(true);"
 ```
 To run administrator, do without _true_:
 ```bash
-php -r "require 'vendor/autoload.php'; new EstaleiroWeb\ED\Admin;"
+php -r "require 'vendor/autoload.php'; new EstaleiroWeb\ED\IO\Admin;"
 ```
 
 ### 2 - Creting a _admin.php_ file
@@ -34,7 +34,7 @@ You can see a exmaple code in vendor folder
 ```php
 #!/usr/bin/env php
 require 'vendor/autoload.php';
-new EstaleiroWeb\ED\Admin();
+new EstaleiroWeb\ED\IO\Admin();
 ```
 Change permitions to execute
 ```bash

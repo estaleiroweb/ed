@@ -80,13 +80,13 @@ class OutHtml {
 	 *
 	 * @var array
 	 */
-	public $head=array();
+	public $head=[];
 	/**
 	 * Lista de Atributos do <body>
 	 *
 	 * @var array
 	 */
-	public $attibute=array();
+	public $attibute=[];
 	/**
 	 * Conteudo que se posiciona dentro do <body> logo no inicio
 	 *
@@ -98,37 +98,37 @@ class OutHtml {
 	 *
 	 * @var array
 	 */
-	public $prebody=array();
+	public $prebody=[];
 	/**
 	 * Conteudo que se posiciona dentro do <body> bem no fim
 	 *
 	 * @var array
 	 */
-	public $posbody=array();
+	public $posbody=[];
 	/**
 	 * Conteudo que se posiciona apos do <body> bem no fim
 	 *
 	 * @var array
 	 */
-	public $foot=array();
+	public $foot=[];
 	/**
 	 * O script a ser executado que fica no cabecalho do documento
 	 *
 	 * @var array
 	 */
-	public $headScript=array();
+	public $headScript=[];
 	/**
 	 * O script a ser executado que fica no cabecalho do documento
 	 *
 	 * @var array
 	 */
-	public $jQueryScript=array();
+	public $jQueryScript=[];
 	/**
 	 * O script a ser executado que fica no rodape do documento
 	 *
 	 * @var array
 	 */
-	public $script=array();
+	public $script=[];
 	/**
 	 * Parser do config.ini
 	 *
@@ -163,10 +163,10 @@ class OutHtml {
 		'ms3.01'=>					'<!doctype html PUBLIC "-//Microsoft/DTD Microsoft Internet Explorer 3.01 HTML//EN">'
 	);
 	private $root;
-	public $buffer=array();
+	public $buffer=[];
 	public $title;
-	public $titleSequence=array();
-	private $savedBuffer=array();
+	public $titleSequence=[];
+	private $savedBuffer=[];
 	static public $isSaveBuffer=false;
 
 	/**
@@ -318,8 +318,8 @@ class OutHtml {
 	 */
 	private function printAllScript($s){
 		if ($this->isPrintScript && $s) {
-			$script1=array();
-			$script2=array();
+			$script1=[];
+			$script2=[];
 			foreach($s as $k=>$v) if(is_numeric($k)) $script1[]=$v; else $script2[]=$v;
 			$script1=array_merge($script1,$script2);
 			print self::$lf."\t<script language='javascript'>".self::$lf."\t\t";
@@ -471,7 +471,7 @@ class OutHtml {
 	 *
 	 */
 	public function clearHead(){
-		$this->head=array();
+		$this->head=[];
 		return $this;
 	}
 	/**
@@ -482,18 +482,18 @@ class OutHtml {
 	public function clearBody($tudo=false){
 		if ($tudo) {
 			$this->stopBuffer();
-			$this->prebody=array();
-			$this->posbody=array();
-			$this->attibute=array();
+			$this->prebody=[];
+			$this->posbody=[];
+			$this->attibute=[];
 		}
-		$this->buffer=array();
+		$this->buffer=[];
 		return $this;
 	}
 	/**
 	 * Apaga o conteudo do rodape printado ate o momento
 	 */
 	public function clearFoot(){
-		$this->foot=array();
+		$this->foot=[];
 		return $this;
 	}
 	/**
@@ -503,9 +503,9 @@ class OutHtml {
 		$this->clearHead();
 		$this->clearBody(true);
 		$this->clearFoot();
-		$this->script=array();
-		$this->headScript=array();
-		$this->jQueryScript=array();
+		$this->script=[];
+		$this->headScript=[];
+		$this->jQueryScript=[];
 		return $this;
 	}
 	/**
@@ -529,7 +529,7 @@ class OutHtml {
 		return htmlspecialchars($value,ENT_QUOTES);
 	}
 	public function saveBuffer(){
-		$this->savedBuffer=array();
+		$this->savedBuffer=[];
 		self::$isSaveBuffer=true;
 		return $this;
 	}
@@ -538,7 +538,7 @@ class OutHtml {
 		return implode('',$this->savedBuffer);
 	}
 	public function clearBuffer(){
-		$this->savedBuffer=array();
+		$this->savedBuffer=[];
 		return $this;
 	}
 	public function paramUrl($parm,$value='',$insert=true){
@@ -551,7 +551,7 @@ class OutHtml {
 		$query=$query?"?$query":'';
 		$result="{$_SERVER['SCRIPT_NAME']}$query";
 
-		if (!isset($_SESSION['urlsDone'])) $_SESSION['urlsDone']=array();
+		if (!isset($_SESSION['urlsDone'])) $_SESSION['urlsDone']=[];
 		$_SESSION['urlsDone'][$url]=$result;
 		return $result;
 	}
@@ -560,7 +560,7 @@ class OutHtml {
 		if(preg_match('/^(http:)\/\//i',$value)) return $value;
 		if(is_null($referer)) $referer=self::$defaultContext;
 		if($referer=='/') $path='/';
-		elseif(array_key_exists($referer,(array)$this->config)) $path=$this->config[$referer][$sub].'/';
+		elseif(property_exists($this->config,$referer)) $path=$this->config->{$referer}[$sub].'/';
 		else {
 			if(is_file($referer)) $referer=dirname($referer);
 			$path=preg_replace('/^'.preg_quote($this->root,'/').'/','',$referer).'/';

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "83eb1b1cd1e8c0622e73483f7675b290",
+    "content-hash": "71a20bd8a02645adcf0ca87675bf2db3",
     "packages": [
         {
             "name": "estaleiroweb/traits",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/estaleiroweb/traits.git",
-                "reference": "2726526b4c182c5f8039033a73a8a76bc6ee130f"
+                "reference": "b532513bf4d9a3eccaee3a01846d5cc946c71398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/estaleiroweb/traits/zipball/2726526b4c182c5f8039033a73a8a76bc6ee130f",
-                "reference": "2726526b4c182c5f8039033a73a8a76bc6ee130f",
+                "url": "https://api.github.com/repos/estaleiroweb/traits/zipball/b532513bf4d9a3eccaee3a01846d5cc946c71398",
+                "reference": "b532513bf4d9a3eccaee3a01846d5cc946c71398",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Estaleiroweb\\Traits\\": "src/"
+                    "EstaleiroWeb\\Traits\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -42,9 +42,9 @@
             "description": "PHP Traits used in others projects of EstaleiroWeb",
             "support": {
                 "issues": "https://github.com/estaleiroweb/traits/issues",
-                "source": "https://github.com/estaleiroweb/traits/tree/v1.0.0"
+                "source": "https://github.com/estaleiroweb/traits/tree/v1.0.2"
             },
-            "time": "2021-10-21T19:07:46+00:00"
+            "time": "2021-10-24T01:59:58+00:00"
         }
     ],
     "packages-dev": [],
@@ -53,7 +53,26 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-ctype": "*",
+        "ext-dom": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-iconv": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-mysqli": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-session": "*",
+        "ext-simplexml": "*",
+        "ext-xml": "*",
+        "ext-xmlreader": "*",
+        "ext-xmlwriter": "*",
+        "ext-zip": "*",
+        "ext-zlib": "*",
+        "php": ">=7.0"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
 }

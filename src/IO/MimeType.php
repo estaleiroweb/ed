@@ -323,6 +323,6 @@ class MimeType {
 
 		
 		$c = Config::singleton();
-		return "{$c->host}{$c->path_imgs}/icons/{$icon}.gif";
+		return "{$c->host}{$c->ed['icons']}/{$icon}.gif";
 	}
 }

@@ -6,10 +6,10 @@
 	"version": "1.0.0",
 	"autoload": {
 		"files": [
-			"/main.php"
+			"main.php"
 		],
 		"psr-4": {
-			"Estaleiroweb\\ED\\": "src/",
+			"EstaleiroWeb\\ED\\": "src/",
 			"EstaleiroWeb\\Cache\\": "cache/"
 		}
 	},
@@ -18,7 +18,7 @@
 		"email": "helbert@estaleiroweb.com.br"
 	}],
 	"require": {
-		"estaleiroweb/traits": "^1.0",
+		"estaleiroweb/traits": "*",
 		"ext-ctype": "*",
 		"ext-dom": "*",
 		"ext-fileinfo": "*",
