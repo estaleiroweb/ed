@@ -2,6 +2,7 @@
 
 namespace EstaleiroWeb\ED\IO;
 
+use EstaleiroWeb\Cache\Config;
 use EstaleiroWeb\Traits\GetterAndSetter;
 
 if (!function_exists('disable_error_handler')) {
@@ -21,20 +22,22 @@ class Ldap {
 	use GetterAndSetter;
 
 	function __construct($user = null, $pass = null) {
-		$this->readonly = array(
+		$this->readonly = [
 			'fulluser' => null,
 			'con' => null,
 			'bind' => null,
-		);
-		$this->protect = array(
-			'server' => 'internal.timbrasil.com.br', //snepdc03v.internal.timbrasil.com.br internal.timbrasil.com.br
-			'domain' => 'internal',
+		];
+		$config = Config::singleton();
+		$arr = [
+			'server' => 'localhost',
+			'domain' => 'mydomain',
 			'fn' => 'ldap_search',
-			'dn' => 'OU=Organization,DC=internal,DC=timbrasil,DC=com,DC=br',
+			'dn' => 'OU=Organization,DC=domain,DC=host,DC=com,DC=br',
 			'port' => 389,
 			'user' => null,
 			'pass' => $pass,
-		);
+		];
+		$this->protect = array($arr, $config->ldap);
 		$this->user = $user;
 		@define('LDAP_OPT_DIAGNOSTIC_MESSAGE', 0x0032);
 		@define('LDAP_SCOPE_ONELEVEL', 2);

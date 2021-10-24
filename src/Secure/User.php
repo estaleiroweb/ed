@@ -29,10 +29,12 @@ class User extends Common {
 		return $obj;
 	}
 	static public function rebuildStaticVars() {
+		$ldap = new Ldap();
+
 		//show(Secure::$ini);
-		(self::$default_domain = @Secure::$ini['main']['domain']) || (self::$default_domain = 'internal');
-		(self::$auth_server = @Secure::$ini['auth']['server']) || (self::$auth_server = 'internal.timbrasil.com.br');
-		(self::$auth_port = @Secure::$ini['auth']['port']) || (self::$auth_port = 389);
+		(self::$default_domain = @Secure::$ini['main']['domain']) || (self::$default_domain = $ldap->domain);
+		(self::$auth_server = @Secure::$ini['auth']['server']) || (self::$auth_server = $ldap->server);
+		(self::$auth_port = @Secure::$ini['auth']['port']) || (self::$auth_port = $ldap->port);
 		//show(self::$default_domain);
 	}
 	private function startVars() {
