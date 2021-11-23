@@ -134,7 +134,7 @@ class ConfigExt {
 		if (!array_key_exists($nm, $prefix)) _::error('PSR4 ' . $nm . ' isn\'t registred', FATAL_ERROR);
 		$dirs = $prefix[$nm];
 		$cacheDir = realpath(array_shift($dirs));
-		$r = new ReflectionClass($composer);
+		//$r = new ReflectionClass($composer);
 
 		$this->readonly = [
 			/**

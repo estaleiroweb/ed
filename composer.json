@@ -18,7 +18,7 @@
 		"email": "helbert@estaleiroweb.com.br"
 	}],
 	"require": {
-		"estaleiroweb/traits": "*",
+		"php": ">=5.4",
 		"ext-ctype": "*",
 		"ext-dom": "*",
 		"ext-fileinfo": "*",
@@ -36,6 +36,7 @@
 		"ext-xmlwriter": "*",
 		"ext-zip": "*",
 		"ext-zlib": "*",
-		"php": ">=7.0"
+		"estaleiroweb/traits": "*",
+		"phpseclib/phpseclib": "^3.0"
 	}
 }
