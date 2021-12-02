@@ -37,6 +37,6 @@
 		"ext-zip": "*",
 		"ext-zlib": "*",
 		"estaleiroweb/traits": "*",
-		"phpseclib/phpseclib": "^3.0"
+		"phpseclib/phpseclib": "*"
 	}
 }
