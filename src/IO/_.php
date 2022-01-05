@@ -331,7 +331,8 @@ class _ {
 		self::error($errstr, 0, "<label>ERROR [$errno] </label><label>File: </label><i>$errfile [$errline]</i>");
 		if ($trigger) @trigger_error($errstr, $errno);
 	}
-	static public function enable_error_handler($e = E_ALL & ~E_NOTICE & ~E_STRICT) {
+	static public function enable_error_handler($e = null) {
+		if(is_null($e)) $e=E_ALL & ~E_NOTICE & ~E_STRICT;
 		//function error_handler... if($trap_error & $errno && $trap_error_callback) call_user_func_array($__TRAP_CALLBACK,$__TRAP_CALLBACK_PARAMETERS);
 		set_error_handler([__CLASS__, 'error_handler'], $e); // & ~E_WARNING
 	}
