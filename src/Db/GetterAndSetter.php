@@ -29,7 +29,7 @@ trait GetterAndSetter {
 			} catch (Exception $e) {
 				$mess = 'Command error (' .  $e->getMessage() . ')';
 			}
-		} else $mess = 'Extendss not init';
+		} else $mess = 'Extends not init';
 		$a = json_encode($args);
 		_::error("$mess: $fn($a)");
 	}

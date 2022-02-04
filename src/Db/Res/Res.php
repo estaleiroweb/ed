@@ -69,16 +69,36 @@ abstract class Res implements Iterator, Countable {
 	}
 	public function key() {
 		return $this->readonly['recNum'];
-	}
+	}	
+	/**
+	 * next
+	 *
+	 * @return void
+	 */
 	public function next() {
 		$this->readonly['recNum']++;
-	}
+	}	
+	/**
+	 * rewind
+	 *
+	 * @return void
+	 */
 	public function rewind() {
 		$this->readonly['recNum'] = 0;
-	}
+	}	
+	/**
+	 * valid
+	 *
+	 * @return void
+	 */
 	public function valid() {
 		return $this->readonly['current'] = $this->fetch(null, PDO::FETCH_ORI_ABS, $this->readonly['recNum']);
-	}
+	}	
+	/**
+	 * count
+	 *
+	 * @return int
+	 */
 	public function count() {
 		return $this->rowCount();
 	}
@@ -102,7 +122,7 @@ abstract class Res implements Iterator, Countable {
 
 	public function close() {
 		$this->conn->release($this);
-		return $this->extends->closeCursor();
+		return $this->extends?@$this->extends->closeCursor():false;
 	}
 	public function free() {
 		return $this->extends->closeCursor();

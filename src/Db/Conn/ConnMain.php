@@ -147,11 +147,10 @@ abstract class ConnMain {
 		$query = $args[0];
 		if ($this->showQuery) _::show($query);
 		else _::verbose($query);
-		try {
-			$res = call_user_func_array([$this->extends, $fn], $args);
-		} catch (Exception $e) {
+		$res = call_user_func_array([$this->extends, $fn], $args);
+		if(!$res){
 			if (!$this->showQuery && $this->showQueryOnError) _::show($query);
-			if ($this->showErrorOnError) _::error($e->getMessage());
+			if ($this->showErrorOnError) _::error($this->extends->errorInfo());
 			if ($this->stopOnError) exit;
 		}
 		$class = $this->resClass;
