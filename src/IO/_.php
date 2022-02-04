@@ -5,6 +5,7 @@ namespace EstaleiroWeb\ED\IO;
 use EstaleiroWeb\ED\Db\Field\Field;
 use EstaleiroWeb\ED\Db\Res\Res;
 use EstaleiroWeb\ED\Ext\Ed;
+use Composer\Autoload\ClassLoader;
 use PDO;
 use PDOStatement;
 
@@ -457,5 +458,48 @@ class _ {
 			$nmap = self::nmap($host, $port);
 		} while (!$nmap && $i < 100);
 		if (!$nmap) return $port;
+	}
+	static public function namespaces() {
+		$al = spl_autoload_functions(); //$al=ComposerAutoloaderInit<hash>::getLoader();
+		if (!$al) _::error('Autoload isn\'t registred', FATAL_ERROR);
+		//$al = reset($al);
+
+		while ($al && is_array($al)) $al = reset($al);
+		if (!($al instanceof ClassLoader)) _::error('Autoload isn\'t Composer', FATAL_ERROR);
+		return (array)$al->getPrefixesPsr4();
+	}
+	static public function checkClass($class) {
+		static $arr = [];
+		if (!$arr) $arr = self::namespaces();
+		foreach ($arr as $nm => $dirs) {
+			$tam = strlen($nm);
+			$cl = substr(strtolower($class), 0, $tam);
+			if (strtolower($nm) == $cl) {
+				$cl = substr(strtolower($class), $tam) . '.php';
+				while ($dirs) {
+					$d = array_shift($dirs);
+					$f = self::trFullFile($d, $cl);
+					if ($f) {
+						$f = $nm . str_replace('/', '\\', preg_replace('/\.php$/i', '', $f));
+						return class_exists($f) ? $f : false;
+					}
+				}
+				break;
+			}
+		}
+		return false;
+	}
+	static public function trFullFile($basedir, $file) {
+		$arr = is_array($file) ? $file : explode('\\', $file);
+		$f = [];
+		while ($arr) {
+			$item = array_shift($arr);
+			$dir = preg_grep('/^' . preg_quote($item, '/') . '$/i', scandir($basedir));
+			if (!$dir) return false;
+			$dir = reset($dir);
+			$f[] = $dir;
+			$basedir .= '/' . $dir;
+		}
+		return join('/', $f);
 	}
 }
