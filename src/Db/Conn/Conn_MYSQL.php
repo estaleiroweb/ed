@@ -4,6 +4,13 @@ namespace EstaleiroWeb\ED\Db\Conn;
 
 //options array(PDO::MYSQL_ATTR_FOUND_ROWS => true)
 class Conn_MYSQL extends ConnMain {
+	public $delimiters = [
+		'tableStart' => '`',
+		'tableEnd' => '`',
+		'fieldStart' => '`',
+		'fieldEnd' => '`',
+		'string' => '\'',
+	];
 	public $maxInsert = 200;
 	
 	public function close() {

@@ -3,11 +3,13 @@
 namespace EstaleiroWeb\ED\Db\Conn;
 
 class Conn_OCI extends ConnMain {
-	public $delimiterTableStart = '"';
-	public $delimiterTableEnd = '"';
-	public $delimiterFieldStart = '"';
-	public $delimiterFieldEnd = '"';
-	public $delimiterString = '\'';
+	public $delimiters = [
+		'tableStart' => '"',
+		'tableEnd' => '"',
+		'fieldStart' => '"',
+		'fieldEnd' => '"',
+		'string' => '\'',
+	];
 	public $autocommit = false;
 
 

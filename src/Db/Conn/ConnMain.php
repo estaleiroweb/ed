@@ -14,12 +14,13 @@ abstract class ConnMain {
 	use GetterAndSetter;
 
 	protected $res;
-
-	public $delimiterTableStart = '`';
-	public $delimiterTableEnd = '`';
-	public $delimiterFieldStart = '`';
-	public $delimiterFieldEnd = '`';
-	public $delimiterString = '\'';
+	public $delimiters = [
+		'tableStart' => '',
+		'tableEnd' => '',
+		'fieldStart' => '',
+		'fieldEnd' => '',
+		'string' => '\'',
+	];
 
 	public $charPrint = '.';
 	public $cmdSave = null; // INSERT LOW_PRIORITY IGNORE, REPLACE
@@ -310,7 +311,7 @@ abstract class ConnMain {
 	public function mountFieldsKeys($line) {
 		$l = [];
 		foreach ($line as $k => $v) $l[] = is_object($v) ? $this->nameByObjField($v, $k) : $k;
-		return $this->fieldDelimiter(implode($this->delimiterFieldEnd . ',' . $this->delimiterFieldStart, $l));
+		return $this->fieldDelimiter(implode($this->delimiter['fieldEnd'] . ',' . $this->delimiters['fieldStart'], $l));
 	}
 	public function mountFieldsSetValues($line) {
 		$out = [];
@@ -411,7 +412,7 @@ abstract class ConnMain {
 		$argv = func_get_args();
 		if (!$argv) return;
 		if (is_array($argv[0])) return call_user_func_array([$this, __FUNCTION__], $argv[0]);
-		foreach ($argv as $k => $v) $argv[$k] = $this->delimiterTableStart . $v . $this->delimiterTableEnd;
+		foreach ($argv as $k => $v) $argv[$k] = $this->delimiters['tableStart'] . $v . $this->delimiters['tableEnd'];
 		return implode('.', $argv);
 	}
 
