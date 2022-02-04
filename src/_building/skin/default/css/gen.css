@@ -1,0 +1,48 @@
+/*Especifica: Barra de Navegacao*/
+.nowrap { white-space:nowrap; }
+
+.temporestante {
+	color: #243D66;
+	font-weight: bold;
+	position: relative;
+	top: 3px;
+	padding: 3px;
+	display: inline;
+}
+.gaugeMain {
+	height: 100%;
+}
+.gaugeMain .gaugeText {
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	color: #000080;
+}
+.gaugeMain .gauge {
+	height: 100%;
+	background-color: #FFFFFF;
+	background-color: #E6F2FF;
+	overflow: hidden;
+	text-align:left;
+}
+.gaugeMain .gauge div {
+	height: 100%;
+	background-color: #99CCFF;
+}
+#TagShowTemporyMessage {
+	background-color: #FF0000;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+	font-weight: bold;
+	padding: 5px;
+}
+input.littleButton, buuton.littleButton {
+	font-size: 8px;
+	height: 14px;
+}
+.alm_00,.alm_01,.alm_02,.alm_03,.alm_04 { font-weight: bold; }
+.alm_00 { color: #008800; }
+.alm_01 { color: #FF0000; }
+.alm_02 { color: #FFA500; }
+.alm_03 { color: #0000FF; }
+.alm_04 { color: #777777; }

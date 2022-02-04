@@ -1,0 +1,14 @@
+span[ed-class="ElementCpfCnpj"] {
+	white-space:nowrap;
+	overflow: auto;
+	border-style: dashed;
+}
+span[ed-class="ElementCpfCnpj"]::-webkit-scrollbar { width:3px; height:3px; background:#e3e0d6; }
+span[ed-class="ElementCpfCnpj"]::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+span[ed-class="ElementCpfCnpj"]::-webkit-scrollbar-thumb { border-radius:3px; background:#8b8778;  }
+/*IE*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	span[ed-class="ElementCpfCnpj"] {
+		overflow: visible; 
+	}
+}

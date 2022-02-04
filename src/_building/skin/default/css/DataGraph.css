@@ -1,0 +1,96 @@
+.DataGraph{
+	display:block;
+}
+.DataGraph * { /*caixa pricipal do gráfico*/
+	font-family: Verdana;
+	font-size: 10px;
+}
+.DataGraph_control{ /*caixa de controle do gráfico*/
+	text-align: center;
+	white-space: nowrap;
+}
+	.DataGraph_size,/*controle de tamanho do gráfico*/
+	.DataGraph_date,/*controle da data do gráfico*/
+	.DataGraph_res,
+	.DataGraph_info,
+	.DataGraph_daterfs{
+		display:inline;
+	}
+	.DataGraph_size *,/*controle de tamanho do gráfico*/
+	.DataGraph_date *,/*controle da data do gráfico*/
+	.DataGraph_res *,
+	.DataGraph_info *,
+	.DataGraph_daterfs * {/*controle de Resolução do gráfico*/
+		vertical-align:middle;
+	}
+	.DataGraph_title h1, 
+	.DataGraph_title h2, 
+	.DataGraph_title h3, 
+	.DataGraph_title h4, 
+	.DataGraph_title h5, 
+	.DataGraph_title h6, 
+	.DataGraph_title h7, 
+	.DataGraph_title h8, 
+	.DataGraph_title h9 {
+		margin: 0;
+		width:100%;
+		font-size: 9px;
+		font-family: Verdana;
+	}
+	.DataGraph_control select {}/*controles*/
+	.DataGraph_control input {}/*controles de data*/
+.DataGraph_grpGraph {/*grupo de gráficos*/
+	text-align: center;
+}
+	.DataGraph_graph {/*linha de 1 gráfico*/
+		text-align:center;
+		margin-right: 10px;
+		vertical-align:top;
+	}
+		.DataGraph img{/*gráfico*/
+			margin-top: 10px;
+			border: 1px solid #000000;
+			cursor: pointer;
+		}
+
+	.DataGraph_listAvg {}/*tabela de média*/
+		.DataGraph_graph{
+			display:inline;
+		}
+		.DataGraph_listAvg tr{
+			background-color: #eeeeee;
+		}
+		.DataGraph_listAvg tr.DataGraph_impar{
+			background-color: #dddddd;
+		}
+		.DataGraph_listAvg th{
+			background-color: #6600ff;
+			color: #ffffff;
+			cursor: pointer;
+		}
+		.DataGraph_listAvg td{
+			text-align:right;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.DataGraph_listAvgColor{
+			padding:0;
+			text-align:center;
+		}
+		.DataGraph_listAvgColor div{
+			width: 10px;
+			height: 10px;
+			overflow: hidden;
+			border: 1px solid #000000;
+		}
+		.DataGraph_listAvgCk{
+			text-align: center;
+		}
+		.DataGraph_listAvgCk input {
+			margin: -5;
+			padding: 0;
+		}
+		.DataGraph_listAvgField{
+			text-align: left;
+			font-weight: bold;
+		}

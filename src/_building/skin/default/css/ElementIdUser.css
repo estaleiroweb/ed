@@ -1,0 +1,8 @@
+span.iduser select {
+	font-size:12px;
+}
+span.iduser span {
+	width: 150px;
+	white-space:nowrap;
+	background-color:#FFFFFF;
+}

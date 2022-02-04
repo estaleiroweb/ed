@@ -1,0 +1,9 @@
+div.close h2, div.open h2 {
+	cursor:pointer;
+	background-image: url('../img/icons/arrow_dn1.gif');
+	background-position: center left;
+	background-repeat: no-repeat;
+	padding-left: 16px;
+}
+div.close h2 { background-image: url('../img/icons/arrow_rg1.gif'); }
+div.close table { display: none; }
