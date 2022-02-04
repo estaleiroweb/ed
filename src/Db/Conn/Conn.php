@@ -43,28 +43,51 @@ class Conn extends ConnMain {
 		return $this->extends ? $this->extends->getReadonly() : null;
 	}
 
-	static public function dsn($dsn = '', $username = null, $password = null, $options = null): ConnMain {
+	/**
+	 * dsn
+	 *
+	 * @param  string|array|object $dsn Connection contents
+	 * @param  string|null $username
+	 * @param  string|null $password
+	 * @param  array|null $options
+	 * @return ConnMain
+	 */
+	static public function dsn($dsn = '', $username = null, $password = null, $options = null) {
 		if (is_object($dsn)) $dsn = (array) $dsn;
 		if (is_array($dsn)) return self::connByArray($dsn);
 		elseif (($conn = self::connByVault($dsn))) return $conn;
 		elseif ($conn = self::connByDSN($dsn, $username, $password, $options)) return $conn;
 	}
-	
-	static private function connByArray(array $arr, $name = null): ConnMain {
+
+	/**
+	 * connByArray
+	 *
+	 * @param  array $arr Connection contents
+	 * @param  string|null $name Name of connection
+	 * @return ConnMain
+	 */
+	static private function connByArray(array $arr, $name = null) {
 		static $aFlds = ['dsn', 'host', 'port', 'dbname', 'charset', 'uid', 'pwd',];
 		//$dsn = 'mysql:dbname=testdb;host=127.0.0.1';
 		//dbc:DSN=SAMPLE;UID=john;PWD=mypass
 		//$dsn = 'uri:file:///usr/local/dbconnect';
 
-		if(array_key_exists($k='protocol',$arr)) {
+		if (array_key_exists($k = 'protocol', $arr)) {
 			$dsn = [];
 			foreach ($aFlds as $f) if (array_key_exists($f, $arr)) $dsn[] = "$f={$arr[$f]}";
 			$dsn = @$arr['protocol'] . ':' . implode(';', $dsn);
-		} else $dsn=@$arr['dsn'];
-		if($dsn=='') _::error('Connection erro',FATAL_ERROR);
+		} else $dsn = @$arr['dsn'];
+		if ($dsn == '') _::error('Connection erro', FATAL_ERROR);
 		return  self::connByDSN($dsn, @$arr['user'], @$arr['passwd'], @$arr['options'], $name);
 	}
-	static private function connByVault($key, $name = null): ConnMain {
+	/**
+	 * connByVault
+	 *
+	 * @param  string $key Key of the valut connection
+	 * @param  string|null $name Name of connection
+	 * @return ConnMain
+	 */
+	static private function connByVault($key, $name = null) {
 		if (!preg_match('/^[0-9A-Z]*$/i', $key)) return false;
 		$v = new Vault;
 		$arr = $v($key);
@@ -72,7 +95,17 @@ class Conn extends ConnMain {
 		$name = $key;
 		return self::connByArray($arr, $name);
 	}
-	static private function connByDSN($dsn, $user = null, $passwd = null, $options = null, $name = null): ConnMain {
+	/**
+	 * connByDSN
+	 *
+	 * @param  string|array|object $dsn Connection contents
+	 * @param  string|null $user User of connection
+	 * @param  string|null $passwd Password of connection
+	 * @param  array|null $options Options of connection
+	 * @param  string|null $name Name of connection
+	 * @return ConnMain
+	 */
+	static private function connByDSN($dsn, $user = null, $passwd = null, $options = null, $name = null) {
 		$class = preg_replace_callback('/^(\w+)\s*:\s*(.+?)\s*$/', [__CLASS__, 'getClass'], $dsn);
 		return new $class($dsn, $user, $passwd, $options, $name);
 	}
