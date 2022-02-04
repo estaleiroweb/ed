@@ -174,7 +174,7 @@ abstract class ConnMain {
 		$this->use_result($res);
 		return $res;
 	}
-	public function query_all($query, $mode = PDO::FETCH_NUM) {
+	public function query_all($query, $mode = PDO::FETCH_ASSOC) {
 		$res = $this->query($query);
 		$lines = $res->fetch_all($mode);
 		$res->close();
