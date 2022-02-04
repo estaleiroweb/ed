@@ -6,8 +6,6 @@ class Admin {
 	private $vlt, $std;
 
 	public function __construct($install = false) {
-		_::show(ConfigExt::singleton());
-		exit;
 		$this->check();
 		$this->vlt = new Vault;
 		$this->std = new Console;
