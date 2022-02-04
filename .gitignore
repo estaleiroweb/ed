@@ -1,6 +1,7 @@
 composer.phar
 /vendor/
-/cache/conn/
+#/cache/
+#/_building/
 #/src/_building/
 #/src/IO/_buiding/
 #/src/Ext/_building/
