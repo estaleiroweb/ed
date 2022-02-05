@@ -88,7 +88,7 @@ class Conn extends ConnMain {
 	 * @return ConnMain
 	 */
 	static private function connByVault($key, $name = null) {
-		if (!preg_match('/^[0-9A-Z]*$/i', $key)) return false;
+		if (!preg_match('/^[0-9A-Z_]*$/i', $key)) return false;
 		$v = new Vault;
 		$arr = $v($key);
 		if (!$arr) return false;
