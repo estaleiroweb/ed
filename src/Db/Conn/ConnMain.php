@@ -231,6 +231,11 @@ abstract class ConnMain {
 		}
 		return $this->getAllQuerys($query);
 	}
+	public function save($tblTo=null,$line=null,$cmd=null,$onUpdate=null,$charPrint='.',$keysDefault=null){
+		$this->cmdSave=$cmd;
+		$this->charPrint=$charPrint;
+		return $this->rec($tblTo, $line, $onUpdate, $keysDefault);
+	}
 	/**
 	 *  @param string $tblTo Nome da tabela. Se null, salva todas as tabelas
 	 *  @param array $line Linhas associativa ou linhas contendo Linhaa associativas que deseja salvar/cache. Se null, salva cache da tabela
@@ -238,7 +243,7 @@ abstract class ConnMain {
 	 *  @param string $keysDefault Nome dos campos que recebem os valores. Se Null, monta as Keys automaticamente
 	 *  @return int Quantidade de registros
 	 */
-	public function save($tblTo = null, $line = null, $onUpdate = null, $keysDefault = null) {
+	public function rec($tblTo = null, $line = null, $onUpdate = null, $keysDefault = null) {
 		static $sqls = [];
 		static $tbls = [];
 		static $keys = [];
