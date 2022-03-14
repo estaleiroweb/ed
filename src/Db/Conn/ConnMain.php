@@ -75,6 +75,9 @@ abstract class ConnMain {
 	public function __toString() {
 		return $this->readonly[$k = 'name'] == '' ? '[default]' : $this->readonly[$k];
 	}
+	public function __invoke(){
+		return $this->extends;
+	}
 
 	public function getAttrs() {
 		return [
@@ -191,7 +194,16 @@ abstract class ConnMain {
 			$cont++;
 		} while ($res->nextRowset());
 		$res->close();
-
+		/*
+			do {
+				//if ($res->columnCount()) continue;
+				while ($line = $res->fetch(PDO::FETCH_ASSOC)) {
+					if (array_key_exists('Dt', $line) && array_key_exists('Descr', $line)) {
+						print "{$line['Dt']}: {$line['Descr']}\n";
+					} else print_r($line);
+				}
+			} while (@$res->nextRowset());
+		*/
 		return $out;
 	}
 	public function fastLine($query, $mode = PDO::FETCH_ASSOC) {
