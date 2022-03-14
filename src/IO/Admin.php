@@ -108,17 +108,18 @@ class Admin {
 		}
 		$this->std->pressKey();
 	}
-	public function connList() {
+	public function connList($showPass=false) {
 		$this->std->cls();
 		$this->std->title('List of Connections');
 		$arr=$this->vlt->contents();
 		foreach($arr as $k=>$c) {
-			$c['passwd']='******';
+			$c['passwd']=$showPass?$this->vlt->decrypt($c['passwd']):'******';
 			$arr[$k]=array_merge(['name'=>$k],$c);
 		}
 		_::showTable($arr);
 		//print json_encode($this->vlt->contents(), JSON_PRETTY_PRINT) . PHP_EOL . PHP_EOL;
-		$this->std->pressKey();
+		$show=$this->std->pressKey();
+		if($show[0]['raw']=='p') $this->connList(true);
 	}
 	public function conn_Add() {
 		$this->std->cls();

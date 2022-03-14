@@ -322,8 +322,7 @@ class _ {
 	}
 
 	static public function error_handler($errno, $errstr, $errfile, $errline, $errcontext = '', $bt = [], $trigger = true) {
-		static $trigger_error=E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
-		static $ntrigger_error=E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_STRICT | E_RECOVERABLE_ERROR | E_DEPRECATED;
+		static $trigger_error, $ntrigger_error;
 		static $constanst=[
 			E_ERROR=>[E_ERROR,'ERROR',0,'pow(2,0)'],
 			E_WARNING=>[E_WARNING,'WARNING',1,'pow(2,1)'],
@@ -343,6 +342,11 @@ class _ {
 			E_ALL=>[E_ALL,'ALL',15,'pow(2,15)-1'],
 		];
 		global $trap_error, $trap_error_callback, $trap_error_callback_PARAMETERS;
+
+		if(!$trigger_error){
+			$trigger_error=E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
+			$ntrigger_error=E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_STRICT | E_RECOVERABLE_ERROR | E_DEPRECATED;
+		}
 
 		//E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING, E_STRICT
 		if ($trap_error & $errno && $trap_error_callback) call_user_func_array($trap_error_callback, $trap_error_callback_PARAMETERS);

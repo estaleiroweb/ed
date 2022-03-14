@@ -138,12 +138,12 @@ class Vault {
 	private function key() {
 		return pack('H*', VaultData::$key);
 	}
-	private function crypt($content) {
+	public function crypt($content) {
 		$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(VaultData::$cipher));
 		$ivdb = base64_encode($iv);
 		return $ivdb . openssl_encrypt($content, VaultData::$cipher, $this->key(), $options = 0, $iv);
 	}
-	private function decrypt($content) {
+	public function decrypt($content) {
 		$iv = base64_decode(substr($content, 0, 24));
 		$pss = substr($content, 24);
 		return openssl_decrypt($pss, VaultData::$cipher, $this->key(), $options = 0, $iv);
