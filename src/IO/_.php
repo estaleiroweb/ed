@@ -322,6 +322,26 @@ class _ {
 	}
 
 	static public function error_handler($errno, $errstr, $errfile, $errline, $errcontext = '', $bt = [], $trigger = true) {
+		static $trigger_error=E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
+		static $ntrigger_error=E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_STRICT | E_RECOVERABLE_ERROR | E_DEPRECATED;
+		static $constanst=[
+			E_ERROR=>[E_ERROR,'ERROR',0,'pow(2,0)'],
+			E_WARNING=>[E_WARNING,'WARNING',1,'pow(2,1)'],
+			E_PARSE=>[E_PARSE,'PARSE',2,'pow(2,2)'],
+			E_NOTICE=>[E_NOTICE,'NOTICE',3,'pow(2,3)'],
+			E_CORE_ERROR=>[E_CORE_ERROR,'CORE_ERROR',4,'pow(2,4)'],
+			E_CORE_WARNING=>[E_CORE_WARNING,'CORE_WARNING',5,'pow(2,5)'],
+			E_COMPILE_ERROR=>[E_COMPILE_ERROR,'COMPILE_ERROR',6,'pow(2,6)'],
+			E_COMPILE_WARNING=>[E_COMPILE_WARNING,'COMPILE_WARNING',7,'pow(2,7)'],
+			E_USER_ERROR=>[E_USER_ERROR,'USER_ERROR',8,'pow(2,8)'],
+			E_USER_WARNING=>[E_USER_WARNING,'USER_WARNING',9,'pow(2,9)'],
+			E_USER_NOTICE=>[E_USER_NOTICE,'USER_NOTICE',10,'pow(2,10)'],
+			E_STRICT=>[E_STRICT,'STRICT',11,'pow(2,11)'],
+			E_RECOVERABLE_ERROR=>[E_RECOVERABLE_ERROR,'RECOVERABLE_ERROR',12,'pow(2,12)'],
+			E_DEPRECATED=>[E_DEPRECATED,'DEPRECATED',13,'pow(2,13)'],
+			E_USER_DEPRECATED=>[E_USER_DEPRECATED,'USER_DEPRECATED',14,'pow(2,14)'],
+			E_ALL=>[E_ALL,'ALL',15,'pow(2,15)-1'],
+		];
 		global $trap_error, $trap_error_callback, $trap_error_callback_PARAMETERS;
 
 		//E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING, E_STRICT
@@ -330,10 +350,21 @@ class _ {
 		if (!@$GLOBALS['show_debug_all_erros'] || $errno == 8192) return;
 		$message = [];
 		self::error($errstr, 0, "<label>ERROR [$errno] </label><label>File: </label><i>$errfile [$errline]</i>");
-		if ($trigger) @trigger_error($errstr, $errno);
+		//show([$errstr, $errno,$constanst]);
+
+		if ($trigger) {
+			$er=$errno & $trigger_error;
+			if(!$er) $er=E_USER_NOTICE;
+			@trigger_error($errstr, $er);
+			if($errno & $ntrigger_error) {
+				$er=[];
+				foreach($constanst as $k=>$cfg) if($k & $errno) $er[]=$cfg[1];
+				print "\n";
+			}
+		}
 	}
 	static public function enable_error_handler($e = null) {
-		if(is_null($e)) $e=E_ALL & ~E_NOTICE & ~E_STRICT;
+		if (is_null($e)) $e = E_ALL & ~E_NOTICE & ~E_STRICT;
 		//function error_handler... if($trap_error & $errno && $trap_error_callback) call_user_func_array($__TRAP_CALLBACK,$__TRAP_CALLBACK_PARAMETERS);
 		set_error_handler([__CLASS__, 'error_handler'], $e); // & ~E_WARNING
 	}
@@ -465,8 +496,8 @@ class _ {
 		//$al = reset($al);
 
 		while ($al && is_array($al)) $al = reset($al);
-		if (!($al instanceof ClassLoader)) _::error('Autoload isn\'t Composer', FATAL_ERROR);
-		return (array)$al->getPrefixesPsr4();
+		if ($al instanceof ClassLoader) return (array)$al->getPrefixesPsr4();
+		else _::error('Autoload isn\'t Composer', FATAL_ERROR);
 	}
 	static public function checkClass($class) {
 		static $arr = [];
