@@ -327,7 +327,7 @@ abstract class ConnMain {
 	public function mountFieldsKeys($line) {
 		$l = [];
 		foreach ($line as $k => $v) $l[] = is_object($v) ? $this->nameByObjField($v, $k) : $k;
-		return $this->fieldDelimiter(implode($this->delimiter['fieldEnd'] . ',' . $this->delimiters['fieldStart'], $l));
+		return $this->fieldDelimiter(implode($this->delimiters['fieldEnd'] . ',' . $this->delimiters['fieldStart'], $l));
 	}
 	public function mountFieldsSetValues($line) {
 		$out = [];
@@ -379,7 +379,7 @@ abstract class ConnMain {
 		return $keys ? $this->mountFieldsConpareValues($keys) : '';
 	}
 	public function fieldDelimiter($field) {
-		return $this->startFieldDelimiter . $field . $this->endFieldDelimiter;
+		return $this->delimiters['fieldStart'] . $field . $this->delimiters['fieldEnd'];
 	}
 	public function nameByObjField($obj, $default = null) {
 		($n = @$obj->name) || ($n = @$obj->orgname) || ($n = @$obj->key) || ($n = $default);
