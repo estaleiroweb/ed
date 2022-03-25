@@ -2,6 +2,8 @@
 
 namespace EstaleiroWeb\ED\Tools;
 
+use EstaleiroWeb\ED\IO\_;
+
 class Monitor {
 	static public $REF_TABLE = 1;
 	public $host = 'localhost';
@@ -27,7 +29,7 @@ class Monitor {
 			5-cached
 		*/
 		$mPerc = ($mem[1] / $mem[0]) * 100;
-		verbose("Mem Used: {$mem[1]}/{$mem[0]} ({$mPerc}%)\n");
+		_::verbose("Mem Used: {$mem[1]}/{$mem[0]} ({$mPerc}%)\n");
 		return $mPerc;
 	}
 	function memorySwap() {
@@ -40,7 +42,7 @@ class Monitor {
 			2-free
 		*/
 		$mPerc = ($mem[1] / $mem[0]) * 100;
-		verbose("Swap Used: {$mem[1]}/{$mem[0]} ({$mPerc}%)\n");
+		_::verbose("Swap Used: {$mem[1]}/{$mem[0]} ({$mPerc}%)\n");
 		return $mPerc;
 	}
 	function load($host = false, $communit = false) {
@@ -49,7 +51,7 @@ class Monitor {
 		//return (float)snmpget($host,$communit,"UCD-SNMP-MIB::laLoadFloat.1");
 		//$get=`w | grep 'load average'`;
 		$ret = (float)`cut -d' ' -f 1 /proc/loadavg`;
-		verbose('Load: ' . $ret . ' (' . trim(`cat /proc/loadavg`) . ")\n");
+		_::verbose('Load: ' . $ret . ' (' . trim(`cat /proc/loadavg`) . ")\n");
 		return $ret;
 	}
 	function cpu() {
@@ -68,7 +70,7 @@ class Monitor {
 			6-softirq: servicing softirqs
 		*/
 		$ret = (1 - $cpu[3] / $total) * 100;
-		verbose("CPU Total: $total, Ocupado: {$ret}%) ({$get})\n");
+		_::verbose("CPU Total: $total, Ocupado: {$ret}%) ({$get})\n");
 		return $ret;
 	}
 	function stopOverCpu($maxCpu = false) {
@@ -97,13 +99,13 @@ class Monitor {
 	}
 	function listProcess($cmd = '', $filter = '') {
 		$get = `{$this->cmdProcess($cmd,$filter)}`;
-		verbose("Process: $get\n");
+		_::verbose("Process: $get\n");
 		preg_match_all("/(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.*)/", eval("return '$get';"), $process, PREG_SET_ORDER);
 		return $process;
 	}
 	function numProcess($cmd = '', $filter = '') {
 		$get = `{$this->cmdProcess($cmd,$filter)} | wc -l`;
-		verbose("NumProcess: $get\n");
+		_::verbose("NumProcess: $get\n");
 		$this->numProcess = (int)eval("return $get;");
 		return $this->numProcess;
 	}
@@ -138,7 +140,7 @@ class Monitor {
 		//print_r($process);
 		$stop = array();
 		foreach ($process as $l) if ($l[2] != $pid) {
-			verbose("KillProcess: {$l[2]}\n");
+			_::verbose("KillProcess: {$l[2]}\n");
 			`kill -9 {$l[2]}`;
 		}
 	}
