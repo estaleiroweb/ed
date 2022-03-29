@@ -146,6 +146,11 @@ abstract class ConnMain {
 		$class = $this->detClass;
 		return new $class($this, $query);
 	}
+	public function exec($query){
+		if ($this->showQuery) _::show($query);
+		else _::verbose($query);
+		return call_user_func_array([$this->extends, __FUNCTION__], func_get_args());
+	}
 	private function queryMethod($fn, $args, $mode = null) {
 		$query = $args[0];
 		if ($this->showQuery) _::show($query);
