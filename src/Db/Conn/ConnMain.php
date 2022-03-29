@@ -6,6 +6,7 @@ use EstaleiroWeb\ED\IO\_;
 use EstaleiroWeb\ED\Db\Detail\Detail;
 use EstaleiroWeb\ED\Db\Field\Field;
 use EstaleiroWeb\ED\Db\GetterAndSetter;
+use EstaleiroWeb\ED\Db\Raw;
 use PDO;
 use Exception;
 use Iterator;
@@ -262,7 +263,7 @@ abstract class ConnMain {
 		if ($line && is_array($line)) {
 			if (is_array(reset($line))) {
 				$sumLines = 0;
-				foreach ($line as $l) $sumLines += $this->save($tblTo, $l, $onUpdate, $keysDefault);
+				foreach ($line as $l) $sumLines += $this->rec($tblTo, $l, $onUpdate, $keysDefault);
 				return $sumLines;
 			}
 			$k = @$keys[$tblTo];
@@ -396,7 +397,7 @@ abstract class ConnMain {
 
 	public function addQuote($value) {
 		if (is_object($value)) {
-			//if($value instanceof Conn_Main_result_field) return $value();
+			if($value instanceof Field || $value instanceof Raw) return $value();
 			return $this->stringDelimiter("$value");
 			return $this->stringDelimiter(json_encode($value));
 		}
