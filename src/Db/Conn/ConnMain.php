@@ -230,6 +230,9 @@ abstract class ConnMain {
 	public function call($procedure) {
 		$args = func_get_args();
 		array_shift($args);
+		return $this->call_array($procedure,$args);
+	}
+	public function call_array($procedure,$args=[]) {
 		$query = 'CALL ' . $procedure;
 		if ($args) {
 			$args = is_array($args[0]) ? $args[0] : $args;
