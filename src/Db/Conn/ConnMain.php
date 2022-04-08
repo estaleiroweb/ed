@@ -293,6 +293,11 @@ abstract class ConnMain {
 				if ($c[$tblTo]) print $c[$tblTo];
 				$sql = "{$cmdT[$tblTo]} {$tbls[$tblTo]} ({$keys[$tblTo]}) VALUES \n" . implode(",\n", $sqls[$tblTo]) . $updt[$tblTo];
 				$this->exec($sql);
+				$er=$this->errorInfo();
+				if($er) {
+					$er['sql']=$sql;
+					print_r($er);
+				}
 				if ($this->on_save) call_user_func($this->on_save, $this);
 				//print "\n$sql\n";
 			}
