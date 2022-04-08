@@ -294,7 +294,7 @@ abstract class ConnMain {
 				$sql = "{$cmdT[$tblTo]} {$tbls[$tblTo]} ({$keys[$tblTo]}) VALUES \n" . implode(",\n", $sqls[$tblTo]) . $updt[$tblTo];
 				$this->exec($sql);
 				$er=$this->errorInfo();
-				if($er) {
+				if(@$er[1]) {
 					$er['sql']=$sql;
 					print_r($er);
 				}
