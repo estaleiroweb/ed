@@ -659,7 +659,8 @@ abstract class ConnMain {
 		return ($table ? $table . '.' : '') . $field;
 	}
 	public function field($index = null) {
-		$class = get_class($this) . '_result_field';
+		if (is_null($index)) $index = $this->fieldIdx++;
+		$class = $this->fldClass;
 		return new $class($index, null, $this);
 	}
 	public function fn($k, $v, $fn) {
@@ -677,8 +678,6 @@ abstract class ConnMain {
 		$f->value = "{$fn}({$v})";
 		return $f;
 	}
-
-
 
 	public function affected_rows() {
 	}

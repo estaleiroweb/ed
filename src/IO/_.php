@@ -6,6 +6,7 @@ use EstaleiroWeb\ED\Db\Field\Field;
 use EstaleiroWeb\ED\Db\Res\Res;
 use EstaleiroWeb\ED\Ext\Ed;
 use Composer\Autoload\ClassLoader;
+use EstaleiroWeb\ED\Db\Raw;
 use PDO;
 use PDOStatement;
 
@@ -207,8 +208,12 @@ class _ {
 			if ($showKey) $line[$showKey] = $idx++;
 			foreach ($head['length'] as $k => $len) {
 				$v = @$line[$k];
-				if (is_object($v)) $v = $line[$k] = ($v instanceof Field) ? $v() : json_encode($v);
-				elseif (is_array($v)) $v = $line[$k] = json_encode($v);
+				if (is_object($v)) {
+					if ($v instanceof Field || $v instanceof Raw) $v = $v();
+					else $v = json_encode($v);
+					$line[$k] = $v;
+				}
+				if (is_array($v)) $v = $line[$k] = json_encode($v);
 				$head['length'][$k] = min(max($len, strlen($v)), $maxLength);
 				if ($v && !is_numeric($v)) $head['align'][$k] = STR_PAD_RIGHT;
 			}
@@ -393,6 +398,7 @@ class _ {
 		return min(max($len, strlen($value)), self::$fit_maxFieldLength);
 	}
 	static public function fit_Field($value, $len = null, $pad = STR_PAD_RIGHT) { //STR_PAD_LEFT STR_PAD_RIGHT STR_PAD_BOTH 
+		if(is_array($value)) $value=json_encode($value);
 		if ($len === null) $len = self::$fit_maxFieldLength;
 		if (!$len) return $value;
 		return str_pad(substr($value, 0, $len), $len, ' ', $pad);
