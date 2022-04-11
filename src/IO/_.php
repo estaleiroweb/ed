@@ -543,4 +543,8 @@ class _ {
 		}
 		return join('/', $f);
 	}
+	static public function is_list($arr) {
+		$tam = count($arr);
+		return array_keys($arr) === range(0, $tam - 1);
+	}
 }
