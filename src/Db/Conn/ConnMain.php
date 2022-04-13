@@ -279,7 +279,7 @@ abstract class ConnMain {
 					if ($onUpdate === true) $onUpdate = $this->mountFieldsUpdateValues($line);
 					$updt[$tblTo] = " \nON DUPLICATE KEY UPDATE $onUpdate";
 				}
-				$c[$tblTo] = is_null($this->charPrint) ? Conn::$charPrint : $this->charPrint;
+				$c[$tblTo] = is_null($this->charPrint) ? Conn::$chrPrint : $this->charPrint;
 				$sqls[$tblTo] = [];
 				$cont[$tblTo] = $sum[$tblTo] = 0;
 			}

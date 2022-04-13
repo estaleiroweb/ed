@@ -7,7 +7,7 @@ use EstaleiroWeb\ED\IO\Vault;
 use PDO;
 
 class Conn extends ConnMain {
-	static public $charPrint = '.';
+	static public $chrPrint = '.';
 	static public $drivers = [
 		'mysql' => 'mysql',
 		'mariadb' => 'mysql',
