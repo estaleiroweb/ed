@@ -23,7 +23,7 @@ abstract class ConnMain {
 		'string' => '\'',
 	];
 
-	public $charPrint = '.';
+	public $charPrint = null;
 	public $cmdSave = null; // INSERT LOW_PRIORITY IGNORE, REPLACE
 	public $stopOnError = true;
 	public $showErrorOnError = true;
@@ -76,7 +76,7 @@ abstract class ConnMain {
 	public function __toString() {
 		return $this->readonly[$k = 'name'] == '' ? '[default]' : $this->readonly[$k];
 	}
-	public function __invoke(){
+	public function __invoke() {
 		return $this->extends;
 	}
 
@@ -147,7 +147,7 @@ abstract class ConnMain {
 		$class = $this->detClass;
 		return new $class($this, $query);
 	}
-	public function exec($query){
+	public function exec($query) {
 		if ($this->showQuery) _::show($query);
 		else _::verbose($query);
 		return call_user_func_array([$this->extends, __FUNCTION__], func_get_args());
@@ -157,7 +157,7 @@ abstract class ConnMain {
 		if ($this->showQuery) _::show($query);
 		else _::verbose($query);
 		$res = call_user_func_array([$this->extends, $fn], $args);
-		if(!$res){
+		if (!$res) {
 			if (!$this->showQuery && $this->showQueryOnError) _::show($query);
 			if ($this->showErrorOnError) _::error($this->extends->errorInfo());
 			if ($this->stopOnError) exit;
@@ -230,9 +230,9 @@ abstract class ConnMain {
 	public function call($procedure) {
 		$args = func_get_args();
 		array_shift($args);
-		return $this->call_array($procedure,$args);
+		return $this->call_array($procedure, $args);
 	}
-	public function call_array($procedure,$args=[]) {
+	public function call_array($procedure, $args = []) {
 		$query = 'CALL ' . $procedure;
 		if ($args) {
 			$args = is_array($args[0]) ? $args[0] : $args;
@@ -240,9 +240,9 @@ abstract class ConnMain {
 		}
 		return $this->getAllQuerys($query);
 	}
-	public function save($tblTo=null,$line=null,$cmd=null,$onUpdate=null,$charPrint='.',$keysDefault=null){
-		$this->cmdSave=$cmd;
-		$this->charPrint=$charPrint;
+	public function save($tblTo = null, $line = null, $cmd = null, $onUpdate = null, $charPrint = '.', $keysDefault = null) {
+		$this->cmdSave = $cmd;
+		$this->charPrint = $charPrint;
 		return $this->rec($tblTo, $line, $onUpdate, $keysDefault);
 	}
 	/**
@@ -279,7 +279,7 @@ abstract class ConnMain {
 					if ($onUpdate === true) $onUpdate = $this->mountFieldsUpdateValues($line);
 					$updt[$tblTo] = " \nON DUPLICATE KEY UPDATE $onUpdate";
 				}
-				$c[$tblTo] = $this->charPrint;
+				$c[$tblTo] = is_null($this->charPrint) ? Conn::$charPrint : $this->charPrint;
 				$sqls[$tblTo] = [];
 				$cont[$tblTo] = $sum[$tblTo] = 0;
 			}
@@ -293,9 +293,9 @@ abstract class ConnMain {
 				if ($c[$tblTo]) print $c[$tblTo];
 				$sql = "{$cmdT[$tblTo]} {$tbls[$tblTo]} ({$keys[$tblTo]}) VALUES \n" . implode(",\n", $sqls[$tblTo]) . $updt[$tblTo];
 				$this->exec($sql);
-				$er=$this->errorInfo();
-				if(@$er[1]) {
-					$er['sql']=$sql;
+				$er = $this->errorInfo();
+				if (@$er[1]) {
+					$er['sql'] = $sql;
 					print_r($er);
 				}
 				if ($this->on_save) call_user_func($this->on_save, $this);
@@ -405,7 +405,7 @@ abstract class ConnMain {
 
 	public function addQuote($value) {
 		if (is_object($value)) {
-			if($value instanceof Field || $value instanceof Raw) return $value();
+			if ($value instanceof Field || $value instanceof Raw) return $value();
 			return $this->stringDelimiter("$value");
 			return $this->stringDelimiter(json_encode($value));
 		}
