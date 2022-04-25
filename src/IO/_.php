@@ -104,141 +104,7 @@ class _ {
 		print $out;
 	}
 	static public function showTable($arr, $showKey = '#', $maxLength = null, $countRecords = true, $classStyle = 'alert alert-primary MakeBox') {
-		if (!$arr) return;
-
-		if (is_array($arr)) {
-			$keys = array_keys(reset($arr));
-			$fn = function (&$arr) {
-				return $arr ? array_shift($arr) : false;
-			};
-		} elseif (is_object($arr) && ($arr instanceof Res || $arr instanceof PDOStatement)) {
-			$nCols = $arr->columnCount();
-			if (!$arr) return;
-			$keys = [];
-			for ($i = 0; $i < $nCols; $i++) $keys[] = $arr->getColumnMeta($i)['name'];
-			//foreach ($arr->fetch_fields() as $v) $keys[$v->name] = $v->name;
-			//print_r($keys);
-			$fn = function (&$arr) {
-				return $arr->fetch(PDO::FETCH_ASSOC);
-			};
-		} else return;
-		if ($showKey) array_unshift($keys, $showKey);
-		//print_r(array($fn,$pr));return;
-
-		if (@$_SERVER['SHELL']) {
-			if (is_null($maxLength)) $maxLength = 30;
-			$fnHeadTop = function ($arr, $flag, $countRecords, $lines) {
-				return self::fit_showHeadLineTop($arr, $flag);
-			};
-			$fnHead = function ($arr, $flag) {
-				return self::fit_Line($arr, $flag);
-			};
-			$fnHeadBottom = function ($arr, $flag) {
-				return self::fit_showHeadLineBottom($arr, $flag);
-			};
-			$fnField = function ($value, $length, $align) {
-				return self::fit_Field($value, $length, $align);
-			};
-			$fnLine = function ($line, $flag) {
-				return self::fit_Line($line, $flag);
-			};
-			$fnFootLine = function ($arr, $flag, $countRecords, $lines) {
-				$result = self::fit_showFootLine($arr, $flag);
-				if ($countRecords) $result .= count($lines) . " Records\n";
-				$result .= "\n";
-				return $result;
-			};
-			$fnCmd = function ($result, $classStyle) {
-				print $result;
-			};
-		} else {
-			if (is_null($maxLength)) $maxLength = 200;
-			new Ed();
-			$fnHeadTop = function ($arr, $flag, $countRecords, $lines) {
-				//table-bordered table-sm 
-				$result = '<div><div>[<a href="javascript:" onclick="$.copy(this.parentElement.nextSibling,\'html\')">Copy</a>]';
-				if ($countRecords) {
-					$recCount = count($lines);
-					$result .= "<b>$recCount Records</b>";
-				}
-				$result .= '</div>';
-				$result .= "<table class='table table-striped table-sm table-hover'>\n";
-				return $result;
-			};
-			$fnHead = function ($arr, $flag) {
-				$result = '<tr>';
-				foreach ($arr as $v) $result .= "<th>$v</th>";
-				$result .= "</tr>\n";
-				return $result;
-			};
-			$fnHeadBottom = function ($arr, $flag) {
-				return '';
-			};
-			$fnField = function ($value, $length, $align) {
-				if ($align == STR_PAD_LEFT) $class = 'text-end';
-				elseif ($align == STR_PAD_RIGHT) $class = 'text-start';
-				elseif ($align == STR_PAD_BOTH) $class = 'text-center';
-				else $class = '';
-				return '<td class="' . $class . '">' . htmlspecialchars($value) . '</td>';
-			};
-			$fnLine = function ($line, $flag) {
-				return '<tr>' . implode('', $line) . "</tr>\n";
-			};
-			$fnFootLine = function ($arr, $flag, $countRecords, $lines) {
-				return '</table></div>';
-			};
-			$fnCmd = function ($result, $classStyle) {
-				print $result;
-				//print self::makeBox($result, '', $classStyle, 'pre');
-			};
-		}
-
-
-		$head = [];
-		foreach ($keys as $k) {
-			$head['length'][$k] = min(max(1, strlen($k)), $maxLength);
-			$head['align'][$k] = STR_PAD_LEFT;
-			$head['alignHead'][$k] = $showKey == $k ? STR_PAD_LEFT : STR_PAD_RIGHT;
-		}
-
-		$idx = 0;
-		$lines = [];
-		while ($line = $fn($arr)) {
-			//foreach($arr as $line) {
-			if ($showKey) $line[$showKey] = $idx++;
-			foreach ($head['length'] as $k => $len) {
-				$v = @$line[$k];
-				if (is_object($v)) {
-					if ($v instanceof Field || $v instanceof Raw) $v = $v();
-					else $v = json_encode($v);
-					$line[$k] = $v;
-				}
-				if (is_array($v)) $v = $line[$k] = json_encode($v);
-				$head['length'][$k] = min(max($len, strlen($v)), $maxLength);
-				if ($v && !is_numeric($v)) $head['align'][$k] = STR_PAD_RIGHT;
-			}
-			$lines[] = $line;
-		}
-		foreach ($keys as $k) {
-			$head['orgname'][$k] = self::fit_Field($k, $head['length'][$k], @$head['alignHead'][$k]);
-			$head['line'][$k] = str_repeat('-', $head['length'][$k]);
-		}
-
-		$result = $fnHeadTop($head['orgname'], true, $countRecords, $lines);
-		$result .= $fnHead($head['orgname'], true);
-		$result .= $fnHeadBottom($head['orgname'], true);
-
-		foreach ($lines as $idx => $line) if (is_array($line)) {
-			if ($showKey) $line = array_merge([$showKey => $idx], $line);
-			foreach ($line as $k => $v) $line[$k] = $fnField($v, $head['length'][$k], $head['align'][$k]);
-			$result .= $fnLine($line, true);
-		} else {
-			$result .= print_r($line, true);
-			$result .= "\n";
-		}
-
-		$result .= $fnFootLine($head['orgname'], true, $countRecords, $lines);
-		$fnCmd($result, $classStyle);
+		print self::getTable($arr, $showKey, $maxLength, $countRecords, $classStyle);
 	}
 	static public function getTable($arr, $showKey = '#', $maxLength = null, $countRecords = true, $classStyle = 'alert alert-primary MakeBox') {
 		if (!$arr) return;
@@ -285,7 +151,7 @@ class _ {
 				$result .= "\n";
 				return $result;
 			};
-			$fnCmd = function ($result, $classStyle) use ($out) {
+			$fnCmd = function ($result, $classStyle) use (&$out) {
 				$out .= $result;
 			};
 		} else {
@@ -324,7 +190,7 @@ class _ {
 			$fnFootLine = function ($arr, $flag, $countRecords, $lines) {
 				return '</table></div>';
 			};
-			$fnCmd = function ($result, $classStyle) use ($out) {
+			$fnCmd = function ($result, $classStyle) use (&$out) {
 				$out .= $result;
 				//$out.=self::makeBox($result, '', $classStyle, 'pre');
 			};
@@ -462,29 +328,29 @@ class _ {
 
 	static public function error_handler($errno, $errstr, $errfile, $errline, $errcontext = '', $bt = [], $trigger = true) {
 		static $trigger_error, $ntrigger_error;
-		static $constanst=[
-			E_ERROR=>[E_ERROR,'ERROR',0,'pow(2,0)'],
-			E_WARNING=>[E_WARNING,'WARNING',1,'pow(2,1)'],
-			E_PARSE=>[E_PARSE,'PARSE',2,'pow(2,2)'],
-			E_NOTICE=>[E_NOTICE,'NOTICE',3,'pow(2,3)'],
-			E_CORE_ERROR=>[E_CORE_ERROR,'CORE_ERROR',4,'pow(2,4)'],
-			E_CORE_WARNING=>[E_CORE_WARNING,'CORE_WARNING',5,'pow(2,5)'],
-			E_COMPILE_ERROR=>[E_COMPILE_ERROR,'COMPILE_ERROR',6,'pow(2,6)'],
-			E_COMPILE_WARNING=>[E_COMPILE_WARNING,'COMPILE_WARNING',7,'pow(2,7)'],
-			E_USER_ERROR=>[E_USER_ERROR,'USER_ERROR',8,'pow(2,8)'],
-			E_USER_WARNING=>[E_USER_WARNING,'USER_WARNING',9,'pow(2,9)'],
-			E_USER_NOTICE=>[E_USER_NOTICE,'USER_NOTICE',10,'pow(2,10)'],
-			E_STRICT=>[E_STRICT,'STRICT',11,'pow(2,11)'],
-			E_RECOVERABLE_ERROR=>[E_RECOVERABLE_ERROR,'RECOVERABLE_ERROR',12,'pow(2,12)'],
-			E_DEPRECATED=>[E_DEPRECATED,'DEPRECATED',13,'pow(2,13)'],
-			E_USER_DEPRECATED=>[E_USER_DEPRECATED,'USER_DEPRECATED',14,'pow(2,14)'],
-			E_ALL=>[E_ALL,'ALL',15,'pow(2,15)-1'],
+		static $constanst = [
+			E_ERROR => [E_ERROR, 'ERROR', 0, 'pow(2,0)'],
+			E_WARNING => [E_WARNING, 'WARNING', 1, 'pow(2,1)'],
+			E_PARSE => [E_PARSE, 'PARSE', 2, 'pow(2,2)'],
+			E_NOTICE => [E_NOTICE, 'NOTICE', 3, 'pow(2,3)'],
+			E_CORE_ERROR => [E_CORE_ERROR, 'CORE_ERROR', 4, 'pow(2,4)'],
+			E_CORE_WARNING => [E_CORE_WARNING, 'CORE_WARNING', 5, 'pow(2,5)'],
+			E_COMPILE_ERROR => [E_COMPILE_ERROR, 'COMPILE_ERROR', 6, 'pow(2,6)'],
+			E_COMPILE_WARNING => [E_COMPILE_WARNING, 'COMPILE_WARNING', 7, 'pow(2,7)'],
+			E_USER_ERROR => [E_USER_ERROR, 'USER_ERROR', 8, 'pow(2,8)'],
+			E_USER_WARNING => [E_USER_WARNING, 'USER_WARNING', 9, 'pow(2,9)'],
+			E_USER_NOTICE => [E_USER_NOTICE, 'USER_NOTICE', 10, 'pow(2,10)'],
+			E_STRICT => [E_STRICT, 'STRICT', 11, 'pow(2,11)'],
+			E_RECOVERABLE_ERROR => [E_RECOVERABLE_ERROR, 'RECOVERABLE_ERROR', 12, 'pow(2,12)'],
+			E_DEPRECATED => [E_DEPRECATED, 'DEPRECATED', 13, 'pow(2,13)'],
+			E_USER_DEPRECATED => [E_USER_DEPRECATED, 'USER_DEPRECATED', 14, 'pow(2,14)'],
+			E_ALL => [E_ALL, 'ALL', 15, 'pow(2,15)-1'],
 		];
 		global $trap_error, $trap_error_callback, $trap_error_callback_PARAMETERS;
 
-		if(!$trigger_error){
-			$trigger_error=E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
-			$ntrigger_error=E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_STRICT | E_RECOVERABLE_ERROR | E_DEPRECATED;
+		if (!$trigger_error) {
+			$trigger_error = E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
+			$ntrigger_error = E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_STRICT | E_RECOVERABLE_ERROR | E_DEPRECATED;
 		}
 
 		//E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING, E_STRICT
@@ -496,12 +362,12 @@ class _ {
 		//show([$errstr, $errno,$constanst]);
 
 		if ($trigger) {
-			$er=$errno & $trigger_error;
-			if(!$er) $er=E_USER_NOTICE;
+			$er = $errno & $trigger_error;
+			if (!$er) $er = E_USER_NOTICE;
 			@trigger_error($errstr, $er);
-			if($errno & $ntrigger_error) {
-				$er=[];
-				foreach($constanst as $k=>$cfg) if($k & $errno) $er[]=$cfg[1];
+			if ($errno & $ntrigger_error) {
+				$er = [];
+				foreach ($constanst as $k => $cfg) if ($k & $errno) $er[] = $cfg[1];
 				print "\n";
 			}
 		}
@@ -532,7 +398,7 @@ class _ {
 		return min(max($len, strlen($value)), self::$fit_maxFieldLength);
 	}
 	static public function fit_Field($value, $len = null, $pad = STR_PAD_RIGHT) { //STR_PAD_LEFT STR_PAD_RIGHT STR_PAD_BOTH 
-		if(is_array($value)) $value=json_encode($value);
+		if (is_array($value)) $value = json_encode($value);
 		if ($len === null) $len = self::$fit_maxFieldLength;
 		if (!$len) return $value;
 		return str_pad(substr($value, 0, $len), $len, ' ', $pad);
