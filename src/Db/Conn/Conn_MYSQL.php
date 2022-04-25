@@ -2,6 +2,8 @@
 
 namespace EstaleiroWeb\ED\Db\Conn;
 
+use Exception;
+
 //options array(PDO::MYSQL_ATTR_FOUND_ROWS => true)
 class Conn_MYSQL extends ConnMain {
 	public $delimiters = [
@@ -14,7 +16,11 @@ class Conn_MYSQL extends ConnMain {
 	public $maxInsert = 200;
 	
 	public function close() {
-		if($this->conn) $this->conn->query('KILL CONNECTION_ID()');
+		if($this->extends) {
+			try{
+				$this->extends->query('KILL CONNECTION_ID()');
+			}catch(Exception $e){}
+		}
 		return parent::close();
 	}
 
