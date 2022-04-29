@@ -104,10 +104,10 @@ class Monitor {
 		return $process;
 	}
 	function numProcess($cmd = '', $filter = '') {
-		$get = `{$this->cmdProcess($cmd,$filter)} | wc -l`;
-		_::verbose("NumProcess: $get\n");
-		$this->numProcess = (int)eval("return $get;");
-		return $this->numProcess;
+		exec($this->cmdProcess($cmd,$filter),$get);
+		$i=count($get);
+		_::verbose("NumProcess: $i\n");
+		return $this->numProcess = $i;
 	}
 	function thisProcess() {
 		$pinfo = pathinfo($this->thisScript());
@@ -129,11 +129,11 @@ class Monitor {
 		if ($this->overThisProcess($numProcess, $filter)) $this->prOverLoad(__FUNCTION__ . '(' . $this->numProcess . ')');
 	}
 	function cmdProcess($cmd = '', $filter = '') {
-		$grep = $filter === '' ? '' : " | grep \"$filter\"";
+		$grep = $filter == '' ? '' : " | grep '$filter'";
 		if ($cmd) {
 			$ps = "ps --no-heading -fC $cmd$grep";
 		} else {
-			$grep .= $grep ? " | grep -v \"grep $filter\"" : " | grep -v \"ps --no-heading -ef\"";
+			$grep .= " | grep -v 'ps --no-heading -ef'";
 			$ps = "ps --no-heading -ef$grep";
 		}
 		_::verbose("Cmd Process: $ps\n");
