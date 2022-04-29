@@ -130,15 +130,18 @@ class Monitor {
 	}
 	function cmdProcess($cmd = '', $filter = '') {
 		$grep = $filter === '' ? '' : " | grep \"$filter\"";
-		if ($cmd) return "ps --no-heading -fC $cmd$grep";
-		$grep .= $grep ? " | grep -v \"grep $filter\"" : " | grep -v \"ps --no-heading -ef\"";
-		return "ps --no-heading -ef$grep";
+		if ($cmd) {
+			$ps = "ps --no-heading -fC $cmd$grep";
+		} else {
+			$grep .= $grep ? " | grep -v \"grep $filter\"" : " | grep -v \"ps --no-heading -ef\"";
+			$ps = "ps --no-heading -ef$grep";
+		}
+		_::verbose("Cmd Process: $ps\n");
+		return $ps;
 	}
 	function stopOthersProcess() {
 		$pid = getmypid();
 		$process = $this->listProcess($this->thisProcess());
-		//print_r($process);
-		$stop = array();
 		foreach ($process as $l) if ($l[2] != $pid) {
 			_::verbose("KillProcess: {$l[2]}\n");
 			`kill -9 {$l[2]}`;
@@ -146,7 +149,9 @@ class Monitor {
 	}
 	function thisFullProcess() {
 		$pid = getmypid();
-		return trim(`ps --no-heading -o cmd -p$pid`);
+		$cmd = "ps --no-heading -o cmd -p$pid";
+		_::verbose(__FUNCTION__ . ": $cmd\n");
+		return trim(`$cmd`);
 	}
 	function process($pr = null, $columns = 'cmd', $ref = null) {  //columns: https://ss64.com/bash/ps_keywords.html
 		if (is_null($pr))  $pr = '-p' . getmypid();
@@ -163,6 +168,7 @@ class Monitor {
 		$bordeaux = '===bordeaux===';
 		$cmd = implode('&& echo "===bordeaux===";', $cmd);
 
+		_::verbose(__FUNCTION__ . ": $cmd\n");
 		$pr = `$cmd`;
 		if (!$pr) return;
 		$pr = explode($bordeaux, "\n$pr");
