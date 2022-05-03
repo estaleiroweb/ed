@@ -4,14 +4,10 @@ namespace EstaleiroWeb\ED\IO;
 
 use Composer\Autoload\ClassLoader;
 use EstaleiroWeb\Traits\GetterAndSetterRO;
-use EstaleiroWeb\Traits\Singleton;
-use ReflectionClass;
+#use ReflectionClass;
 
 class ConfigExt {
-	use Singleton;
 	use GetterAndSetterRO;
-
-	static public $nmCache = 'EstaleiroWeb\\Cache';
 
 	/**
 	 * Root URL Project
@@ -60,9 +56,9 @@ class ConfigExt {
 		'log_ext' => 'log',
 		'log_fileAuth' => 'authError',
 		'log_filePre' => 'acs_',
-		'translate'=>[
-			'intbhe101'=>'/^(0*189\.0*21\.0*3\.0*61|0*10\.0*72\.0*5\.0*2|intbhe101\.localdomain)(:0*(80|443))?$/i',
-			'10.9.5.14'=>'/^(0*10\.0*9\.0*5\.0*14|0*10\.0*192\.0*72\.0*10|0*200\.0*184\.0*192\.0*201|0*127\.0+\.0+\.0*1|0*10\.174\.0*220\.117)|(((evoice|fsc(srv)?)|((db|portal)(fsc|v?cp|vcd))|localhost)(\.(localdomain|internal\.timbrasil\.com\.br))?)(:0*(80|443))?$/i',
+		'translate' => [
+			'intbhe101' => '/^(0*189\.0*21\.0*3\.0*61|0*10\.0*72\.0*5\.0*2|intbhe101\.localdomain)(:0*(80|443))?$/i',
+			'10.9.5.14' => '/^(0*10\.0*9\.0*5\.0*14|0*10\.0*192\.0*72\.0*10|0*200\.0*184\.0*192\.0*201|0*127\.0+\.0+\.0*1|0*10\.174\.0*220\.117)|(((evoice|fsc(srv)?)|((db|portal)(fsc|v?cp|vcd))|localhost)(\.(localdomain|internal\.timbrasil\.com\.br))?)(:0*(80|443))?$/i',
 		],
 	];
 	/**
@@ -134,7 +130,9 @@ class ConfigExt {
 		if (($composer instanceof ClassLoader)) $nm_paths = $composer->getPrefixesPsr4();
 		else _::error('Autoload isn\'t Composer', FATAL_ERROR);
 		$prefix = (array)$nm_paths;
-		$nm = self::$nmCache . '\\';
+		//print '========== '.preg_replace('/[^\\\]+?$/','',get_class($this));
+		//$nm = Config::$nmCache . '\\';
+		$nm = preg_replace('/[^\\\]+?$/', '', get_class($this));
 		if (!array_key_exists($nm, $prefix)) _::error('PSR4 ' . $nm . ' isn\'t registred', FATAL_ERROR);
 		$dirs = $prefix[$nm];
 		$cacheDir = realpath(array_shift($dirs));
