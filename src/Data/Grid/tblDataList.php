@@ -1,4 +1,15 @@
 <?php
+namespace Evoice\Data\Grid;
+
+use EstaleiroWeb\ED\Data\Form\Form;
+use EstaleiroWeb\ED\Db\Conn\Conn;
+use EstaleiroWeb\ED\DB\Tools\EasyView;
+use EstaleiroWeb\ED\Ext\Bootstrap;
+use EstaleiroWeb\ED\Ext\JQuery_Cookie;
+use EstaleiroWeb\ED\IO\MimeType;
+use EstaleiroWeb\ED\Screen\OutHtml;
+use EstaleiroWeb\ED\Secure\Secure;
+
 /**
 * @author Helbert Fernandes <helbertfernandes@gmail.com>
 * @description Conjunto de classes do tblData para manipulação de conjunto de dados
@@ -548,8 +559,8 @@ class tblDataList extends tblData {
 		//$host=$outHtml->config['__autoload']['host'];
 		/*$edFN=$outHtml->config['easyData']['fn'];
 		$outHtml->headScript['copyUrl']="window.copyUrlPath='{$edFN}/urlRedir.php'";*/
-		new JQuery_Cookie;
-		new Bootstrap;
+		new JQuery_Cookie();
+		new Bootstrap();
 		$outHtml->style('tblDataList','easyData');
 		$outHtml->script('Ed','easyData');
 		$outHtml->script('tblDataList','easyData');

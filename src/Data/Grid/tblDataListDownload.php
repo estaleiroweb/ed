@@ -1,4 +1,8 @@
 <?php
+namespace Evoice\Data\Grid;
+
+use EstaleiroWeb\ED\Db\Conn\Conn;
+
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 ini_set('memory_limit','1G');

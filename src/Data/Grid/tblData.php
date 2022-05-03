@@ -1,4 +1,13 @@
 <?php
+namespace Evoice\Data\Grid;
+
+use EstaleiroWeb\ED\Data\Form\Form;
+use EstaleiroWeb\ED\IO\SessControl;
+use EstaleiroWeb\ED\Screen\OutHtml;
+use EstaleiroWeb\ED\Secure\Secure;
+use EstaleiroWeb\ED\Tools\Id;
+use Evoice\Tools\Refresh;
+
 /**
 * @author Helbert Fernandes <helbertfernandes@gmail.com>
 * @description Conjunto de classes do tblData para manipulação de conjunto de dados
