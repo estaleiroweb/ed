@@ -74,7 +74,8 @@ class Secure extends Common {
 		global $__autoload;
 		//show($_COOKIE);
 		self::$cookie_path = $__autoload->host;
-		self::$ini = Config::singleton();
+		$ini = Config::singleton();
+		self::$ini=$ini['secure'];
 		$this->connect();
 		$this->menu();
 		if ($noStart === true || !$this->secure_init($noStart)) return;
@@ -186,8 +187,8 @@ class Secure extends Common {
 		//_::verbose();
 		$mainVar = array('autoLogon' => false, 'multiSession' => true, 'expiresSession' => 15, 'tryWait' => 10, 'tryTimes' => 3, 'expiresPassword' => 120,);
 		foreach ($mainVar as $k => $v) {
-			if (!isset(self::$ini['main'][$k])) self::$ini['main'][$k] = $v;
-			else $v = self::$ini['main'][$k];
+			if (!isset(self::$ini[$k])) self::$ini[$k] = $v;
+			else $v = self::$ini[$k];
 			self::$conn->query("SET @{$k}=" . _::value2String($v));
 			$this->readonly[$k] = $v;
 		}
@@ -202,11 +203,11 @@ class Secure extends Common {
 	}
 	public function connect() {
 		if (!self::$conn) {
-			Secure::$db = Secure::$ini['main']['db'];
-			Secure::$db_log = Secure::$ini['main']['db_log'];
+			Secure::$db = Secure::$ini['db'];
+			Secure::$db_log = Secure::$ini['db_log'];
 			if (!@self::$ini) _::error('Configuration file "secure.ini" doesn\'t find');
-			if (!@self::$ini['main']['dsn']) _::error('DSN (Data Source Name) doesn\'t find');
-			self::$conn = Conn::dsn(self::$ini['main']['dsn']);
+			if (!@self::$ini['dsn']) _::error('DSN (Data Source Name) doesn\'t find');
+			self::$conn = Conn::dsn(self::$ini['dsn']);
 		}
 		return self::$conn;
 	}
@@ -398,7 +399,7 @@ class Secure extends Common {
 	}
 	final private function logIn($full_username, $passwd = null, $newPass = null, $forceLogIn = false) {
 		_::verbose('');
-		if (!self::$authFnMethod) (self::$authFnMethod = @Secure::$ini['main']['authMethod']) || (self::$authFnMethod = 'ldap');
+		if (!self::$authFnMethod) (self::$authFnMethod = @Secure::$ini['authMethod']) || (self::$authFnMethod = 'ldap');
 		/*
 			$conn->query('
 				INSERT IGNORE '.Secure::$db_log.'tb_TryLogIn 

@@ -34,7 +34,7 @@ class ConfigExt {
 	 * Secure Class settings
 	 */
 	public $secure = [
-		'dsn' => 'localhost',
+		'dsn' => '',
 		'db' => 'db_Secure',
 		'db_log' => 'db_Secure_Log',
 		'autoLogon' => true,               // (DEFAULT OFF)
@@ -120,15 +120,15 @@ class ConfigExt {
 		'smtp_time' => 60, //segundos
 	];
 
-	private function __construct() {
+	protected function __construct() {
 		$al = spl_autoload_functions();
 		if (!$al) _::error('Autoload isn\'t registred', FATAL_ERROR);
 		//$al = reset($al);
 		//$al=ComposerAutoloaderInit88b796964b1d95f3ba4f63403e82804e::getLoader();
 		$composer = $al;
 		while ($composer && is_array($composer)) $composer = reset($composer);
-		if (!($composer instanceof ClassLoader)) _::error('Autoload isn\'t Composer', FATAL_ERROR);
-		$nm_paths = $composer->getPrefixesPsr4();
+		if (($composer instanceof ClassLoader)) $nm_paths = $composer->getPrefixesPsr4();
+		else _::error('Autoload isn\'t Composer', FATAL_ERROR);
 		$prefix = (array)$nm_paths;
 		$nm = self::$nmCache . '\\';
 		if (!array_key_exists($nm, $prefix)) _::error('PSR4 ' . $nm . ' isn\'t registred', FATAL_ERROR);
