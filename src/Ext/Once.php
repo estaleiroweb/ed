@@ -2,6 +2,8 @@
 
 namespace EstaleiroWeb\ED\Ext;
 
+use EstaleiroWeb\ED\IO\_;
+
 class Once {
 	protected $version = null;
 	protected $versions = [];
@@ -11,7 +13,7 @@ class Once {
 		if ($this->passed) return;
 		$this->passed = false;
 		if (is_null($version)) $version = $this->version;
-		if (!array_key_exists($version, $this->versions)) {
+		if (!key_exists($version, $this->versions)) {
 			$keys = array_keys($this->versions);
 			$arr = preg_grep("/^$version\b/", $keys);
 			if ($arr) $version = reset($arr);
@@ -22,7 +24,12 @@ class Once {
 			}
 			//print_r([get_class($this), $version, $arr]);
 		}
-		$versions = $this->versions[$version];
+		if (key_exists($version, $this->versions)) $versions = $this->versions[$version];
+		else {
+			reset($this->versions);
+			$version = key($this->versions);
+			$versions = current($this->versions);
+		}
 		$this->dependences($version);
 		foreach ($versions as $v) print $v;
 	}

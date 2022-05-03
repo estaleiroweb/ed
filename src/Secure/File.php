@@ -63,7 +63,7 @@ class File extends Common {
 	}
 	private function load($where) {
 		_::verbose($where);
-		$line = Secure::$conn->fastLine('SELECT * FROM ' . Secure::$ini['main']['db'] . '.tb_Files WHERE ' . $where . ' LIMIT 1');
+		$line = Secure::$conn->fastLine('SELECT * FROM ' . Secure::$ini['db'] . '.tb_Files WHERE ' . $where . ' LIMIT 1');
 		if (!$line) return false;
 		$this->readonly = array_merge($this->readonly, $line);
 		$this->error();
@@ -105,7 +105,7 @@ class File extends Common {
 		foreach ($fields as $k) if (array_key_exists($k, $data)) $set[] = "`$k`=" . Secure::$conn->addQuote($data[$k]);
 		if ($set) {
 			$set = implode(',', $set);
-			Secure::$conn->query('UPDATE {' . Secure::$ini['main']['db'] . '.tb_Files SET $set WHERE idFile=' . $this->readonly['idFile']);
+			Secure::$conn->query('UPDATE {' . Secure::$ini['db'] . '.tb_Files SET $set WHERE idFile=' . $this->readonly['idFile']);
 			$this->loadById($this->readonly['idFile']);
 		}
 	}

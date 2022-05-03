@@ -60,6 +60,10 @@ class ConfigExt {
 		'log_ext' => 'log',
 		'log_fileAuth' => 'authError',
 		'log_filePre' => 'acs_',
+		'translate'=>[
+			'intbhe101'=>'/^(0*189\.0*21\.0*3\.0*61|0*10\.0*72\.0*5\.0*2|intbhe101\.localdomain)(:0*(80|443))?$/i',
+			'10.9.5.14'=>'/^(0*10\.0*9\.0*5\.0*14|0*10\.0*192\.0*72\.0*10|0*200\.0*184\.0*192\.0*201|0*127\.0+\.0+\.0*1|0*10\.174\.0*220\.117)|(((evoice|fsc(srv)?)|((db|portal)(fsc|v?cp|vcd))|localhost)(\.(localdomain|internal\.timbrasil\.com\.br))?)(:0*(80|443))?$/i',
+		],
 	];
 	/**
 	 * Ldap Class Config
