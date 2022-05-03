@@ -75,7 +75,9 @@ class Secure extends Common {
 		//show($_COOKIE);
 		self::$cookie_path = $__autoload->host;
 		$ini = Config::singleton();
-		self::$ini=$ini['secure'];
+		self::$ini = $ini->secure;
+		_::show(session_save_path());
+		_::show(self::$ini);
 		$this->connect();
 		$this->menu();
 		if ($noStart === true || !$this->secure_init($noStart)) return;
@@ -83,7 +85,6 @@ class Secure extends Common {
 		self::$obj = $this;
 		$this->layout_init($noStart);
 		//show($this->sess->get());
-
 		//_::verbose();
 		$this->readonly['file'] = $this->loadFile();
 		Secure::$idFile = $this->readonly['file']->idFile;
@@ -702,7 +703,7 @@ class Secure extends Common {
 		return $this->dbProcedure('pc_Permition_File_by_idFile_idUser', $param);
 	}
 	public function getGroupPermition() {
-		$conn = Conn::dsn();
+		$conn = $this->connect();
 		$idFile = Secure::$idFile;
 		$idUser = Secure::$idUser;
 		return $conn->query_all("CALL db_Secure.pc_Permition_List_File_by_idFile_idUser($idFile,$idUser)");
