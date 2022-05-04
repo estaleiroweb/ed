@@ -3,6 +3,7 @@
 namespace EstaleiroWeb\ED\Ext;
 
 use EstaleiroWeb\ED\IO\_;
+use EstaleiroWeb\ED\Screen\OutHtml;
 
 class Once {
 	protected $version = null;
@@ -31,7 +32,8 @@ class Once {
 			$versions = current($this->versions);
 		}
 		$this->dependences($version);
-		foreach ($versions as $v) print $v;
+		$o=OutHtml::singleton();
+		foreach ($versions as $v) $o->head($v);
 	}
 	public function dependences($version) {
 	}
