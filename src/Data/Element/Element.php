@@ -14,9 +14,9 @@ $Elements = [];
 class Element {
 	private $htmlView = '';
 	private $htmlEdit = '';
-	protected $typeList = array('text');
+	protected $typeList = ['text'];
 	protected $started = false;
-	protected  $protect = array(
+	protected  $protect = [
 		'id' => '',
 		'printed' => false,
 		'debug' => false,
@@ -38,7 +38,7 @@ class Element {
 		'help' => null,
 		'objectForm' => null,
 		'caretWidth' => 4,
-		'check_types' => array('match', 'in', 'key', 'regexp', 'glob', 'smart'),
+		'check_types' => ['match', 'in', 'key', 'regexp', 'glob', 'smart'],
 		'error' => [],
 		'attr' => [],
 
@@ -112,8 +112,8 @@ class Element {
 		'onbeforeupdate' => null,
 		'onbeforedelete' => null,
 		'value' => null,
-	);
-	protected $events = array(
+	];
+	protected $events = [
 		'onactivate' => null,
 		'onbeforeactivate' => null,
 		'onbeforecut' => null,
@@ -182,9 +182,9 @@ class Element {
 		'date' => null,
 		'email' => null,
 		'url' => null,
-	);
+	];
 	public $methods = [];
-	protected $displayAttr = array(
+	protected $displayAttr = [
 		'ed-element' => 'string',
 		'ed-form-id' => null,
 		'ed-form-fieldname' => null,
@@ -206,13 +206,13 @@ class Element {
 		'rows' => null,
 		'wrap' => null,
 		'readonly' => null,
-	);
-	protected $inputAttr = array(
+	];
+	protected $inputAttr = [
 		'minlength' => null,
 		'maxlength' => null,
 		'validate' => null,
 		'required' => null,
-	);
+	];
 	protected $variables = [];
 	public $style = [];
 	public $details = []; //Depreciada
@@ -231,11 +231,10 @@ class Element {
 			$this->id = $oId->id;
 		}
 		$GLOBALS['Elements'][$this->id] = $this;
-		//$this->set('objClass',get_class($this));
 		if (!is_null($value)) $this->set('value', $value);
 		if (is_null($this->class)) $this->addClass('form-control');
 		//show($this->displayAttr['ed-class']);
-		if (!$this->displayAttr['ed-class']) $this->displayAttr['ed-class'] = get_class($this);
+		if (!$this->displayAttr['ed-class']) $this->displayAttr['ed-class'] = $this->OutHtml->baseClass(get_class($this));
 		$this->displayAttr['ed-element'] = $this->makeEdElement($this->displayAttr['ed-class']);
 		$this->OutHtml->style(__CLASS__, 'ed');
 		$this->OutHtml->style($this->displayAttr['ed-class'], 'ed');
@@ -915,7 +914,7 @@ class Element {
 		$dPoint = $dPoint ? ":" : "";
 		if ($this->id) $for = " for='{$this->OutHtml->htmlSlashes($this->preIdDisplay .$this->id)}'";
 		$r = ($this->required || $this->validate === '') && !$this->auto_increment && $this->isEdit() ? $this->strRequired : '';
-		$class = $this->attr('classLabel') . ' ' . get_class($this);
+		$class = $this->attr('classLabel') . ' ' . $this->OutHtml->baseClass(get_class($this));
 		return "<label$for$acceskey class='control-label $class'>$label$dPoint$r&nbsp;</label>";
 	}
 	protected function buildValueByName($name, $array) {
@@ -1020,7 +1019,7 @@ class Element {
 			$tmp[] = 'SELECT ' . implode(', ', $line);
 		}
 
-		$tmpName = 'tmp_' . __CLASS__ . '_' . time();
+		$tmpName = 'tmp_' . $this->OutHtml->baseClass(__CLASS__) . '_' . time();
 		$sql = 'CREATE TEMPORARY TABLE ' . $tmpName . " \n" . implode(" UNION ALL \n", $tmp);
 		//show($sql);
 		$conn->query($sql);

@@ -567,9 +567,12 @@ class OutHtml {
 		$_SESSION['urlsDone'][$url] = $result;
 		return $result;
 	}
+	public function baseClass($val){
+		return preg_replace('/.*\\\\([^\\\\]+)$/', '\1', $val);
+	}
 	public function getHeadPath($value, $referer = null, $sub = 'js') {
 		if (preg_match('/^(http:)\/\//i', $value)) return $value;
-		$value = preg_replace('/.*\\\\([^\\\\]+)$/', '\1', $value);
+		$value = $this->baseClass($value);
 		if (is_null($referer)) $referer = self::$defaultContext;
 		if ($referer == '/') {
 			$path = '';
