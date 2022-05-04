@@ -209,7 +209,7 @@ class OutHtml {
 		if ($this->fill || $this->buffer) {
 			//Junta todo o corpo do documento
 			if ($this->organize) {
-				array_unshift($this->headScript, 'window.easyData=' . json_encode($this->config->ed) . ';');
+				array_unshift($this->headScript, 'window.ed=' . json_encode($this->config->ed) . ';');
 				$body = '';
 				if ($this->prebody) $body .= implode(self::$lf, $this->prebody) . self::$lf;
 				if ($this->buffer) $body .= implode('', (array)$this->buffer) . self::$lf;
@@ -340,7 +340,7 @@ class OutHtml {
 	private function add(&$var, $value = '', $position = null) {
 		if (!$this->isAddContent) return $this;
 		if ($value) {
-			if ($position === null) $var[] = $value;
+			if (is_null($position)) $var[] = $value;
 			elseif (is_numeric($position) && $position < 0) array_unshift($var, $value);
 			else $var[$position] = $value;
 			/*
@@ -354,8 +354,8 @@ class OutHtml {
 	}
 	public function head($value, $position = null) {
 		if (!$this->isPrintScript && preg_match('/<\s*script.*>/i', $value)) return $this;
-		$value = "\t" . preg_replace('/\s*$/', '', str_replace(self::$lf, self::$lf . "\t", $value));
-		return $this->add($this->head, $value, $position);
+		$value = preg_replace('/\s*$/', '', str_replace(self::$lf, self::$lf . "\t", $value));
+		return $this->add($this->head, "\t" . $value, $value);
 		/*
 		if(is_null($position)) $this->head[]=$value;
 		else $this->add($this->head,$value,$position);
@@ -592,10 +592,6 @@ class OutHtml {
 		$out = $path . '/' . $file;
 		if (is_file($root)) $out .= '?updateTS=' . (int)@filectime($root);
 		return $out;
-	}
-	public function showUrls() { //FIXME depreciated
-		//$this->headScript['siteUrl']="window.siteUrl='{$this->config->site}'";
-		//$this->headScript['easyDataUrl']="window.easyDataUrl='{$this->config->easyData}'";
 	}
 
 	public function meta($name, $content = null, $attr = 'name') {
