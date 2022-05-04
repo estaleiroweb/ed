@@ -1,10 +1,11 @@
 <?php
-namespace Evoice\Data\Grid;
+namespace EstaleiroWeb\ED\Data\Grid;
 
 use EstaleiroWeb\ED\Data\Form\Form;
 use EstaleiroWeb\ED\Db\Conn\Conn;
 use EstaleiroWeb\ED\DB\Tools\EasyView;
 use EstaleiroWeb\ED\Ext\Bootstrap;
+use EstaleiroWeb\ED\Ext\Ed;
 use EstaleiroWeb\ED\Ext\JQuery_Cookie;
 use EstaleiroWeb\ED\IO\MimeType;
 use EstaleiroWeb\ED\Screen\OutHtml;
@@ -557,13 +558,13 @@ class tblDataList extends tblData {
 		$this->outHead.=$this->htmlHead();
 		$outHtml=OutHtml::singleton();
 		//$host=$outHtml->config['__autoload']['host'];
-		/*$edFN=$outHtml->config['easyData']['fn'];
+		/*$edFN=$outHtml->config['ed']['fn'];
 		$outHtml->headScript['copyUrl']="window.copyUrlPath='{$edFN}/urlRedir.php'";*/
 		new JQuery_Cookie();
 		new Bootstrap();
-		$outHtml->style('tblDataList','easyData');
-		$outHtml->script('Ed','easyData');
-		$outHtml->script('tblDataList','easyData');
+		new Ed();
+		$outHtml->style('tblDataList','ed');
+		$outHtml->script('tblDataList','ed');
 		
 		$this->buildShow_records();            //Numero de Registros
 		$this->buildShow_quantLines();         //Quantidade de Registros a mostrar

@@ -27,7 +27,7 @@ class tblDataFrame extends tblData {
 	}
 	public function __tostring(){
 		if ($this->outFormat) return '';
-		OutHtml::singleton()->script(__CLASS__,'easyData');
+		OutHtml::singleton()->script(__CLASS__,'ed');
 
 		$tabActived=$this->tabActived?$this->tabActived:key($this->tabs);
 		$idFrm='frm_'.$this->id;

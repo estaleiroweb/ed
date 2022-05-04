@@ -591,15 +591,6 @@ class OutHtml {
 		$root .= '/' . $file;
 		$out = $path . '/' . $file;
 		if (is_file($root)) $out .= '?updateTS=' . (int)@filectime($root);
-		else {
-			/*_::show([
-				$root, 'file' => $file,
-				'root' => $this->config->root, 'path' => $path,
-				'cpath' => $this->config->path,
-				'fullpath' => $this->config->fullpath,
-				'func_get_args' => func_get_args()
-			]);*/
-		}
 		return $out;
 	}
 	public function showUrls() { //FIXME depreciated

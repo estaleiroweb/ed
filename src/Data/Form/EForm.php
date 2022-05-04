@@ -19,7 +19,7 @@ class EForm {
 		$this->fields = $fields;
 	}
 	public function __toString() {
-		OutHtml::singleton()->style(__CLASS__, 'easyData');
+		OutHtml::singleton()->style(__CLASS__, 'ed');
 		return "<{$this->tag} {$this->args}>\n{$this->content}</{$this->tag}>\n";
 	}
 	public function __invoke() {
