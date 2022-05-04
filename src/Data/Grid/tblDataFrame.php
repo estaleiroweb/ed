@@ -1,5 +1,5 @@
 <?php
-namespace Evoice\Data\Grid;
+namespace EstaleiroWeb\ED\Data\Grid;
 
 use EstaleiroWeb\ED\Screen\OutHtml;
 use EstaleiroWeb\ED\Tools\Id;

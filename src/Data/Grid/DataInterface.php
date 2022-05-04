@@ -1,3 +1,6 @@
 <?php
-namespace Evoice\Data\Grid;
-interface DataInterface {}
+
+namespace EstaleiroWeb\ED\Data\Grid;
+
+interface DataInterface {
+}

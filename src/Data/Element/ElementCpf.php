@@ -12,7 +12,7 @@ class ElementCpf extends Element {
 		$this->size = 14;
 		$this->maxlength = 14;
 		$this->width = '9em';
-		$this->OutHtml->script('validateform', 'easyData');
+		$this->OutHtml->script('validateform', 'ed');
 	}
 	function makeControl($moreEvents = [], $moreAttr = [], $tp = 'text') {
 		$this->script();

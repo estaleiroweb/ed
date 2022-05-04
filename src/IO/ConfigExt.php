@@ -9,22 +9,35 @@ use EstaleiroWeb\Traits\GetterAndSetterRO;
 class ConfigExt {
 	use GetterAndSetterRO;
 
+	public $root = '';
 	/**
 	 * Root URL Project
 	 */
-	public $baseURL = 'http://URL_BASE';
+	public $baseURL = '';
+	/**
+	 * Root Base path Default=$_SERVER['DOCUMENT_ROOT']
+	 */
+	public $baseDIR = null;
+	/**
+	 * dirname($_SERVER['PHP_SELF'] | $_SERVER['SCRIPT_NAME'])
+	 */
+	public $path = null;
+	/**
+	 * dirname(@$_SERVER['SCRIPT_FILENAME'])
+	 */
+	public $fullpath = null;
 	/**
 	 * Easy Data Paths
 	 */
 	public $ed = [
-		'base' => '/',
-		'js' => '/js',
-		'fn' => '/fn',
-		'skin' => '/skin/default',
-		'css' => '/skin/default/css',
-		'imgs' => '/skin/default/img',
-		'icons' => '/skin/default/icons',
-		'url' => '/url',
+		'base' => '/easyData',
+		'js' => '/easyData/js',
+		'fn' => '/easyData/fn',
+		'skin' => '/easyData/skin/default',
+		'css' => '/easyData/skin/default/css',
+		'imgs' => '/easyData/skin/default/img',
+		'icons' => '/easyData/skin/default/icons',
+		'url' => '/easyData/url',
 	];
 	/**
 	 * Secure Class settings
@@ -137,6 +150,12 @@ class ConfigExt {
 		$dirs = $prefix[$nm];
 		$cacheDir = realpath(array_shift($dirs));
 		//$r = new ReflectionClass($composer);
+		if ($this->baseDIR == '') $this->baseDIR =  @$_SERVER['DOCUMENT_ROOT'];
+		if(!isset($_SERVER['SHELL'])) $this->root = is_link($this->baseDIR) ? readlink($this->baseDIR) : $this->baseDIR;
+
+		$script = @$_SERVER['SCRIPT_NAME'] == '' ? @$_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+		$this->path = dirname($script);
+		$this->fullpath = dirname(@$_SERVER['SCRIPT_FILENAME']);
 
 		$this->readonly = [
 			/**

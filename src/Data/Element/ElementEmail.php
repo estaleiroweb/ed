@@ -13,7 +13,7 @@ class ElementEmail extends Element {
 	}
 	function makeControl($moreEvents = [], $moreAttr = [], $tp = 'text') {
 		$this->script();
-		//$this->OutHtml->script('validateform','easyData');
+		//$this->OutHtml->script('validateform','ed');
 		$n = $this->required ? '' : 'Null';
 		$this->validate = preg_replace('/(chkEmail)(Null)?/', '\1' . $n, $this->validate);
 		return parent::makeControl();

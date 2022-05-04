@@ -2,6 +2,7 @@
 
 namespace EstaleiroWeb\ED\Ext;
 
+use EstaleiroWeb\Cache\Config;
 use EstaleiroWeb\ED\IO\_;
 use EstaleiroWeb\ED\Screen\OutHtml;
 
@@ -32,8 +33,15 @@ class Once {
 			$versions = current($this->versions);
 		}
 		$this->dependences($version);
-		$o=OutHtml::singleton();
-		foreach ($versions as $v) $o->head($v);
+		$o = OutHtml::singleton();
+		foreach ($versions as $v) $o->head($this->tr($v));
+	}
+	final public function tr($val) {
+		$c = Config::singleton();
+		return preg_replace_callback('/\{([^\}]+?)\}/', function ($m) use ($c) {
+			return eval('return ' . $m[1] . ';');
+		}, $val);
+		return $val;
 	}
 	public function dependences($version) {
 	}

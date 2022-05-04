@@ -16,7 +16,7 @@ class ElementFile extends Element {
 		$this->inputAttr['capture'] = null;
 		//$this->protected['extTypesCheck']=array('in','regexp','glob','smart');
 		parent::__construct($name, $value, $id);
-		//$this->OutHtml->script('validateform','easyData');
+		//$this->OutHtml->script('validateform','ed');
 	}
 	function makeContent() {
 		//show($this->value);
