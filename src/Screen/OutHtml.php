@@ -567,16 +567,20 @@ class OutHtml {
 		$_SESSION['urlsDone'][$url] = $result;
 		return $result;
 	}
-	public function baseClass($val){
+	public function baseClass($val) {
 		return preg_replace('/.*\\\\([^\\\\]+)$/', '\1', $val);
 	}
 	public function getHeadPath($value, $referer = null, $sub = 'js') {
+		static $arr = [];
+		$k = "$value|$referer|$sub";
+		if (key_exists($k, $arr)) return $arr[$k];
 		if (preg_match('/^(http:)\/\//i', $value)) return $value;
 		$value = $this->baseClass($value);
 		if (is_null($referer)) $referer = self::$defaultContext;
-		if ($referer == '/') {
-			$path = '';
-			$root = $this->config->root;
+		if ($referer[0] == '/') {
+			$referer=preg_replace('/\/$/','',$referer);
+			$path = $referer;
+			$root = $this->config->root . $referer;
 		} elseif (property_exists($this->config, $referer)) {
 			$path = $this->config->{$referer}[$sub];
 			$root = $this->config->root . $path;
@@ -593,10 +597,10 @@ class OutHtml {
 		$file = $value . '.' . $sub;
 		$root .= '/' . $file;
 		$out = $path . '/' . $file;
+		
 		if (is_file($root)) $out .= '?updateTS=' . (int)@filectime($root);
-		return $out;
+		return $arr[$k] = $out;
 	}
-
 	public function meta($name, $content = null, $attr = 'name') {
 		$content = $content ? 'content="' . $this->htmlSpecial($content) . '"' : '';
 		return $this->add($this->head, "\t<meta {$attr}=\"$name\" $content />", __FUNCTION__ . '#' . $attr . ':' . $name);
