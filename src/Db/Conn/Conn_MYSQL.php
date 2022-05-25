@@ -16,10 +16,11 @@ class Conn_MYSQL extends ConnMain {
 	public $maxInsert = 200;
 	
 	public function close() {
-		if($this->extends) {
-			try{
-				$this->extends->query('KILL CONNECTION_ID()');
-			}catch(Exception $e){}
+		if ($this->extends) {
+			try {
+				$this->extends->exec('KILL CONNECTION_ID()');
+			} catch (Exception $e) {
+			}
 		}
 		return parent::close();
 	}
