@@ -301,7 +301,12 @@ class _ {
 			$args = @$l['args'] ? array_values(@$l['args']) : [];
 			if (@$_SERVER['SHELL'] || is_string(self::$verbose)) {
 				//$caller.=implode(',',array_map('gettype',$args)).");\n"; //arg1,arg2,...);
-				$caller .= implode(',', array_map('json_encode', $args)) . ");\n"; //arg1,arg2,...);
+				$amap = array_map(function ($v) {
+					$v = json_encode($v);
+					return strlen($v) > 10 ? substr($v, 0, 20) . '...' : $v;
+				}, $args);
+				//$amap=array_map('json_encode', $args);
+				$caller .= implode(',', $amap) . ");\n"; //arg1,arg2,...);
 			} else { //Browser print type
 				$caller = self::htmlScpChar($caller);
 				$out = [];
