@@ -109,7 +109,7 @@ class _ {
 	static public function getTable($arr, $showKey = '#', $maxLength = null, $countRecords = true, $classStyle = 'alert alert-primary MakeBox') {
 		if (!$arr) return;
 		$out = '';
-		if (is_array($arr)) {
+		if (is_array($arr) && is_array(reset($arr))) {
 			$keys = array_keys(reset($arr));
 			$fn = function (&$arr) {
 				return $arr ? array_shift($arr) : false;
