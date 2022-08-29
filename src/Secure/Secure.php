@@ -93,38 +93,50 @@ class Secure extends Common {
 		self::$conn->query('SET @Secure_idFile=' . Secure::$idFile);
 
 		$this->readonly['user'] = $this->loadUser(); //Recupera User da sessão
+		$arr = [];
 		if ($this->isLoged()) {
-			$user = $this->readonly['user']->fullUserName();
-			$keepalive = false;
+			$arr['method'] = 'LOGED';
+			$arr['user'] = $this->readonly['user']->fullUserName();
+			($arr['keepalive'] = @$_POST['keepalive']) || $arr['keepalive'] = @$_COOKIE['keepalive'];
+			setcookie('username', $arr['user'], self::$cookie_expire, self::$cookie_path);
+			$_COOKIE['username'] = $arr['user'];
 			if (@$_POST['logout'] == $this->getIdUser()) {
-				_::show();
 				$this->logOut();
+				setcookie('keepalive', 0, self::$cookie_expire, self::$cookie_path);
+				$_COOKIE['keepalive'] = 0;
+				$arr['keepalive'] = 0;
 			}
 		} else {
-			if (@$_POST['username']) { /*Recupera por POST*/
-				_::show();
-				$user = $_POST['username'];
-				$keepalive = @$_POST['keepalive'];
-				$err = $this->logIn($user, $_POST['password'], @$_POST['new_password']);
-				if ($err && strlen($err) < 3) $this->error("ERROR[$err]: {$this->aErrMessage[$err]}", true);
-			} elseif (@$_COOKIE['username'] && @$_COOKIE['keepalive']) { /*Recupera por COOKIE*/
-				$user = $_COOKIE['username'];
-				$this->logIn($user);
+			if (($arr['user'] = @$_POST['username'])) { /*Recupera por POST*/
+				$arr['method'] = 'POST';
+				$arr['keepalive'] = @$_POST['keepalive'];
+				$arr['password'] = @$_POST['password'];
+				$arr['new_password'] = @$_POST['new_password'];
+				$arr['passwordBin'] = $this->dbFunction('fn_encode', $arr['password']);
+			} elseif (($arr['keepalive'] = @$_COOKIE['keepalive'])) { /*Recupera por COOKIE*/
+				$arr['method'] = 'COOKIE';
+				$arr['user'] = @$_COOKIE['username'];
+				$arr['passwordBin'] = @$_COOKIE['password'];
+				$arr['password'] = $this->dbFunction('fn_decode', $arr['passwordBin']);
+				$arr['new_password'] = null;
+				//$this->logIn($_COOKIE['username']);
+			}
+			if ($arr['user']) {
+				$err = $this->logIn($arr['user'], $arr['password'], $arr['new_password']);
+				if ($err && strlen($err) < 3) {
+					$this->error("ERROR[$err]: {$this->aErrMessage[$err]}", true);
+				}
 			}
 		}
 
-		setcookie('username', $user, self::$cookie_expire, self::$cookie_path);
-		$_COOKIE['username'] = $user;
-		if ($keepalive) {
-			setcookie('keepalive', $keepalive, self::$cookie_expire, self::$cookie_path);
-			$_COOKIE['keepalive'] = $keepalive;
-		}
-
-		//showme($_SESSION);
-		//showme($_POST);
+		setcookie('username', $arr['user'], self::$cookie_expire, self::$cookie_path);
+		setcookie('keepalive', $arr['keepalive'], self::$cookie_expire, self::$cookie_path);
+		setcookie('password', $arr['passwordBin'], self::$cookie_expire, self::$cookie_path);
+		$_COOKIE['username'] = $arr['user'];
+		$_COOKIE['keepalive'] = $arr['keepalive'];
+		$_COOKIE['password'] = $arr['passwordBin'];
 
 		$this->readonly['acc'] = $this->permition();
-
 		if ($this->isLoged()) {
 			$this->addLog();
 			$this->state_Layout = 'layout_loged';
@@ -134,6 +146,11 @@ class Secure extends Common {
 			$this->sess->menu = [];
 			//if($this->readonly['autoLogon'] && $this->readonly['file']->L) $this->captureUserPassword(); //FIXME
 		}
+		//showme($_SESSION);
+		//showme($_POST);
+		//showme($arr);
+		//showme($_COOKIE);
+
 		$cruds = (int)@$this->readonly['acc']['CRUDS'];
 		//show(Secure::$idUser);
 		if ($cruds == 0) exit; //layout_denied default
@@ -377,7 +394,7 @@ class Secure extends Common {
 		new BootstrapSubmenu();
 		$m = $this->checkMenu($this->menu);
 		if (!$m) return;
-		
+
 		$m = $this->buildNavBar(array($this->buildMenu($m), $this->layout_logonStatus()));
 		$outHtml->addPreBody($m . '<br/><br/><br/>');
 	}
@@ -494,9 +511,12 @@ class Secure extends Common {
 	final private function secure_check_passwd_by_db_end($passwd = null, $newPass = null, $forceLogIn = false) {
 		return $this->readonly['user']->check($passwd, $forceLogIn); //verifica password and return Token
 	}
-	final private function secure_check_passwd_by_ldap_end() {
+	final private function secure_check_passwd_by_ldap_end($passwd = null, $newPass = null, $forceLogIn = false) {
 		$this->readonly['user']->ldap_importDetails();
-		return $this->readonly['user']->setPasswd($this->passwd); //Set Password and return Token
+		//$this->readonly['user']->setPasswd($this->passwd); //Set Password and return Token
+		$token = $this->readonly['user']->buildToken();
+		$this->readonly['user']->changeLogedStatus(null, $token);
+		return $token;
 	}
 	final private function secure_check_passwd_by_ntml_end($passwd = null, $newPass = null, $forceLogIn = false) {
 		return 0;

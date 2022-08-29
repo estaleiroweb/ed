@@ -31,14 +31,14 @@ class Common {
 		return Secure::$conn->addQuote($param);
 	}
 	###Callers of Database###
-	function dbFunction($fn, $param) {
+	function dbFunction($fn, $param = []) {
 		$line = Secure::$conn->fastLine('SELECT ' . Secure::$db . '.' . $fn . '(' . $this->dbCheckParameters($param) . ') r');
 		return @$line['r'];
 	}
-	function dbProcedure($fn, $param) {
+	function dbProcedure($fn, $param = []) {
 		return Secure::$conn->fastLine('CALL ' . Secure::$db . '.' . $fn . '(' . $this->dbCheckParameters($param) . ')');
 	}
-	function dbProcedureAll($pc, $param) {
+	function dbProcedureAll($pc, $param = []) {
 		return Secure::$conn->query_all('CALL ' . Secure::$db . '.' . $pc . '(' . $this->dbCheckParameters($param) . ')');
 	}
 	static function dbViewAll($vw) {
