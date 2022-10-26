@@ -14,7 +14,7 @@ It even implements a report grid with filters, a ***CRUD*** form and many other 
 
 By Composer, load the pack
 ```bash
-composer require helbertfernandes/ed
+composer require estaleiroweb/ed
 ```
 After the conclusion Composer, do the instalation of Easy Data.
 You can do it for 2 ways.
