@@ -6,6 +6,7 @@ use EstaleiroWeb\ED\IO\_;
 use EstaleiroWeb\ED\Db\Detail\Detail;
 use EstaleiroWeb\ED\Db\Field\Field;
 use EstaleiroWeb\ED\Db\GetterAndSetter;
+use EstaleiroWeb\ED\Db\Raw;
 use PDO;
 use Exception;
 use Iterator;
@@ -14,14 +15,15 @@ abstract class ConnMain {
 	use GetterAndSetter;
 
 	protected $res;
+	public $delimiters = [
+		'tableStart' => '',
+		'tableEnd' => '',
+		'fieldStart' => '',
+		'fieldEnd' => '',
+		'string' => '\'',
+	];
 
-	public $delimiterTableStart = '`';
-	public $delimiterTableEnd = '`';
-	public $delimiterFieldStart = '`';
-	public $delimiterFieldEnd = '`';
-	public $delimiterString = '\'';
-
-	public $charPrint = '.';
+	public $charPrint = null;
 	public $cmdSave = null; // INSERT LOW_PRIORITY IGNORE, REPLACE
 	public $stopOnError = true;
 	public $showErrorOnError = true;
@@ -73,6 +75,9 @@ abstract class ConnMain {
 	}
 	public function __toString() {
 		return $this->readonly[$k = 'name'] == '' ? '[default]' : $this->readonly[$k];
+	}
+	public function __invoke() {
+		return $this->extends;
 	}
 
 	public function getAttrs() {
@@ -142,15 +147,19 @@ abstract class ConnMain {
 		$class = $this->detClass;
 		return new $class($this, $query);
 	}
+	public function exec($query) {
+		if ($this->showQuery) _::show($query);
+		else _::verbose($query);
+		return call_user_func_array([$this->extends, __FUNCTION__], func_get_args());
+	}
 	private function queryMethod($fn, $args, $mode = null) {
 		$query = $args[0];
 		if ($this->showQuery) _::show($query);
 		else _::verbose($query);
-		try {
-			$res = call_user_func_array([$this->extends, $fn], $args);
-		} catch (Exception $e) {
+		$res = call_user_func_array([$this->extends, $fn], $args);
+		if (!$res) {
 			if (!$this->showQuery && $this->showQueryOnError) _::show($query);
-			if ($this->showErrorOnError) _::error($e->getMessage());
+			if ($this->showErrorOnError) _::error($this->extends->errorInfo());
 			if ($this->stopOnError) exit;
 		}
 		$class = $this->resClass;
@@ -173,7 +182,7 @@ abstract class ConnMain {
 		$this->use_result($res);
 		return $res;
 	}
-	public function query_all($query, $mode = PDO::FETCH_NUM) {
+	public function query_all($query, $mode = PDO::FETCH_ASSOC) {
 		$res = $this->query($query);
 		$lines = $res->fetch_all($mode);
 		$res->close();
@@ -191,7 +200,16 @@ abstract class ConnMain {
 			$cont++;
 		} while ($res->nextRowset());
 		$res->close();
-
+		/*
+			do {
+				//if ($res->columnCount()) continue;
+				while ($line = $res->fetch(PDO::FETCH_ASSOC)) {
+					if (array_key_exists('Dt', $line) && array_key_exists('Descr', $line)) {
+						print "{$line['Dt']}: {$line['Descr']}\n";
+					} else print_r($line);
+				}
+			} while (@$res->nextRowset());
+		*/
 		return $out;
 	}
 	public function fastLine($query, $mode = PDO::FETCH_ASSOC) {
@@ -212,12 +230,20 @@ abstract class ConnMain {
 	public function call($procedure) {
 		$args = func_get_args();
 		array_shift($args);
+		return $this->call_array($procedure, $args);
+	}
+	public function call_array($procedure, $args = []) {
 		$query = 'CALL ' . $procedure;
 		if ($args) {
 			$args = is_array($args[0]) ? $args[0] : $args;
 			$query .= $this->mountValueInsertLine($args);
 		}
 		return $this->getAllQuerys($query);
+	}
+	public function save($tblTo = null, $line = null, $cmd = null, $onUpdate = null, $charPrint = '.', $keysDefault = null) {
+		$this->cmdSave = $cmd;
+		$this->charPrint = $charPrint;
+		return $this->rec($tblTo, $line, $onUpdate, $keysDefault);
 	}
 	/**
 	 *  @param string $tblTo Nome da tabela. Se null, salva todas as tabelas
@@ -226,7 +252,7 @@ abstract class ConnMain {
 	 *  @param string $keysDefault Nome dos campos que recebem os valores. Se Null, monta as Keys automaticamente
 	 *  @return int Quantidade de registros
 	 */
-	public function save($tblTo = null, $line = null, $onUpdate = null, $keysDefault = null) {
+	public function rec($tblTo = null, $line = null, $onUpdate = null, $keysDefault = null) {
 		static $sqls = [];
 		static $tbls = [];
 		static $keys = [];
@@ -240,7 +266,7 @@ abstract class ConnMain {
 		if ($line && is_array($line)) {
 			if (is_array(reset($line))) {
 				$sumLines = 0;
-				foreach ($line as $l) $sumLines += $this->save($tblTo, $l, $onUpdate, $keysDefault);
+				foreach ($line as $l) $sumLines += $this->rec($tblTo, $l, $onUpdate, $keysDefault);
 				return $sumLines;
 			}
 			$k = @$keys[$tblTo];
@@ -253,7 +279,7 @@ abstract class ConnMain {
 					if ($onUpdate === true) $onUpdate = $this->mountFieldsUpdateValues($line);
 					$updt[$tblTo] = " \nON DUPLICATE KEY UPDATE $onUpdate";
 				}
-				$c[$tblTo] = $this->charPrint;
+				$c[$tblTo] = is_null($this->charPrint) ? Conn::$chrPrint : $this->charPrint;
 				$sqls[$tblTo] = [];
 				$cont[$tblTo] = $sum[$tblTo] = 0;
 			}
@@ -267,6 +293,11 @@ abstract class ConnMain {
 				if ($c[$tblTo]) print $c[$tblTo];
 				$sql = "{$cmdT[$tblTo]} {$tbls[$tblTo]} ({$keys[$tblTo]}) VALUES \n" . implode(",\n", $sqls[$tblTo]) . $updt[$tblTo];
 				$this->exec($sql);
+				$er = $this->errorInfo();
+				if (@$er[1]) {
+					$er['sql'] = $sql;
+					print_r($er);
+				}
 				if ($this->on_save) call_user_func($this->on_save, $this);
 				//print "\n$sql\n";
 			}
@@ -310,7 +341,7 @@ abstract class ConnMain {
 	public function mountFieldsKeys($line) {
 		$l = [];
 		foreach ($line as $k => $v) $l[] = is_object($v) ? $this->nameByObjField($v, $k) : $k;
-		return $this->fieldDelimiter(implode($this->delimiterFieldEnd . ',' . $this->delimiterFieldStart, $l));
+		return $this->fieldDelimiter(implode($this->delimiters['fieldEnd'] . ',' . $this->delimiters['fieldStart'], $l));
 	}
 	public function mountFieldsSetValues($line) {
 		$out = [];
@@ -362,7 +393,7 @@ abstract class ConnMain {
 		return $keys ? $this->mountFieldsConpareValues($keys) : '';
 	}
 	public function fieldDelimiter($field) {
-		return $this->startFieldDelimiter . $field . $this->endFieldDelimiter;
+		return $this->delimiters['fieldStart'] . $field . $this->delimiters['fieldEnd'];
 	}
 	public function nameByObjField($obj, $default = null) {
 		($n = @$obj->name) || ($n = @$obj->orgname) || ($n = @$obj->key) || ($n = $default);
@@ -374,7 +405,7 @@ abstract class ConnMain {
 
 	public function addQuote($value) {
 		if (is_object($value)) {
-			//if($value instanceof Conn_Main_result_field) return $value();
+			if ($value instanceof Field || $value instanceof Raw) return $value();
 			return $this->stringDelimiter("$value");
 			return $this->stringDelimiter(json_encode($value));
 		}
@@ -411,7 +442,7 @@ abstract class ConnMain {
 		$argv = func_get_args();
 		if (!$argv) return;
 		if (is_array($argv[0])) return call_user_func_array([$this, __FUNCTION__], $argv[0]);
-		foreach ($argv as $k => $v) $argv[$k] = $this->delimiterTableStart . $v . $this->delimiterTableEnd;
+		foreach ($argv as $k => $v) $argv[$k] = $this->delimiters['tableStart'] . $v . $this->delimiters['tableEnd'];
 		return implode('.', $argv);
 	}
 
@@ -633,7 +664,8 @@ abstract class ConnMain {
 		return ($table ? $table . '.' : '') . $field;
 	}
 	public function field($index = null) {
-		$class = get_class($this) . '_result_field';
+		if (is_null($index)) $index = $this->fieldIdx++;
+		$class = $this->fldClass;
 		return new $class($index, null, $this);
 	}
 	public function fn($k, $v, $fn) {
@@ -651,8 +683,6 @@ abstract class ConnMain {
 		$f->value = "{$fn}({$v})";
 		return $f;
 	}
-
-
 
 	public function affected_rows() {
 	}

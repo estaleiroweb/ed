@@ -1,37 +1,47 @@
 <?php
+
+namespace EstaleiroWeb\ED\Data\Grid;
+
+use EstaleiroWeb\ED\Data\Form\Form;
+use EstaleiroWeb\ED\IO\SessControl;
+use EstaleiroWeb\ED\Screen\OutHtml;
+use EstaleiroWeb\ED\Secure\Secure;
+use EstaleiroWeb\ED\Tools\Id;
+use Evoice\Tools\Refresh;
+
 /**
 * @author Helbert Fernandes <helbertfernandes@gmail.com>
 * @description Conjunto de classes do tblData para manipulação de conjunto de dados
 **/
-//$_SESSION=array();
+//$_SESSION=[];
 class tblData implements DataInterface {
 	static private $labled=false;
 	static protected $toDo=true;
-	static protected $outObj=array();
+	static protected $outObj=[];
 	
 	const LF="\n";
 	const TAB="\t";
 
 	public $oSess;
 	protected $baseId='Data';
-	protected $varSess=array();
+	protected $varSess=[];
 	
 	protected $outFormat;
 	public $oDad;
-	public $active=array();
-	protected $readonly=array(
+	public $active=[];
+	protected $readonly=[
 		'id'                => null,   //Id do Objeto [obrigatório]
 		'idHtml'            => null,   //Id do Objeto em html [obrigatório]
 		'idObj'             => null,   //Id automático do Objeto
 		'label'             => null,   //Label do objeto
 		'recordCount'       => null,   //Número de registros
-	);
-	protected $protect=array(
+	];
+	protected $protect=[
 		'conn'              => null,   //Conexão com o banco de dados
-		'style'             => array(),//array('field'=>$call_back_function)
+		'style'             => [],//array('field'=>$call_back_function)
 		'container'         => null,
-	);
-	protected $trackerFields=array(    
+	];
+	protected $trackerFields=[  
 		//Formato String
 		'view'              => null,   //SQL ou nome da View [obrigatório]
 		'db'                => null,   //Base de dados source
@@ -86,7 +96,7 @@ class tblData implements DataInterface {
 		'fields'            => [],  //array Nomes dos campos array('campo1'=>'value','campo2'=>'value','campo3'=>'value')
 		'lstFields'         => null,     //array|string Lista de campos a serem mostrados array('campo1'=>'value','campo2'=>'value','campo3'=>'value')
 		
-	);
+	];
 	public $classIcons=[
 		'btn'=>            'btn',
 		'input-group'=>    'input-group',
@@ -271,7 +281,7 @@ class tblData implements DataInterface {
 	protected function trString2Array($value){ return is_array($value)?$value:preg_split('/\s*[,;]\s*/',$value); }
 	protected function trString2ArrayStyle($style){
 		if(is_array($style)) return $style;
-		$out=array();
+		$out=[];
 		if(is_string($style)) {
 			$style=preg_split('/\s*;\s*/',$style);
 			foreach($style as $v)if(preg_match('/^([^:]+?)\s*:\s*(\s+?|.+)$/',trim($v),$ret)) $out[$ret[1]]=$ret[2];
@@ -333,7 +343,7 @@ class tblData implements DataInterface {
 		return $default;
 	}
 	protected function buildHistory(){
-		$class=array();
+		$class=[];
 		$bt=debug_backtrace();
 		foreach($bt as $line) if(
 			array_key_exists('class',$line)    && $line['class']  &&

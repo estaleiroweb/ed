@@ -49,8 +49,8 @@ class Vault {
 		//$al=ComposerAutoloaderInit88b796964b1d95f3ba4f63403e82804e::getLoader();
 
 		while ($al && is_array($al)) $al = reset($al);
-		if (!($al instanceof ClassLoader)) _::error('Autoload isn\'t Composer', FATAL_ERROR);
-		$prefix = (array)$al->getPrefixesPsr4();
+		if ($al instanceof ClassLoader) $prefix = (array)$al->getPrefixesPsr4();
+		else _::error('Autoload isn\'t Composer', FATAL_ERROR);
 		$nm = self::$namespace . '\\';
 		if (!array_key_exists($nm, $prefix)) _::error('PSR4 ' . $nm . ' isn\'t registred', FATAL_ERROR);
 		$dirs = $prefix[$nm];
@@ -138,12 +138,12 @@ class Vault {
 	private function key() {
 		return pack('H*', VaultData::$key);
 	}
-	private function crypt($content) {
+	public function crypt($content) {
 		$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(VaultData::$cipher));
 		$ivdb = base64_encode($iv);
 		return $ivdb . openssl_encrypt($content, VaultData::$cipher, $this->key(), $options = 0, $iv);
 	}
-	private function decrypt($content) {
+	public function decrypt($content) {
 		$iv = base64_decode(substr($content, 0, 24));
 		$pss = substr($content, 24);
 		return openssl_decrypt($pss, VaultData::$cipher, $this->key(), $options = 0, $iv);

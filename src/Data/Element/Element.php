@@ -2,7 +2,9 @@
 
 namespace EstaleiroWeb\ED\Data\Element;
 
+use EstaleiroWeb\Cache\Config;
 use EstaleiroWeb\ED\Db\Conn\Conn;
+use EstaleiroWeb\ED\Ext\Ed;
 use EstaleiroWeb\ED\Ext\JQuery_Cookie;
 use EstaleiroWeb\ED\IO\MediatorPHPJS;
 use EstaleiroWeb\ED\Screen\OutHtml;
@@ -12,9 +14,9 @@ $Elements = [];
 class Element {
 	private $htmlView = '';
 	private $htmlEdit = '';
-	protected $typeList = array('text');
+	protected $typeList = ['text'];
 	protected $started = false;
-	protected  $protect = array(
+	protected  $protect = [
 		'id' => '',
 		'printed' => false,
 		'debug' => false,
@@ -36,7 +38,7 @@ class Element {
 		'help' => null,
 		'objectForm' => null,
 		'caretWidth' => 4,
-		'check_types' => array('match', 'in', 'key', 'regexp', 'glob', 'smart'),
+		'check_types' => ['match', 'in', 'key', 'regexp', 'glob', 'smart'],
 		'error' => [],
 		'attr' => [],
 
@@ -110,8 +112,8 @@ class Element {
 		'onbeforeupdate' => null,
 		'onbeforedelete' => null,
 		'value' => null,
-	);
-	protected $events = array(
+	];
+	protected $events = [
 		'onactivate' => null,
 		'onbeforeactivate' => null,
 		'onbeforecut' => null,
@@ -180,9 +182,9 @@ class Element {
 		'date' => null,
 		'email' => null,
 		'url' => null,
-	);
+	];
 	public $methods = [];
-	protected $displayAttr = array(
+	protected $displayAttr = [
 		'ed-element' => 'string',
 		'ed-form-id' => null,
 		'ed-form-fieldname' => null,
@@ -204,23 +206,24 @@ class Element {
 		'rows' => null,
 		'wrap' => null,
 		'readonly' => null,
-	);
-	protected $inputAttr = array(
+	];
+	protected $inputAttr = [
 		'minlength' => null,
 		'maxlength' => null,
 		'validate' => null,
 		'required' => null,
-	);
+	];
 	protected $variables = [];
 	public $style = [];
 	public $details = []; //Depreciada
-	public $OutHtml;
+	public $OutHtml, $config;
 
 
 	public function __construct($name = '', $value = null, $id = null) {
 		$this->makeVariables();
 		$this->type = $this->typeList[0];
 		$this->OutHtml = OutHtml::singleton();
+		$this->config = Config::singleton();
 		$this->name = $name;
 		if ($id != '') $this->id = $id;
 		else {
@@ -228,15 +231,13 @@ class Element {
 			$this->id = $oId->id;
 		}
 		$GLOBALS['Elements'][$this->id] = $this;
-		//$this->set('objClass',get_class($this));
 		if (!is_null($value)) $this->set('value', $value);
-		//$this->config=loadFileDefault('config.ini');
 		if (is_null($this->class)) $this->addClass('form-control');
 		//show($this->displayAttr['ed-class']);
-		if (!$this->displayAttr['ed-class']) $this->displayAttr['ed-class'] = get_class($this);
+		if (!$this->displayAttr['ed-class']) $this->displayAttr['ed-class'] = $this->OutHtml->baseClass(get_class($this));
 		$this->displayAttr['ed-element'] = $this->makeEdElement($this->displayAttr['ed-class']);
-		$this->OutHtml->style(__CLASS__, 'easyData');
-		$this->OutHtml->style($this->displayAttr['ed-class'], 'easyData');
+		$this->OutHtml->style(__CLASS__, 'ed');
+		$this->OutHtml->style($this->displayAttr['ed-class'], 'ed');
 		$this->script();
 	}
 	public function __toString() {
@@ -269,13 +270,13 @@ class Element {
 	}
 	protected function script($file = null) {
 		new JQuery_Cookie();
-		$this->OutHtml->script('Ed', 'easyData');
-		$this->OutHtml->script(__CLASS__, 'easyData');
-		$this->OutHtml->script($file ? $file : get_class($this), 'easyData');
+		new Ed;
+		$this->OutHtml->script(__CLASS__, 'ed');
+		$this->OutHtml->script($file ? $file : get_class($this), 'ed');
 		return $this;
 	}
 	protected function style($file = null) {
-		$this->OutHtml->style($file ? $file : get_class($this), 'easyData');
+		$this->OutHtml->style($file ? $file : get_class($this), 'ed');
 		return $this;
 	}
 	public function get($var) {
@@ -769,15 +770,15 @@ class Element {
 		$order = ($order = $this->Order) || ($order = $this->order) ? ' ORDER BY ' . $order : '';
 		return preg_match('/\s/', $sql) ? $sql : ('SELECT * FROM ' . $sql . $order);
 	}
-	public function validadeCmd($cmd) {
-		if (!$cmd) return;
+	public function validadeCmd($cmd) { //TODO
+		/*if (!$cmd) return;
 		$m = MediatorPHPJS::singleton();
 		$m->setIdTrace(2);
 		$m->setSession('cmd', $cmd);
 		$this->idCmd = $m->buildIdTrace();
 		$a = $this->validate ? preg_split('/[;,]/', $this->validate) : [];
 		$a[] = 'validadeCmd';
-		$this->validate = implode(';', $a);
+		$this->validate = implode(';', $a);*/
 	}
 	public function attr($attr, $value = null, $force = false) {
 		if (is_null($value) && !$force) return @$this->displayAttr[$attr];
@@ -913,7 +914,7 @@ class Element {
 		$dPoint = $dPoint ? ":" : "";
 		if ($this->id) $for = " for='{$this->OutHtml->htmlSlashes($this->preIdDisplay .$this->id)}'";
 		$r = ($this->required || $this->validate === '') && !$this->auto_increment && $this->isEdit() ? $this->strRequired : '';
-		$class = $this->attr('classLabel') . ' ' . get_class($this);
+		$class = $this->attr('classLabel') . ' ' . $this->OutHtml->baseClass(get_class($this));
 		return "<label$for$acceskey class='control-label $class'>$label$dPoint$r&nbsp;</label>";
 	}
 	protected function buildValueByName($name, $array) {
@@ -1018,7 +1019,7 @@ class Element {
 			$tmp[] = 'SELECT ' . implode(', ', $line);
 		}
 
-		$tmpName = 'tmp_' . __CLASS__ . '_' . time();
+		$tmpName = 'tmp_' . $this->OutHtml->baseClass(__CLASS__) . '_' . time();
 		$sql = 'CREATE TEMPORARY TABLE ' . $tmpName . " \n" . implode(" UNION ALL \n", $tmp);
 		//show($sql);
 		$conn->query($sql);
@@ -1108,9 +1109,7 @@ class Element {
 		return $class ? $class : 'string';
 	}
 	public function addHeader() {
-		$config = loadFileDefault('config.ini');
-		//$site="{$config->root}{$config->site}";
-		OutHtml::singleton()->headScript['modal_file'] = "$.Element.modal_file='{$config['easyData']['fn']}/modal.html';";
+		OutHtml::singleton()->headScript['modal_file'] = "$.Element.modal_file='{$this->config->ed['fn']}/modal.html';";
 	}
 	protected function isDbSource(&$source) {
 		if (

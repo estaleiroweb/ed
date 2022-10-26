@@ -12,6 +12,15 @@ mb_language('uni');
 
 @date_default_timezone_set('America/Sao_Paulo');
 setlocale(LC_ALL,  'pt_BR.utf-8', 'pt_BR', 'portuguese');
+setlocale(LC_NUMERIC,  'en_US.utf-8', 'en_US');
+
+if(!function_exists('array_is_list')){
+	function array_is_list(array $arr){
+		$cont=0;
+		foreach($arr as $k=>$v) if($cont++!=$k) return false;
+		return true;
+	}
+}
 
 /*print_r([
 	date_default_timezone_get(),

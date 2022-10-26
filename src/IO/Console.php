@@ -112,16 +112,16 @@ class Console {
 	 */
 	public function __construct(array $options = []) {
 		$this->protect = [
-			'styleNormalize' => (array) ($options['styleNormalize'] ?? [0]),
-			'styleLabel' => (array) ($options['styleLabel'] ?? [1, 'cyan']),
-			'styleMax' => (array) ($options['styleMax'] ?? [1, 'green']),
-			'styleContent' => (array) ($options['styleContent'] ?? [0, 'yellow']),
-			'styleTitle' => (array) ($options['styleTitle'] ?? ['underline', 'green']),
-			'styleOption' => (array) ($options['styleOption'] ?? [['underline', 'bold'], 'white']),
-			'styleDefaultOption' => (array) ($options['styleOption'] ?? [['underline', 'bold'], 'green']),
-			'styleUnderline' => (array) ($options['styleUnderline'] ?? ['underline']),
-			'lfTitle' =>  $options['lfTitle'] ?? "\n\n",
-			'cls' =>  $options['cls'] ?? true,
+			'styleNormalize' => (array) (@$options['styleNormalize'] ? $options['styleNormalize'] : [0]),
+			'styleLabel' => (array) (@$options['styleLabel'] ? $options['styleLabel'] : [1, 'cyan']),
+			'styleMax' => (array) (@$options['styleMax'] ? $options['styleMax'] : [1, 'green']),
+			'styleContent' => (array) (@$options['styleContent'] ? $options['styleContent'] : [0, 'yellow']),
+			'styleTitle' => (array) (@$options['styleTitle'] ? $options['styleTitle'] : ['underline', 'green']),
+			'styleOption' => (array) (@$options['styleOption'] ? $options['styleOption'] : [['underline', 'bold'], 'white']),
+			'styleDefaultOption' => (array) (@$options['styleOption'] ? $options['styleOption'] : [['underline', 'bold'], 'green']),
+			'styleUnderline' => (array) (@$options['styleUnderline'] ? $options['styleUnderline'] : ['underline']),
+			'lfTitle' =>  @$options['lfTitle'] ? $options['lfTitle'] : "\n\n",
+			'cls' =>  @$options['cls'] ? $options['cls'] : true,
 		];
 		$this->readonly = [
 			'actualStyle' =>  [0],
@@ -147,7 +147,7 @@ class Console {
 	 * ```
 	 */
 	public function chStyle($option = null) {
-		if (!$option) return $this->lastStyle?$this->chStyle($this->lastStyle):'';
+		if (!$option) return $this->lastStyle ? $this->chStyle($this->lastStyle) : '';
 		if (is_array($option)) {
 			$this->readonly['lastStyle'] = $this->actualStyle;
 			$this->readonly['actualStyle'] = $option;
@@ -242,12 +242,12 @@ class Console {
 	 * ));
 	 * ```
 	 */
-	public function menu(array $aOptions, $title=null, $text = null) {
+	public function menu(array $aOptions, $title = null, $text = null) {
 		static $o = '123456789ABCDEFGHIJKLMNOPQRSTUVXWYZ';
 
 		$tam = strlen($title);
 		$this->cls();
-		if($tam) $this->title($title);
+		if ($tam) $this->title($title);
 
 		$opt = [];
 		foreach ($aOptions as $k => $line) {
@@ -312,7 +312,7 @@ class Console {
 				}
 			}
 			$erChar .= $k;
-			$style=$i?'Option':'DefaultOption';
+			$style = $i ? 'Option' : 'DefaultOption';
 			if (preg_match('/^(.*?)(' . preg_quote($k, '/') . ')(.*?)$/i', $txt, $ret)) {
 				$aTxt[$k] = $ret[1] . $this->chStyle($style) . $k . $this->chStyle() . $ret[3];
 			} else {
@@ -345,7 +345,7 @@ class Console {
 	 * @return string|bool|null Value. Null=Timeout, FALSE=Abort, String=Value
 	 */
 	public function readLine($prompt = null, $length = null, $timeout = null, $er = null, $default = null, $show = null) {
-		$show = $show ?? true;
+		if (is_null($show)) $show = true;
 		$value = "$default";
 		$er = $er ? array_values((array)$er) : [];
 		print $prompt;
@@ -448,8 +448,8 @@ class Console {
 	public function multRead(array $arr) {
 		foreach ($arr as $k => $cfg) {
 			do {
-				$label = $this->chStyle('Label') . ($cfg['label'] ?? $k) . $this->chStyle();
-				if( @$cfg['len']) $label .=$this->chStyle('Max') . '(max ' . $cfg['len'] . ')' . $this->chStyle();
+				$label = $this->chStyle('Label') . (@$cfg['label'] ? $cfg['label'] : $k) . $this->chStyle();
+				if (@$cfg['len']) $label .= $this->chStyle('Max') . '(max ' . $cfg['len'] . ')' . $this->chStyle();
 				$label .= ': ' . $this->chStyle('Content');
 				$value = $this->readLine(
 					$label,
@@ -516,7 +516,7 @@ class Console {
 					$raw = $str = $char[$i];
 					$ord = ord($str);
 					$type = 'normal';
-					$erCheck = $er[0] ?? '';
+					$erCheck = @$er[0] ? $er[0] : '';
 
 					if ($ord == 195) {
 						$str .= $char[++$i];
@@ -524,7 +524,7 @@ class Console {
 					} else if (array_key_exists($ord, $this->spcKeys)) {
 						$str = $this->spcKeys[$ord];
 						$type = 'control';
-						$erCheck = $er[1] ?? '';
+						$erCheck = @$er[1] ? $er[1] : '';
 					}
 					if ($erCheck && !preg_match($erCheck, $str)) continue;
 					$out[] = [

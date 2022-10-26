@@ -2,6 +2,10 @@
 
 namespace EstaleiroWeb\ED\Ext;
 
+use EstaleiroWeb\Cache\Config;
+use EstaleiroWeb\ED\IO\_;
+use EstaleiroWeb\ED\Screen\OutHtml;
+
 class Once {
 	protected $version = null;
 	protected $versions = [];
@@ -11,7 +15,7 @@ class Once {
 		if ($this->passed) return;
 		$this->passed = false;
 		if (is_null($version)) $version = $this->version;
-		if (!array_key_exists($version, $this->versions)) {
+		if (!key_exists($version, $this->versions)) {
 			$keys = array_keys($this->versions);
 			$arr = preg_grep("/^$version\b/", $keys);
 			if ($arr) $version = reset($arr);
@@ -22,9 +26,22 @@ class Once {
 			}
 			//print_r([get_class($this), $version, $arr]);
 		}
-		$versions = $this->versions[$version];
+		if (key_exists($version, $this->versions)) $versions = $this->versions[$version];
+		else {
+			reset($this->versions);
+			$version = key($this->versions);
+			$versions = current($this->versions);
+		}
 		$this->dependences($version);
-		foreach ($versions as $v) print $v;
+		$o = OutHtml::singleton();
+		foreach ($versions as $v) $o->head($this->tr($v));
+	}
+	final public function tr($val) {
+		$c = Config::singleton();
+		return preg_replace_callback('/\{([^\}]+?)\}/', function ($m) use ($c) {
+			return eval('return ' . $m[1] . ';');
+		}, $val);
+		return $val;
 	}
 	public function dependences($version) {
 	}

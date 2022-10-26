@@ -4,37 +4,46 @@ namespace EstaleiroWeb\ED\IO;
 
 use Composer\Autoload\ClassLoader;
 use EstaleiroWeb\Traits\GetterAndSetterRO;
-use EstaleiroWeb\Traits\Singleton;
-use ReflectionClass;
+#use ReflectionClass;
 
 class ConfigExt {
-	use Singleton;
 	use GetterAndSetterRO;
 
-	static public $nmCache = 'EstaleiroWeb\\Cache';
-
+	public $root = '';
 	/**
 	 * Root URL Project
 	 */
-	public $baseURL = 'http://URL_BASE';
+	public $baseURL = '';
+	/**
+	 * Root Base path Default=$_SERVER['DOCUMENT_ROOT']
+	 */
+	public $baseDIR = null;
+	/**
+	 * dirname($_SERVER['PHP_SELF'] | $_SERVER['SCRIPT_NAME'])
+	 */
+	public $path = null;
+	/**
+	 * dirname(@$_SERVER['SCRIPT_FILENAME'])
+	 */
+	public $fullpath = null;
 	/**
 	 * Easy Data Paths
 	 */
 	public $ed = [
-		'base' => '/',
-		'js' => '/js',
-		'fn' => '/fn',
-		'skin' => '/skin/default',
-		'css' => '/skin/default/css',
-		'imgs' => '/skin/default/img',
-		'icons' => '/skin/default/icons',
-		'url' => '/url',
+		'base' => '/easyData',
+		'js' => '/easyData/js',
+		'fn' => '/easyData/fn',
+		'skin' => '/easyData/skin/default',
+		'css' => '/easyData/skin/default/css',
+		'imgs' => '/easyData/skin/default/img',
+		'icons' => '/easyData/skin/default/icons',
+		'url' => '/easyData/url',
 	];
 	/**
 	 * Secure Class settings
 	 */
 	public $secure = [
-		'dsn' => 'localhost',
+		'dsn' => '',
 		'db' => 'db_Secure',
 		'db_log' => 'db_Secure_Log',
 		'autoLogon' => true,               // (DEFAULT OFF)
@@ -60,6 +69,10 @@ class ConfigExt {
 		'log_ext' => 'log',
 		'log_fileAuth' => 'authError',
 		'log_filePre' => 'acs_',
+		'translate' => [
+			'intbhe101' => '/^(0*189\.0*21\.0*3\.0*61|0*10\.0*72\.0*5\.0*2|intbhe101\.localdomain)(:0*(80|443))?$/i',
+			'10.9.5.14' => '/^(0*10\.0*9\.0*5\.0*14|0*10\.0*192\.0*72\.0*10|0*200\.0*184\.0*192\.0*201|0*127\.0+\.0+\.0*1|0*10\.174\.0*220\.117)|(((evoice|fsc(srv)?)|((db|portal)(fsc|v?cp|vcd))|localhost)(\.(localdomain|internal\.timbrasil\.com\.br))?)(:0*(80|443))?$/i',
+		],
 	];
 	/**
 	 * Ldap Class Config
@@ -120,21 +133,29 @@ class ConfigExt {
 		'smtp_time' => 60, //segundos
 	];
 
-	private function __construct() {
+	protected function __construct() {
 		$al = spl_autoload_functions();
 		if (!$al) _::error('Autoload isn\'t registred', FATAL_ERROR);
 		//$al = reset($al);
 		//$al=ComposerAutoloaderInit88b796964b1d95f3ba4f63403e82804e::getLoader();
 		$composer = $al;
 		while ($composer && is_array($composer)) $composer = reset($composer);
-		if (!($composer instanceof ClassLoader)) _::error('Autoload isn\'t Composer', FATAL_ERROR);
-		$nm_paths = $composer->getPrefixesPsr4();
+		if (($composer instanceof ClassLoader)) $nm_paths = $composer->getPrefixesPsr4();
+		else _::error('Autoload isn\'t Composer', FATAL_ERROR);
 		$prefix = (array)$nm_paths;
-		$nm = self::$nmCache . '\\';
+		//print '========== '.preg_replace('/[^\\\]+?$/','',get_class($this));
+		//$nm = Config::$nmCache . '\\';
+		$nm = preg_replace('/[^\\\]+?$/', '', get_class($this));
 		if (!array_key_exists($nm, $prefix)) _::error('PSR4 ' . $nm . ' isn\'t registred', FATAL_ERROR);
 		$dirs = $prefix[$nm];
 		$cacheDir = realpath(array_shift($dirs));
 		//$r = new ReflectionClass($composer);
+		if ($this->baseDIR == '') $this->baseDIR =  @$_SERVER['DOCUMENT_ROOT'];
+		if(!isset($_SERVER['SHELL'])) $this->root = is_link($this->baseDIR) ? readlink($this->baseDIR) : $this->baseDIR;
+
+		$script = @$_SERVER['SCRIPT_NAME'] == '' ? @$_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+		$this->path = dirname($script);
+		$this->fullpath = dirname(@$_SERVER['SCRIPT_FILENAME']);
 
 		$this->readonly = [
 			/**

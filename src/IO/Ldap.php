@@ -37,7 +37,7 @@ class Ldap {
 			'user' => null,
 			'pass' => $pass,
 		];
-		$this->protect = array($arr, $config->ldap);
+		$this->protect = array_merge($arr, $config->ldap);
 		$this->user = $user;
 		@define('LDAP_OPT_DIAGNOSTIC_MESSAGE', 0x0032);
 		@define('LDAP_SCOPE_ONELEVEL', 2);

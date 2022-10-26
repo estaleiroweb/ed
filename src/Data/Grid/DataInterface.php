@@ -1,2 +1,6 @@
 <?php
-interface DataInterface {}
+
+namespace EstaleiroWeb\ED\Data\Grid;
+
+interface DataInterface {
+}

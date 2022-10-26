@@ -10,18 +10,19 @@ class Field {
 
 	public $dataTypes = [];
 	public $raw = false;
+	public $index;
 	protected $conn, $res;
 	/*
 		public $index,$name,$orgname,$table,$orgtable,$def,$vartype,$realType;
 		public $type,$max_length,$length,$decimals,$charsetnr,$flags;
 		public $not_null,$zerofill,$unsigned;
 		public $value,$fn;	*/
-	
-	public function __construct($conn, $res, $readonly = [], $protect = ['value' => null, 'raw' => null, 'fn' => null,]) {
+
+	public function __construct($conn, $res, $index = null, $readonly = null, $protect = null) {
 		$this->conn = $conn;
 		$this->res = $res;
-		$this->readonly = $readonly;
-		$this->protect = $protect;
+		$this->readonly = is_null($readonly) ? [] : $readonly;
+		$this->protect = is_null($protect) ? ['value' => null, 'raw' => null, 'fn' => null,] : $protect;
 	}
 	public function __invoke() {
 		return $this->raw ? $this->value : $this->conn->addQuote($this->__toString());

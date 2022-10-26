@@ -276,6 +276,9 @@ class User extends Common {
 		if (!$idUser) $idUser = $this->readonly['idUser'];
 		return $this->dbFunction('fn_User_GetPassword', (int)$idUser);
 	}
+	public function getTokenBin() {
+		return $this->dbFunction('fn_User_GetTkbin');
+	}
 	public function check($passwd, $forceLogIn = null, &$token = null, $idUser = null) {
 		if (!$idUser) $idUser = $this->readonly['idUser'];
 		$param = array(

@@ -12,6 +12,7 @@ use EstaleiroWeb\ED\IO\_;
 use EstaleiroWeb\ED\IO\SessControl;
 use EstaleiroWeb\ED\Screen\OutHtml;
 use EstaleiroWeb\Traits\SingletonClass;
+use Exception;
 
 define('SECURE_LEVEL_FREE', 0);
 define('SECURE_LEVEL_SECURED', 1);
@@ -40,20 +41,12 @@ class Secure extends Common {
 	private $passwd;
 	public $logonButton = [];
 
-	protected $readonly = array(
-		'user' => null, //'domain'=>'','user'=>'','idUser'=>0,'machine'=>'','idDomain'=>'','ativo'=>0,'grpUsers'=>array(),'UserDetails'=>array(),
-		'file' => null,
-		'access' => null, //'pCRUDS'=>0, 'CRUDS'=>0, 'status'=>1,
-		'logon' => array(),
-		'flow-status' => 'non-started', //started, finished
-		'Error' => '',
-	);
 	private $sess;
 	private $state_Layout = 'layout_unloged';
 	private $access_Layout = 'layout_denied';
 	public $title = 'Autenticação de Usuário';
 	public $realm = 'Digite DOMINIO\USER e SENHA do sistema';
-	protected $menu = array(); // árvore de menus onde o último nível pode ser '' ou 'tags html' ou array('href'=>'content', 'target'=>'content', 'onclick'=>'script')
+	protected $menu = []; // árvore de menus onde o último nível pode ser '' ou 'tags html' ou array('href'=>'content', 'target'=>'content', 'onclick'=>'script')
 	protected $links = array(
 		'home' => array('html' => 'Home', 'href' => '/'),
 	);
@@ -72,9 +65,21 @@ class Secure extends Common {
 
 	final protected function __construct($noStart = false) {
 		global $__autoload;
+
+		$this->readonly = [
+			'user' => null, //'domain'=>'','user'=>'','idUser'=>0,'machine'=>'','idDomain'=>'','ativo'=>0,'grpUsers'=>[],'UserDetails'=>[],
+			'file' => null,
+			'acc' => null, //'pCRUDS'=>0, 'CRUDS'=>0, 'status'=>1,
+			'logon' => [],
+			'flow-status' => 'non-started', //started, finished
+			'Error' => '',
+		];
 		//show($_COOKIE);
 		self::$cookie_path = $__autoload->host;
-		self::$ini = Config::singleton();
+		$ini = Config::singleton();
+		self::$ini = $ini->secure;
+		//_::show(session_save_path());
+		//_::show($ini);
 		$this->connect();
 		$this->menu();
 		if ($noStart === true || !$this->secure_init($noStart)) return;
@@ -82,44 +87,71 @@ class Secure extends Common {
 		self::$obj = $this;
 		$this->layout_init($noStart);
 		//show($this->sess->get());
-
 		//_::verbose();
 		$this->readonly['file'] = $this->loadFile();
 		Secure::$idFile = $this->readonly['file']->idFile;
 		self::$conn->query('SET @Secure_idFile=' . Secure::$idFile);
 
 		$this->readonly['user'] = $this->loadUser(); //Recupera User da sessão
+		$arr = [];
 		if ($this->isLoged()) {
-			$user = $this->readonly['user']->fullUserName();
-			setcookie('username', $user, self::$cookie_expire, self::$cookie_path);
-			$_COOKIE['username'] = $user;
-			if (@$_POST['logout'] == $this->getIdUser()) $this->logOut();
+			$arr['method'] = 'LOGED';
+			$arr['user'] = $this->readonly['user']->fullUserName();
+			($arr['keepalive'] = @$_POST['keepalive']) || $arr['keepalive'] = @$_COOKIE['keepalive'];
+			setcookie('username', $arr['user'], self::$cookie_expire, self::$cookie_path);
+			$_COOKIE['username'] = $arr['user'];
+			if (@$_POST['logout'] == $this->getIdUser()) {
+				$this->logOut();
+				setcookie('keepalive', 0, self::$cookie_expire, self::$cookie_path);
+				$_COOKIE['keepalive'] = 0;
+				$arr['keepalive'] = 0;
+			}
 		} else {
-			if (@$_POST['username']) { /*Recupera por POST*/
-				setcookie('username', $_POST['username'], self::$cookie_expire, self::$cookie_path);
-				setcookie('keepalive', @$_POST['keepalive'], self::$cookie_expire, self::$cookie_path);
-				$_COOKIE['username'] = $_POST['username'];
-				$_COOKIE['keepalive'] = @$_POST['keepalive'];
-				$err = $this->logIn($_POST['username'], $_POST['password'], @$_POST['new_password']);
-				if ($err && strlen($err) < 3) $this->error("ERROR[$err]: {$this->aErrMessage[$err]}", true);
-			} elseif (@$_COOKIE['username'] && @$_COOKIE['keepalive']) { /*Recupera por COOKIE*/
-				$this->logIn($_COOKIE['username']);
+			if (($arr['user'] = @$_POST['username'])) { /*Recupera por POST*/
+				$arr['method'] = 'POST';
+				$arr['keepalive'] = @$_POST['keepalive'];
+				$arr['password'] = @$_POST['password'];
+				$arr['new_password'] = @$_POST['new_password'];
+				$arr['passwordBin'] = $this->dbFunction('fn_encode', $arr['password']);
+			} elseif (($arr['keepalive'] = @$_COOKIE['keepalive'])) { /*Recupera por COOKIE*/
+				$arr['method'] = 'COOKIE';
+				$arr['user'] = @$_COOKIE['username'];
+				$arr['passwordBin'] = @$_COOKIE['password'];
+				$arr['password'] = $this->dbFunction('fn_decode', $arr['passwordBin']);
+				$arr['new_password'] = null;
+				//$this->logIn($_COOKIE['username']);
+			}
+			if ($arr['user']) {
+				$err = $this->logIn($arr['user'], $arr['password'], $arr['new_password']);
+				if ($err && strlen($err) < 3) {
+					$this->error("ERROR[$err]: {$this->aErrMessage[$err]}", true);
+				}
 			}
 		}
-		//showme($_SESSION);
-		//showme($_POST);
 
-		$this->readonly['access'] = $this->permition();
+		setcookie('username', $arr['user'], self::$cookie_expire, self::$cookie_path);
+		setcookie('keepalive', $arr['keepalive'], self::$cookie_expire, self::$cookie_path);
+		setcookie('password', $arr['passwordBin'], self::$cookie_expire, self::$cookie_path);
+		$_COOKIE['username'] = $arr['user'];
+		$_COOKIE['keepalive'] = $arr['keepalive'];
+		$_COOKIE['password'] = $arr['passwordBin'];
+
+		$this->readonly['acc'] = $this->permition();
 		if ($this->isLoged()) {
 			$this->addLog();
 			$this->state_Layout = 'layout_loged';
 			Secure::$idUser = $this->readonly['user']->idUser;
 			self::$conn->query('SET @Secure_idUser=' . Secure::$idUser);
 		} else {
-			$this->sess->menu = array();
+			$this->sess->menu = [];
 			//if($this->readonly['autoLogon'] && $this->readonly['file']->L) $this->captureUserPassword(); //FIXME
 		}
-		$cruds = (int)@$this->readonly['access']['CRUDS'];
+		//showme($_SESSION);
+		//showme($_POST);
+		//showme($arr);
+		//showme($_COOKIE);
+
+		$cruds = (int)@$this->readonly['acc']['CRUDS'];
 		//show(Secure::$idUser);
 		if ($cruds == 0) exit; //layout_denied default
 		elseif (self::can_R($cruds)) {
@@ -139,13 +171,13 @@ class Secure extends Common {
 		if (!$outHtml->organize) return '';
 		$this->readonly['flow-status'] = 'finished';
 		$this->showError();
-		return call_user_func(array($this, $this->access_Layout));
+		return call_user_func([$this, $this->access_Layout]);
 	}
 	public function getLevel() {
 		if (@$this->readonly['file']) return @$this->readonly['file']->level;
 	}
 	public function getCRUDS() {
-		return @$this->readonly['access']['CRUDS'];
+		return @$this->readonly['acc']['CRUDS'];
 	}
 	public function getC() {
 		return $this->can_C($this->getCRUDS());
@@ -186,8 +218,8 @@ class Secure extends Common {
 		//_::verbose();
 		$mainVar = array('autoLogon' => false, 'multiSession' => true, 'expiresSession' => 15, 'tryWait' => 10, 'tryTimes' => 3, 'expiresPassword' => 120,);
 		foreach ($mainVar as $k => $v) {
-			if (!isset(self::$ini['main'][$k])) self::$ini['main'][$k] = $v;
-			else $v = self::$ini['main'][$k];
+			if (!isset(self::$ini[$k])) self::$ini[$k] = $v;
+			else $v = self::$ini[$k];
 			self::$conn->query("SET @{$k}=" . _::value2String($v));
 			$this->readonly[$k] = $v;
 		}
@@ -195,18 +227,18 @@ class Secure extends Common {
 		if (!isset($this->sess->loggingStep)) $this->sess->loggingStep = 0;
 		if (!isset($this->sess->loged))       $this->sess->loged = false;
 		if (!isset($this->sess->token))       $this->sess->token = '';
-		if (!isset($this->sess->menu))        $this->sess->menu = array();
+		if (!isset($this->sess->menu))        $this->sess->menu = [];
 		$this->sess->url = $GLOBALS['__autoload']->fullUrl;
 
 		return !$parameters;
 	}
 	public function connect() {
 		if (!self::$conn) {
-			Secure::$db = Secure::$ini['main']['db'];
-			Secure::$db_log = Secure::$ini['main']['db_log'];
+			Secure::$db = Secure::$ini['db'];
+			Secure::$db_log = Secure::$ini['db_log'];
 			if (!@self::$ini) _::error('Configuration file "secure.ini" doesn\'t find');
-			if (!@self::$ini['main']['dsn']) _::error('DSN (Data Source Name) doesn\'t find');
-			self::$conn = Conn::dsn(self::$ini['main']['dsn']);
+			//if (!@self::$ini['dsn']) _::error('DSN (Data Source Name) doesn\'t find');
+			self::$conn = Conn::dsn(self::$ini['dsn']);
 		}
 		return self::$conn;
 	}
@@ -398,7 +430,7 @@ class Secure extends Common {
 	}
 	final private function logIn($full_username, $passwd = null, $newPass = null, $forceLogIn = false) {
 		_::verbose('');
-		if (!self::$authFnMethod) (self::$authFnMethod = @Secure::$ini['main']['authMethod']) || (self::$authFnMethod = 'ldap');
+		if (!self::$authFnMethod) (self::$authFnMethod = @Secure::$ini['authMethod']) || (self::$authFnMethod = 'ldap');
 		/*
 			$conn->query('
 				INSERT IGNORE '.Secure::$db_log.'tb_TryLogIn 
@@ -479,9 +511,12 @@ class Secure extends Common {
 	final private function secure_check_passwd_by_db_end($passwd = null, $newPass = null, $forceLogIn = false) {
 		return $this->readonly['user']->check($passwd, $forceLogIn); //verifica password and return Token
 	}
-	final private function secure_check_passwd_by_ldap_end() {
+	final private function secure_check_passwd_by_ldap_end($passwd = null, $newPass = null, $forceLogIn = false) {
 		$this->readonly['user']->ldap_importDetails();
-		return $this->readonly['user']->setPasswd($this->passwd); //Set Password and return Token
+		//$this->readonly['user']->setPasswd($this->passwd); //Set Password and return Token
+		$token = $this->readonly['user']->buildToken();
+		$this->readonly['user']->changeLogedStatus(null, $token);
+		return $token;
 	}
 	final private function secure_check_passwd_by_ntml_end($passwd = null, $newPass = null, $forceLogIn = false) {
 		return 0;
@@ -519,7 +554,7 @@ class Secure extends Common {
 		//$_COOKIE['keepalive']='';
 		if ($this->getIdUser()) $this->readonly['user']->LogOut();
 		$this->readonly['user'] = null;
-		$this->readonly['logon'] = array();
+		$this->readonly['logon'] = [];
 		$this->sess->idUser = 0;
 		$this->sess->loggingStep = 0;
 		$this->sess->loged = false;
@@ -688,20 +723,25 @@ class Secure extends Common {
 	 * Checa permissão File x User
 	 **/
 	public function permition($idFile = false, $idUser = false) {
+		static $arr = [];
 		//show('Manutenção: '. __CLASS__ . '->'. __FUNCTION__ ."($idFile,$idUser):". __LINE__);
 		if (!$idFile) {
 			$idFile = $this->getIdFile();
 			if (!$idFile) return;
 		}
 		if ($idUser === false) $idUser = $this->getIdUser();
-		$param = array(
+		$param = [
 			(int)$idFile,
 			(int)$idUser,
-		);
-		return $this->dbProcedure('pc_Permition_File_by_idFile_idUser', $param);
+		];
+		$k = join(',', $param);
+		if (!key_exists($k, $arr)) {
+			$arr[$k] = $this->dbProcedure('pc_Permition_File_by_idFile_idUser', $param);
+		}
+		return $arr[$k];
 	}
 	public function getGroupPermition() {
-		$conn = Conn::dsn();
+		$conn = $this->connect();
 		$idFile = Secure::$idFile;
 		$idUser = Secure::$idUser;
 		return $conn->query_all("CALL db_Secure.pc_Permition_List_File_by_idFile_idUser($idFile,$idUser)");
@@ -785,14 +825,14 @@ class Secure extends Common {
 		} else $referer = '';
 		$request = json_encode($_REQUEST);
 		if (preg_match_all('/"frm_action_([^"]+)":"(\d+)"/', $request, $ret, PREG_SET_ORDER)) {
-			$frm_action = array();
+			$frm_action = [];
 			foreach ($ret as $v) $frm_action[] = $v[1] . ':' . $v[2];
 			$frm_action = implode(',', $frm_action);
 		} else $frm_action = null;
 		$param = array(
 			'idUser' => $this->readonly['user']->idUser,
 			'idFile' => $this->readonly['file']->idFile,
-			'CRUDS' => $this->readonly['access']['CRUDS'],
+			'CRUDS' => $this->readonly['acc']['CRUDS'],
 			'remoteAddr' => $_SERVER['REMOTE_ADDR'],
 			'remotePort' => $_SERVER['REMOTE_PORT'],
 			'serverAddr' => $_SERVER['SERVER_ADDR'],

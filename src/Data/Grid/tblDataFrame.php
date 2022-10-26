@@ -1,4 +1,9 @@
 <?php
+namespace EstaleiroWeb\ED\Data\Grid;
+
+use EstaleiroWeb\ED\Screen\OutHtml;
+use EstaleiroWeb\ED\Tools\Id;
+
 # Autor: Helbert Fernandes
 # Descrição: Conjunto de classes do tblData para manipulação de conjunto de dados
 #
@@ -22,7 +27,7 @@ class tblDataFrame extends tblData {
 	}
 	public function __tostring(){
 		if ($this->outFormat) return '';
-		OutHtml::singleton()->script(__CLASS__,'easyData');
+		OutHtml::singleton()->script(__CLASS__,'ed');
 
 		$tabActived=$this->tabActived?$this->tabActived:key($this->tabs);
 		$idFrm='frm_'.$this->id;

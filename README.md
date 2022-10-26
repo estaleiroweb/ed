@@ -20,7 +20,18 @@ After the conclusion Composer, do the instalation of Easy Data.
 You can do it for 2 ways.
 > This example was ran on the root project.
 
-### 1 - Direcly
+### 1 - Simbol Link (recomendated)
+```bash
+ln -s vendor/estaleiroweb/ed/admin.php
+
+#To first install 
+./admin.php install
+
+#To admitrate
+./admin.php
+```
+
+### 2 - Direcly
 ```bash
 php -r "require 'vendor/autoload.php'; new EstaleiroWeb\ED\IO\Admin(true);"
 ```
@@ -29,7 +40,7 @@ To run administrator, do without _true_:
 php -r "require 'vendor/autoload.php'; new EstaleiroWeb\ED\IO\Admin;"
 ```
 
-### 2 - Creting a _admin.php_ file
+### 3 - Creting a _admin.php_ file
 You can see a exmaple code in vendor folder
 ```php
 #!/usr/bin/env php
