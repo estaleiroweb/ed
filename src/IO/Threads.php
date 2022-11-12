@@ -7,6 +7,7 @@ use Closure;
 use Countable;
 use Exception;
 use Iterator;
+use EstaleiroWeb\Traits\GetSet;
 
 /**
  * Threads
@@ -193,7 +194,8 @@ abstract class Threads implements Iterator, Countable, ArrayAccess {
 			$text .= isset($bt[1]['class']) ? $bt[1]['class'] . $bt[1]['type'] : ''; //class-> or class:: (if exists)
 			$text .= $bt[1]['function'] . '(' . $args . ');'; //function(
 		}
-		print strftime('[%F %T]: ') . "$text\n";
+		print date('[c]: ') . "$text\n";
+		// print strftime('[%F %T]: ') . "$text\n";
 	}
 	/**/ //end main methods
 
