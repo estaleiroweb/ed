@@ -97,7 +97,7 @@ class Thread {
 	 * 
 	 * @param mixed callback $callbackFunction
 	 */
-	public function __construct($callbackFunction, array $args = []) {
+	public function __construct($callbackFunction, $args = []) {
 		if (!function_exists('pcntl_fork')) return $this->error(self::ERROR_PCNTL_FORK);
 		if (!function_exists($callbackFunction)) return $this->error(self::ERROR_CALLBACK_FUNCTION_NOT_EXISTS);
 		if (!is_callable($callbackFunction)) return $this->error(self::ERROR_CALLBACK_FUNCTION_NOT_CALLABLE);
@@ -109,7 +109,7 @@ class Thread {
 		if (!$this->idSharedMemory) return $this->error(self::ERROR_SHARE_MEMORY);
 
 		$this->callbackFunction = $callbackFunction;
-		$this->args = $args;
+		$this->args = (array)$args;
 		$this->benchmarkOff();
 	}
 	public function __destruct() {
@@ -241,6 +241,13 @@ class Thread {
 		$this->exitCode = self::ERROR_PID_KILLED;
 		return $this;
 	}
+	public function pause($_wait = false) {
+	}
+	public function unpause($_wait = false) {
+	}
+	public function resume($_wait = false) {
+	}
+
 	public function benchmarkOff() {
 		$this->benchmark = false;
 		$this->benchmarkQuant = 0;
@@ -265,7 +272,7 @@ class Thread {
 	}
 	public function runByTime($args) {
 		$start = microtime(true);
-		$i=0;
+		$i = 0;
 		if ($this->benchmarkArray) {
 			$return = [];
 			do {
@@ -326,9 +333,8 @@ class Thread {
 		$this->pidTime = null;
 		$pid = @pcntl_fork();
 		if ($pid == -1) { //not suport
-			return $this->error(self::ERROR_FORK);
-		}
-		if ($pid) { // parent 
+			$this->error(self::ERROR_FORK);
+		} elseif ($pid) { // parent 
 			$this->pid = $pid;
 		} else { // child
 			pcntl_signal(SIGTERM, [$this, 'signalHandler']);
@@ -346,5 +352,10 @@ class Thread {
 				exit($exitCode);
 			}
 		}
+		return $this;
+	}
+	public function wait() {
+		while ($this->isAlive());
+		return $this;
 	}
 }
