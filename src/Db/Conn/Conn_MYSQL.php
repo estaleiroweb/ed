@@ -244,4 +244,7 @@ class Conn_MYSQL extends ConnMain {
 
 		return "SELECT $fields \nFROM {$this->buildTableName($db,$tbl)}";
 	}
+	public function escape_string($val){
+		return addcslashes($val, "\"'\\\0..\37\177");
+	}
 }

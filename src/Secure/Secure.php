@@ -131,10 +131,10 @@ class Secure extends Common {
 
 		setcookie('username', $arr['user'], self::$cookie_expire, self::$cookie_path);
 		setcookie('keepalive', $arr['keepalive'], self::$cookie_expire, self::$cookie_path);
-		setcookie('password', $arr['passwordBin'], self::$cookie_expire, self::$cookie_path);
+		setcookie('password', @$arr['passwordBin'], self::$cookie_expire, self::$cookie_path);
 		$_COOKIE['username'] = $arr['user'];
 		$_COOKIE['keepalive'] = $arr['keepalive'];
-		$_COOKIE['password'] = $arr['passwordBin'];
+		$_COOKIE['password'] = @$arr['passwordBin'];
 
 		$this->readonly['acc'] = $this->permition();
 		if ($this->isLoged()) {
