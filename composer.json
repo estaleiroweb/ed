@@ -36,10 +36,10 @@
 		"ext-xmlwriter": "*",
 		"ext-zip": "*",
 		"ext-zlib": "*",
+		"estaleiroweb/traits": "*@dev",
 		"phpseclib/phpseclib": "*"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^4.8.18",
-		"estaleiroweb/traits": "*@dev"
+		"phpunit/phpunit": "^4.8.18"
 	}
 }
