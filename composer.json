@@ -36,7 +36,6 @@
 		"ext-xmlwriter": "*",
 		"ext-zip": "*",
 		"ext-zlib": "*",
-		"estaleiroweb/traits": "*",
 		"phpseclib/phpseclib": "*"
 	},
 	"require-dev": {

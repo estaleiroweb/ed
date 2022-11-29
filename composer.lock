@@ -4,49 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cc2172c338a62c90f06a2d6a70f90d1",
+    "content-hash": "fef4ac84ce17a215ab7e105c133cd855",
     "packages": [
-        {
-            "name": "estaleiroweb/traits",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/estaleiroweb/traits.git",
-                "reference": "4cf988af1a4b016ed63b1e47ee84437c1699596f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/estaleiroweb/traits/zipball/4cf988af1a4b016ed63b1e47ee84437c1699596f",
-                "reference": "4cf988af1a4b016ed63b1e47ee84437c1699596f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "EstaleiroWeb\\Traits\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "estaleiroweb",
-                    "email": "helbert@estaleiroweb.com.br"
-                }
-            ],
-            "description": "PHP Traits used in others projects of EstaleiroWeb",
-            "support": {
-                "issues": "https://github.com/estaleiroweb/traits/issues",
-                "source": "https://github.com/estaleiroweb/traits/tree/main"
-            },
-            "time": "2022-11-12T20:54:39+00:00"
-        },
         {
             "name": "phpseclib/phpseclib",
             "version": "2.0.39",
@@ -216,6 +175,47 @@
                 "source": "https://github.com/doctrine/instantiator/tree/master"
             },
             "time": "2015-06-14T21:17:01+00:00"
+        },
+        {
+            "name": "estaleiroweb/traits",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/estaleiroweb/traits.git",
+                "reference": "a00c7027fa88e89c35244036ee74390d333c4721"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/estaleiroweb/traits/zipball/a00c7027fa88e89c35244036ee74390d333c4721",
+                "reference": "a00c7027fa88e89c35244036ee74390d333c4721",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EstaleiroWeb\\Traits\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "estaleiroweb",
+                    "email": "helbert@estaleiroweb.com.br"
+                }
+            ],
+            "description": "PHP Traits used in others projects of EstaleiroWeb",
+            "support": {
+                "issues": "https://github.com/estaleiroweb/traits/issues",
+                "source": "https://github.com/estaleiroweb/traits/tree/main"
+            },
+            "time": "2022-11-29T11:29:52+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
