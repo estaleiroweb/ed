@@ -25,7 +25,7 @@ trait GetterAndSetter {
 	public function __call($fn, $args) {
 		if ($this->extends) {
 			try {
-				return call_user_func_array([$this->extends, $fn], $args);
+				if(method_exists($this->extends, $fn)) return call_user_func_array([$this->extends, $fn], $args);
 			} catch (Exception $e) {
 				$mess = 'Command error (' .  $e->getMessage() . ')';
 			}
