@@ -34,7 +34,9 @@ class Once {
 		}
 		$this->dependences($version);
 		$o = OutHtml::singleton();
-		foreach ($versions as $v) $o->head($this->tr($v));
+		if(is_array($versions)) {
+			foreach ($versions as $v) $o->head($this->tr($v));
+		} else $o->head($this->tr($versions));
 	}
 	final public function tr($val) {
 		$c = Config::singleton();
