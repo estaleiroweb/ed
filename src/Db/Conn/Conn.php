@@ -10,11 +10,15 @@ class Conn extends ConnMain {
 	static public $chrPrint = '.';
 	static public $drivers = [
 		'mysql' => 'mysql',
+		'mysqli' => 'mysql',
 		'mariadb' => 'mysql',
+		'maxdb' => 'mysql',
 		'oci' => 'oci',
 		'oracle' => 'oci',
-		'mssql' => 'sqlsrv',
 		'sqlsrv' => 'sqlsrv',
+		'mssql' => 'sqlsrv',
+		'ms-sql' => 'sqlsrv',
+		'ms-sql-s' => 'sqlsrv',
 		'dblib' => 'dblib',
 		'pgsql' => 'pgsql',
 		'postgresql' => 'pgsql',
@@ -59,7 +63,11 @@ class Conn extends ConnMain {
 		elseif (($conn = self::connByVault($dsn))) return $conn;
 		elseif ($conn = self::connByDSN($dsn, $username, $password, $options)) return $conn;
 	}
-
+	static private function trProtocol($protocol) {
+		$p = strtolower($protocol);
+		if (key_exists($p, self::$drivers)) return self::$drivers[$p];
+		return $protocol;
+	}
 	/**
 	 * connByArray
 	 *
@@ -72,11 +80,14 @@ class Conn extends ConnMain {
 		//$dsn = 'mysql:dbname=testdb;host=127.0.0.1';
 		//dbc:DSN=SAMPLE;UID=john;PWD=mypass
 		//$dsn = 'uri:file:///usr/local/dbconnect';
-
-		if (array_key_exists($k = 'protocol', $arr)) {
+		$arr = array_change_key_case($arr);
+		if (key_exists($k = 'protocol', $arr) || key_exists($k = 'schema', $arr)) {
 			$dsn = [];
-			foreach ($aFlds as $f) if (array_key_exists($f, $arr)) $dsn[] = "$f={$arr[$f]}";
-			$dsn = @$arr['protocol'] . ':' . implode(';', $dsn);
+			if (!key_exists($t = 'dbname', $arr) && (key_exists($s = 'db', $arr) || key_exists($s = 'database', $arr))) $arr[$t] = $arr[$s];
+			if (!key_exists($t = 'passwd', $arr) && (key_exists($s = 'pass', $arr) || key_exists($s = 'password', $arr))) $arr[$t] = $arr[$s];
+			if (!key_exists($t = 'host', $arr) && (key_exists($s = 'ip', $arr) || key_exists($s = 'device', $arr))) $arr[$t] = $arr[$s];
+			foreach ($aFlds as $f) if (key_exists($f, $arr)) $dsn[] = "$f={$arr[$f]}";
+			$dsn = self::trProtocol($arr[$k]) . ':' . implode(';', $dsn);
 		} else $dsn = @$arr['dsn'];
 		if ($dsn == '') _::error('Connection erro', FATAL_ERROR);
 		return  self::connByDSN($dsn, @$arr['user'], @$arr['passwd'], @$arr['options'], $name);
