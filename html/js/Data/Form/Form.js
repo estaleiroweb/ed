@@ -55,7 +55,7 @@
 			return _this.setAction(_this.bin('edit'));
 		});
 		this.elements.buttonDel.click(function(e){
-			if (!confirm("Do you want to remove this record?") || !confirm("Do you sure?")) return false;
+			if (!confirm("Do you want to remove this record?") || !confirm("Are you sure?")) return false;
 			return _this.setAction(_this.bin('del')|_this.bin('save'));
 		});
 		this.elements.buttonSave.click(function(e){
