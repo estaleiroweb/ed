@@ -129,15 +129,13 @@ class Monitor {
 		if ($this->overThisProcess($numProcess, $filter)) $this->prOverLoad(__FUNCTION__ . '(' . $this->numProcess . ')');
 	}
 	function cmdProcess($cmd = '', $filter = '') {
-		$grep = $filter == '' ? '' : " | grep '$filter'";
-		if ($cmd) {
-			$ps = "ps --no-heading -fC $cmd$grep";
-		} else {
-			$grep .= " | grep -v 'ps --no-heading -ef'";
-			$ps = "ps --no-heading -ef$grep";
-		}
-		_::verbose("Cmd Process: $ps\n");
-		return $ps;
+		if ("$cmd$filter" == '') {
+			$cmd = $this->thisProcess();
+			$grep = '';
+		} else $grep = $filter === '' ? '' : " | grep \"$filter\"";
+		if ($cmd) return "ps --no-heading -fC $cmd$grep";
+		$grep .= $grep ? " | grep -v \"grep $filter\"" : " | grep -v \"ps --no-heading -ef\"";
+		return "ps --no-heading -ef$grep";
 	}
 	function stopOthersProcess() {
 		$pid = getmypid();
