@@ -4,6 +4,7 @@ namespace EstaleiroWeb\ED\IO;
 
 class Admin {
 	private $vlt, $std;
+	private $spc = "\t";
 
 	public function __construct($install = false) {
 		$this->check();
@@ -54,7 +55,7 @@ class Admin {
 			['opt' => 'Manager DSN Connections', 'fn' => [$this, 'menu_Conn']],
 			['opt' => 'Config Directories', 'fn' => [$this, 'config_Paths']],
 			['opt' => 'Repopulate Database', 'fn' => [$this, 'build_db']],
-		],'Easy Data Main Menu'));
+		], 'Easy Data Main Menu'));
 	}
 	public function menu_Conn() {
 		while ($this->std->menu([
@@ -62,7 +63,7 @@ class Admin {
 			['opt' => 'Add DSN Connection', 'fn' => [$this, 'conn_Add']],
 			['opt' => 'Remove DSN Connection', 'fn' => [$this, 'menu_ConnRm']],
 			//['opt' => 'xxxx', 'fn' => 'yyy'],
-		],'Easy Data DSN Menu'));
+		], 'Easy Data DSN Menu'));
 	}
 	public function menu_ConnRm() {
 		print __FUNCTION__ . PHP_EOL;
@@ -74,7 +75,7 @@ class Admin {
 
 			$opts[] = ['opt' => '[' . $name . ']: ' . json_encode($line), 'fn' => [$this, 'conn_Rm']];
 		}
-		while ($this->std->menu($opts,'Easy Data DSN Remove List Menu'));
+		while ($this->std->menu($opts, 'Easy Data DSN Remove List Menu'));
 	}
 
 	public function main_Key() {
@@ -108,18 +109,18 @@ class Admin {
 		}
 		$this->std->pressKey();
 	}
-	public function connList($showPass=false) {
+	public function connList($showPass = false) {
 		$this->std->cls();
 		$this->std->title('List of Connections');
-		$arr=$this->vlt->contents();
-		foreach($arr as $k=>$c) {
-			$c['passwd']=$showPass?$this->vlt->decrypt($c['passwd']):'******';
-			$arr[$k]=array_merge(['name'=>$k],$c);
+		$arr = $this->vlt->contents();
+		foreach ($arr as $k => $c) {
+			$c['passwd'] = $showPass ? $this->vlt->decrypt($c['passwd']) : '******';
+			$arr[$k] = array_merge(['name' => $k], $c);
 		}
 		_::showTable($arr);
 		//print json_encode($this->vlt->contents(), JSON_PRETTY_PRINT) . PHP_EOL . PHP_EOL;
-		$show=$this->std->pressKey();
-		if($show[0]['raw']=='p') $this->connList(true);
+		$show = $this->std->pressKey();
+		if ($show[0]['raw'] == 'p') $this->connList(true);
 	}
 	public function conn_Add() {
 		$this->std->cls();

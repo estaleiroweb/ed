@@ -1,6 +1,6 @@
 <?php
 
-namespace EstaleiroWeb\ED\Func;
+namespace EstaleiroWeb\ED\IO;
 
 use EstaleiroWeb\Traits\GetterAndSetter;
 
