@@ -83,7 +83,7 @@ class API {
 		if (key_exists($name, $this->protect)) return $this->protect[$name];
 	}
 	public function __set($name, $val) {
-		if (method_exists($this, $fn = 'get' . $name)) $this->$fn($val);
+		if (method_exists($this, $fn = 'set' . $name)) $this->$fn($val);
 		elseif (!key_exists($name, $this->readonly) && key_exists($name, $this->protect)) $this->protect[$name] = $val;
 	}
 
