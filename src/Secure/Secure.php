@@ -272,13 +272,34 @@ class Secure extends Common {
 	public function layout_loged() {
 		$lbl = @$this->logonButton['left'];
 		$lbr = @$this->logonButton['right'];
+		$outHtml = OutHtml::singleton();
+		if (!$outHtml->organize) return;
+		$outHtml->jQueryScript['secure_loged'] = '
+			var totalSeconds = 900; //(15 * 60) 15 minutos em segundos
+			var $loginTimer = $("#secure_btn_login_det");
+			function startTimer() {
+				let timer = setInterval(function () {
+					totalSeconds--;
+					let minutes = Math.floor(totalSeconds / 60);
+					let seconds = totalSeconds % 60;
+					$loginTimer.text(minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0"));
+					if (totalSeconds <= 0) {
+						clearInterval(timer);
+						$("#secure_btn_login").click();
+					}
+				}, 1000);
+			}
+		
+			if ($loginTimer.length) startTimer();
+		';
 		return '
-		<form method="POST" class="navbar-form navbar-right">' . $lbl . '
-			<input type="hidden" name="logout" value="' . $this->getIdUser() . '"> 
-			<button class="' . self::$btn_class . '" type="submit" id="secure_btn_login">
-				<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout ' . $this->readonly['user']->User . '
-			</button>' . $lbr . '
-		</form>
+			<form method="POST" class="navbar-form navbar-right">' . $lbl . '
+				<input type="hidden" name="logout" value="' . $this->getIdUser() . '"> 
+				<button class="' . self::$btn_class . '" type="submit" id="secure_btn_login" title="Logout">
+					<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> ' . $this->readonly['user']->User . ': 
+					<span id="secure_btn_login_det">Logout</span>
+				</button>' . $lbr . '
+			</form>
 		';
 	}
 	public function layout_unloged() {
@@ -291,8 +312,8 @@ class Secure extends Common {
 		//}
 		//unchecked
 		$outHtml = OutHtml::singleton();
-		if (!$outHtml->organize) return; {
-			$outHtml->jQueryScript['secure_unloged'] = '
+		if (!$outHtml->organize) return;
+		$outHtml->jQueryScript['secure_unloged'] = '
 			$("#secure_chk_keepalive").change(function(){
 				$obj=$(this).parent();
 				$obj.find("span").removeClass("glyphicon-check glyphicon-unchecked").addClass(this.checked?"glyphicon-check":"glyphicon-unchecked");
@@ -317,55 +338,54 @@ class Secure extends Common {
 				$("#secure_container").show("slow");
 			});
 		';
-		} {
-			return '
-		<form method="POST" class="navbar-form navbar-right"> 
-			<button class="' . self::$btn_class . '" type="button" id="secure_btn_login">
-				<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login
-			</button>
-		</form>
-		<table id="secure_container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0,0, 0.4);"><tr><td>
-		<div class="container">
-		<div class="col-md-6 col-md-offset-3">
-		<div class="jumbotron">
-			<form method="POST" class="' . self::$frm_class . '" id="secure_form">
-				<div class="' . self::$fgp_class . '">
-					<label class="' . self::$lbl_class . '" for="secure_txt_username" title="User of the network company">Username:</label>
-					<div class="input-group">
-						<input class="' . self::$ipt_class . '" type="text" tabindex="1" name="username" id="secure_txt_username" value="' . $username . '" placeholder="user or domain\user"' . self::$ipt_style . '>
-						<span class="input-group-btn">
-							<div class="btn-group" data-toggle="buttons">
-								<label class="' . self::$btn_class . $ka_active . '">
-									<input type="checkbox" tabindex="3" name="keepalive" id="secure_chk_keepalive" value="1"' . $ka_checked . '> 
-									<span class="glyphicon" aria-hidden="true"></span>
-									Keep Alive
-								</label>
-							</div>
-						</span>
-					</div>
-				</div>
-				<div class="' . self::$fgp_class . '">
-					<label class="' . self::$lbl_class . '" for="secure_txt_password">Password:</label>
-					<div class="input-group">
-						<input class="' . self::$ipt_class . '" type="password" tabindex="2" name="password" id="secure_txt_password" placeholder="Password"' . self::$ipt_style . '>
-						<span class="input-group-btn">
-							<button class="' . self::$btn_class . '" type="button" id="secure_btn_forget">
-								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span id="secure_spn_forget"></span>
-							</button>
-						</span>
-					</div>
-				</div>
-				<div class="' . self::$fgp_class . ' text-right">
-					<button class="' . self::$btn_class . ' btn-success" id="secure_btn_ok"     type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> LogIn</button>
-					<button class="' . self::$btn_class . ' btn-danger"  id="secure_btn_cancel" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
-				</div>
+
+		return '
+			<form method="POST" class="navbar-form navbar-right"> 
+				<button class="' . self::$btn_class . '" type="button" id="secure_btn_login">
+					<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login
+				</button>
 			</form>
-		</div>
-		</div>
-		</div>
-		</td></tr></table>
+			<table id="secure_container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0,0, 0.4);"><tr><td>
+			<div class="container">
+			<div class="col-md-6 col-md-offset-3">
+			<div class="jumbotron">
+				<form method="POST" class="' . self::$frm_class . '" id="secure_form">
+					<div class="' . self::$fgp_class . '">
+						<label class="' . self::$lbl_class . '" for="secure_txt_username" title="User of the network company">Username:</label>
+						<div class="input-group">
+							<input class="' . self::$ipt_class . '" type="text" tabindex="1" name="username" id="secure_txt_username" value="' . $username . '" placeholder="user or domain\user"' . self::$ipt_style . '>
+							<span class="input-group-btn">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="' . self::$btn_class . $ka_active . '">
+										<input type="checkbox" tabindex="3" name="keepalive" id="secure_chk_keepalive" value="1"' . $ka_checked . '> 
+										<span class="glyphicon" aria-hidden="true"></span>
+										Keep Alive
+									</label>
+								</div>
+							</span>
+						</div>
+					</div>
+					<div class="' . self::$fgp_class . '">
+						<label class="' . self::$lbl_class . '" for="secure_txt_password">Password:</label>
+						<div class="input-group">
+							<input class="' . self::$ipt_class . '" type="password" tabindex="2" name="password" id="secure_txt_password" placeholder="Password"' . self::$ipt_style . '>
+							<span class="input-group-btn">
+								<button class="' . self::$btn_class . '" type="button" id="secure_btn_forget">
+									<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <span id="secure_spn_forget"></span>
+								</button>
+							</span>
+						</div>
+					</div>
+					<div class="' . self::$fgp_class . ' text-right">
+						<button class="' . self::$btn_class . ' btn-success" id="secure_btn_ok"     type="submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> LogIn</button>
+						<button class="' . self::$btn_class . ' btn-danger"  id="secure_btn_cancel" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+					</div>
+				</form>
+			</div>
+			</div>
+			</div>
+			</td></tr></table>
 		';
-		}
 	}
 	public function layout_change_password() {
 		$out = $this->layout_default();
