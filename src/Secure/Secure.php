@@ -274,7 +274,7 @@ class Secure extends Common {
 		$lbr = @$this->logonButton['right'];
 		$outHtml = OutHtml::singleton();
 		if (!$outHtml->organize) return;
-		$outHtml->jQueryScript['secure_loged'] = '
+		/*$outHtml->jQueryScript['secure_loged'] = '
 			var totalSeconds = 900; //(15 * 60) 15 minutos em segundos
 			var $loginTimer = $("#secure_btn_login_det");
 			function startTimer() {
@@ -291,7 +291,7 @@ class Secure extends Common {
 			}
 		
 			if ($loginTimer.length) startTimer();
-		';
+		';*/
 		return '
 			<form method="POST" class="navbar-form navbar-right">' . $lbl . '
 				<input type="hidden" name="logout" value="' . $this->getIdUser() . '"> 
