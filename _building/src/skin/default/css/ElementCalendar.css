@@ -1,0 +1,10 @@
+span[ed-class="ElementCalendar"]{
+	border-style: dashed;
+	white-space: nowrap;
+}
+div[ed-class="ElementCalendar"] .datepicker .day.weekend {
+	background-color: #E6E6E6;
+}
+div[ed-class="ElementCalendar"] [buttonformat] {
+	cursor:pointer;
+}

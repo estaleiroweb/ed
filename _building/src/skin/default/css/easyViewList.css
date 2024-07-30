@@ -1,0 +1,79 @@
+body{
+	font-family: Verdana;
+	font-size: x-small;
+	overflow-X:hidden;
+	overflow-Y:auto;
+}
+body,form{
+	margin:0;
+}
+img{
+	margin-right: 3px;
+}
+.open,.close{
+	position:absolute;
+	cursor:pointer;
+	width:12px;height:12px;
+	background:url(../img/setadireita.gif) no-repeat center;
+}
+.open {
+	background:url(../img/setabaixo.gif) no-repeat center;
+}
+.grptitle{
+	background: #cccccc;
+	border-bottom:1px solid #aaaaaa;
+}
+.title{
+	padding-left: 15px;
+	white-space:nowrap;
+}
+.content{
+	border-left:1px solid #555555;
+	margin-left:17px;
+}
+.main{
+	border:1px solid #444444;
+	background-color: #eeeeff;
+}
+.item,.itemgrp,.itemover,.itemgrpover,.itemchk,.itemgrpchk,.itemchkover,.itemgrpchkover {
+	cursor:pointer;
+	white-space:nowrap;
+	padding-right:4px;
+}
+.itemgrp,.itemgrpover,.itemgrpchk,.itemgrpchkover {
+	background-color: #dddddd;
+}
+.item,.itemover,.itemchk,.itemchkover {
+	padding-left:2px;
+	border:1px solid #eeeeee;
+	border-bottom:1px solid #dddddd;
+	background-color: #eeeeee;
+}
+.itemover {
+	border:1px solid #dadada;
+	background-color: #fafafa;
+}
+.itemgrpover{
+	background-color:#eaeaea;
+}
+.itemchk {
+	border:1px solid #9a9a9a;
+	background-color: #bababa;
+}
+.itemgrpchk{
+	background-color:#aaaaaa;
+}
+.itemchkover {
+	border:1px solid #aaaaaa;
+	background-color: #cacaca;
+}
+.itemgrpchkover{
+	background-color:#bababa;
+}
+span.cat{
+	color=#aaaaaa;
+	margin-left:5px;
+}
+select{
+	width:100%;
+}

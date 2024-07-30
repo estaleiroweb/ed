@@ -1,0 +1,89 @@
+/*Estilos Gerais*/
+TABLE.Box {}
+TD.Box_neverHidden {
+   display:block!important;
+}
+TD.Box_HandHidden {
+	cursor:hand;
+}
+
+/*Estilo com borda*/
+.Box TD.Box_tl div,.Box TD.Box_tc div,.Box TD.Box_tr div,
+.Box TD.Box_ml div,.Box TD.Box_mr div,
+.Box TD.Box_bl div,.Box TD.Box_bc div,.Box TD.Box_br div {
+	width: 6px;
+	height: 6px;
+	overflow:hidden;
+}
+.Box TD.Box_tl,.Box TD.Box_tc,.Box TD.Box_tr,
+.Box TD.Box_ml,.Box TD.Box_mc,.Box TD.Box_mr,
+.Box TD.Box_bl,.Box TD.Box_bc,.Box TD.Box_br {
+	background-color: transparent;
+	padding: 0;
+	margin: 0;
+}
+.Box TD.Box_tl,.Box TD.Box_tr,.Box TD.Box_bl,.Box TD.Box_br {
+	width: 6px; height: 6px;
+	background-repeat: no-repeat;
+}
+.Box TD.Box_tc,.Box TD.Box_bc {
+	height: 6px;
+	background-repeat: repeat-x;
+}
+.Box TD.Box_ml,.Box TD.Box_mr {
+	width: 6px;
+	background-repeat: repeat-y;
+}
+
+.Box TD.Box_tl { background-image:url(../img/box/tl.gif); }
+.Box TD.Box_tc { background-image:url(../img/box/tc.gif); }
+.Box TD.Box_tr { background-image:url(../img/box/tr.gif); }
+.Box TD.Box_ml { background-image:url(../img/box/ml.gif); }
+.Box TD.Box_mc { background-image:url(../img/box/mc.gif); }
+.Box TD.Box_mr { background-image:url(../img/box/mr.gif); }
+.Box TD.Box_bl { background-image:url(../img/box/bl.gif); }
+.Box TD.Box_bc { background-image:url(../img/box/bc.gif); }
+.Box TD.Box_br { background-image:url(../img/box/br.gif); }
+
+.Box h1, .Box h2, .Box h3, .Box h4, .Box h5, .Box h6, .Box p, .Box pre {
+	color:#FFFFFF;
+	border-bottom: 1px solid #FFFFFF;
+	margin-bottom: 3px;
+	margin-top: 0;
+	padding-top: 0;
+}
+.Box label {
+	color:#FFFFFF;
+}
+.Box label a, .Box label a:link { 
+	color:#FFFFFF;
+}
+.Box label a:hover { 
+	color:#CCCCCC;
+}
+.Box .groupcheck a, .Box .groupcheck a:link { 
+	color:#000000;
+}
+.Box .groupcheck a:hover { 
+	color:#999999;
+}
+
+
+/*Estilo com borda*/
+/*
+.BoxUl TD.Box_tl,.BoxUl TD.Box_tc,.BoxUl TD.Box_tr,
+.BoxUl TD.Box_ml,.BoxUl TD.Box_mc,.BoxUl TD.Box_mr,
+.BoxUl TD.Box_bl,.BoxUl TD.Box_bc,.BoxUl TD.Box_br {
+	background-color: #EEEEEE;
+}
+.BoxUl TD.Box_tl,.BoxUl TD.Box_tc,.BoxUl TD.Box_tr{
+	height: 2px;
+}
+.BoxUl TD.Box_bl,.BoxUl TD.Box_bc,.BoxUl TD.Box_br {
+	height: 2px;
+}
+.BoxUl TD.Box_tl,.BoxUl TD.Box_bl,
+.BoxUl TD.Box_tr,.BoxUl TD.Box_br{
+	width: 2px;
+}
+*/

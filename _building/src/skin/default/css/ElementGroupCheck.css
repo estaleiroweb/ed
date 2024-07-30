@@ -1,0 +1,12 @@
+[ed-element=groupCheck]{
+	display: inline-block;
+	vertical-align: middle;
+	white-space: pre-wrap;
+}
+[ed-element=groupCheck] .select-group {
+	display: block;
+	font-weight: bold;
+}
+[ed-element=groupCheck] .select-group label {
+	font-weight: bold;
+}

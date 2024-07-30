@@ -1,0 +1,17 @@
+#PrintLines th, #PrintLines td {
+	border-right: 1px solid #FFFFFF;
+	padding-left: 4px;
+	padding-right: 4px;
+	height: 18px;
+}
+#PrintLines th {
+	color: #FFFFFF; 
+	background-color: #B0232E; 
+	background-image: url('../img/red.gif');
+	white-space: nowrap;
+}
+#PrintLines td {
+	color: #000000; 
+	background-color: #ece9d8;
+	border-bottom: 1px solid #fdfae9;
+}

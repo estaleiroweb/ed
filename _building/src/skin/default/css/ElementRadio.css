@@ -1,0 +1,8 @@
+span.radio input {
+	font-size:12px;
+}
+span.radio span {
+	width: 150px;
+	white-space:nowrap;
+	background-color:#FFFFFF;
+}

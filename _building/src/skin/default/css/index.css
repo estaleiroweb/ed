@@ -1,0 +1,40 @@
+#Layout_main		{ background-image: url("../img/index/listra.gif"); background-repeat: repeat-y; }
+#index				{ width:100%; height:100%; font-size: xx-small; }
+
+#leftCorner			{ width:182px; vertical-align: top; text-align: center; }
+#leftCorner #data	{ margin-bottom: 20px; }
+#leftCorner iframe	{ width: 106px; height: 300px; margin-bottom: 5px; }
+#leftCorner #box	{
+	width: 106px; height:15px;
+	font-size: xx-small; font-weight: bold;
+	color: #000000; background-color: #CCCCFF;
+}
+#leftCorner #button	{
+	cursor: pointer;
+	background-image: url("../img/index/graf.gif"); background-repeat: no-repeat;
+	width: 14px; height: 15px;
+}
+
+#middle		{ 
+	vertical-align: top; text-align: left;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+#middle h1	{ color: #CC3300; font-size: medium; text-align: left; }
+
+#rightCorner		{ 
+	width: 300px; vertical-align: top; 
+	border-left: 1px solid #CC3300;
+	padding-right: 5px;
+	padding-left: 10px;
+	text-align: justify;
+}
+#rightCorner h1		{ color: #CC3300; font-size: 120%; text-align: center; font-weight: bold; }
+#rightCorner #alert	{ 
+	background-image: url("../img/index/alert.gif"); background-repeat: no-repeat;
+	width: 23px; height: 21px; 
+	margin-right: 5px;
+}
+
+li	{ list-style-image: url("../img/index/bullet.gif"); }
+hr	{ height: 1px; color: #CC3300; }

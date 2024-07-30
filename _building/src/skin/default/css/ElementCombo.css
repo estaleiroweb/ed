@@ -1,0 +1,9 @@
+span[ed-class="ElementCombo"] {
+	overflow:hidden;
+	white-space:nowrap;
+	min-width:90px;
+	border-style: dashed;
+}
+select[ed-class="ElementCombo"] {
+	display: inline-block;
+}
