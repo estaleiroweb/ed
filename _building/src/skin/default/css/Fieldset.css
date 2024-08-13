@@ -1,0 +1,21 @@
+fieldset.ed  legend {
+	cursor:pointer;
+}
+fieldset.ed legend:before{
+	content: "\e252";
+	font-family: 'Glyphicons Halflings';
+	font-size: 70%;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	opacity: .5;
+}
+
+fieldset.ed  legend:hover {
+	color: #0059b3;
+}
+fieldset.ed.closed legend:before{
+	content: "\e250";
+}
+

@@ -1,0 +1,12 @@
+#SubItem h2#SubItem_title {
+	background-position: center left;
+	background-repeat: no-repeat;
+	padding-left: 16px;
+	cursor:pointer;
+	border-bottom: 1px solid #ffffff;
+}
+#SubItem .opened h2#SubItem_title { background-image:url(../img/subitem/opened.gif); }
+#SubItem .closed h2#SubItem_title { background-image:url(../img/subitem/closed.gif); }
+#SubItem .opened #SubItem_content { display: block; }
+#SubItem .closed #SubItem_content { display: none; }
+#SubItem h2#SubItem_title div.over { text-decoration: underline; }

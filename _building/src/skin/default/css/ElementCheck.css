@@ -1,0 +1,32 @@
+label.ElementCheck {
+	margin-left: 3px;
+	margin-right: 5px;
+}
+/*
+span.check {
+	padding-top: 3px;
+	margin-right: 10px;
+}
+span.check input {
+	margin-top: -3px;
+}
+span.check span {
+	font-size: 12pt;
+	margin-right: 2px;
+	border: none;
+}
+span.check .on, span.check .off {
+	margin-left: 2px;
+	width: 15px; height: 14px;
+	background-position:top center;
+	background-repeat:no-repeat;
+	background-image:url(../img/element/check/checked.gif);
+	background-color:trasnparent;
+}
+span.check .off {
+	background-image:url(../img/element/check/unchecked.gif);
+}
+.Box span.check label {
+	color:#FFFFFF;
+}
+*/

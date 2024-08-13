@@ -1,0 +1,36 @@
+#DataTab { }
+#DataTab_bar { padding-left: 10px; padding-right: 10px;  white-space: nowrap; }
+#DataTab_Button, #DataTab_ButtonActive	{ position: relative; margin-bottom: -6px; white-space: nowrap; display: inline; cursor: pointer; height: 30px; }
+#DataTab_Button	{ z-index: -1; }
+#DataTab_ButtonActive	{  }
+#DataTab_leftButton, #DataTab_rightButton, #DataTab_middleButton {
+height: 100%;
+display: inline;
+overflow: hidden;
+}
+#DataTab_leftButton, #DataTab_rightButton {
+width: 9px;
+background-repeat: no-repeat;
+}
+#DataTab_middleButton	{ 
+background-repeat: repeat-x; 
+white-space: nowrap;
+font-weight: bold;
+padding-top: 5px;
+}
+
+#DataTab_Button #DataTab_leftButton		{ background-image:url(../img/dataTab/left.gif); }
+#DataTab_Button #DataTab_middleButton	{ background-image:url(../img/dataTab/middle.gif); }
+#DataTab_Button #DataTab_rightButton	{ background-image:url(../img/dataTab/right.gif); }
+#DataTab_Button.over #DataTab_leftButton	{ background-image:url(../img/dataTab/leftOver.gif); }
+#DataTab_Button.over #DataTab_middleButton	{ background-image:url(../img/dataTab/middleOver.gif); }
+#DataTab_Button.over #DataTab_rightButton	{ background-image:url(../img/dataTab/rightOver.gif); }
+
+#DataTab_ButtonActive #DataTab_leftButton		{ background-image:url(../img/dataTab/leftAct.gif); }
+#DataTab_ButtonActive #DataTab_middleButton		{ background-image:url(../img/dataTab/middleAct.gif); }
+#DataTab_ButtonActive #DataTab_rightButton		{ background-image:url(../img/dataTab/rightAct.gif); }
+#DataTab_ButtonActive.over #DataTab_leftButton		{ background-image:url(../img/dataTab/leftActOver.gif); }
+#DataTab_ButtonActive.over #DataTab_middleButton	{ background-image:url(../img/dataTab/middleActOver.gif); }
+#DataTab_ButtonActive.over #DataTab_rightButton		{ background-image:url(../img/dataTab/rightActOver.gif); }
+
+#DataTab_body { }

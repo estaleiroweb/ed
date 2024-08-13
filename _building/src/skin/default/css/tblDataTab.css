@@ -1,0 +1,72 @@
+/*Especifica: Tabs*/
+.tblData_tabs {
+	margin-bottom: -12px;
+}
+.tblData_tabs div.active .Box_mc {
+	white-space: nowrap;
+	height: 18px;
+	vertical-align: top;
+}
+.tblData_tabLineTL,.tblData_tabLineTC,.tblData_tabLineTR { }
+.tblData_tabLineML,.tblData_tabLineMR { }
+.tblData_tabLineMC,.tblData_tabLineMC div#DataTabGui {
+	position: relative;
+	white-space: nowrap;
+	z-index:0;
+}
+.tblData_tabLineBL,.tblData_tabLineBC,.tblData_tabLineBR{
+	white-space: nowrap;
+	position: relative;
+	top: -6px;
+	background:#7292E0;
+	background-image:url(../img/tblDataList/tblData_grp_Fld_tc.jpg);
+	height:5px;
+	background-repeat: repeat-x;
+	z-index:-1;
+}
+.tblData_tabLineBL { 
+	padding-left:15px;
+	filter:progid:DXImageTransform.Microsoft.Alpha( style=1,opacity=0,finishOpacity=100,startX=0,finishX=100,startY=0,finishY=0);
+}
+.tblData_tabLineBC { height:6px; }
+.tblData_tabLineBR { 
+	padding-right:15px;
+	filter:progid:DXImageTransform.Microsoft.Alpha( style=1,opacity=0,finishOpacity=100,startX=100,finishX=0,startY=100,finishY=100);
+}
+
+.tblData_tabs div#DataTabGui,.tblData_tabs div#DataTabGui table {
+	display: inline;
+	vertical-align: top;
+	font-weight: bold;
+	cursor:pointer;
+}
+.tblData_tabs div.desativ, .tblData_tabs div.hover {
+	position: relative;
+	z-index:-1;
+} 
+
+.tblData_tabs div.desativ .Box_tl { background-image:url(../img/box/tl_desativ.gif); }
+.tblData_tabs div.desativ .Box_tc { background-image:url(../img/box/tc_desativ.gif); }
+.tblData_tabs div.desativ .Box_tr { background-image:url(../img/box/tr_desativ.gif); }
+.tblData_tabs div.desativ .Box_ml { background-image:url(../img/box/ml_desativ.gif); }
+.tblData_tabs div.desativ .Box_mc { background-image:url(../img/box/mc_desativ.gif); }
+.tblData_tabs div.desativ .Box_mr { background-image:url(../img/box/mr_desativ.gif); }
+
+.tblData_tabs div.hover .Box_tl { background-image:url(../img/box/tl_over.gif); }
+.tblData_tabs div.hover .Box_tc { background-image:url(../img/box/tc_over.gif); }
+.tblData_tabs div.hover .Box_tr { background-image:url(../img/box/tr_over.gif); }
+.tblData_tabs div.hover .Box_ml { background-image:url(../img/box/ml_over.gif); }
+.tblData_tabs div.hover .Box_mc { background-image:url(../img/box/mc_over.gif); }
+.tblData_tabs div.hover .Box_mr { background-image:url(../img/box/mr_over.gif); }
+
+@media print {
+	.tblData_tabs { margin-bottom: 0px; }
+	.tblData_tabLineMC { position: static; padding: 0px; margin: 0px;}
+	.tblData_tabLineBL,.tblData_tabLineBC,.tblData_tabLineBR, .tblData_tabs div {
+		display: none;
+		padding: 0px;
+		margin: 0px;
+	}
+	.tblData_tabs div.active { display: block; }
+	.tblData_tabs div.active .mc { font-size: 18; }
+}

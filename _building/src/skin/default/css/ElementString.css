@@ -1,0 +1,37 @@
+span[ed-class="ElementString"] {
+	white-space:nowrap;
+	overflow: auto;
+	border-style: dashed;
+}
+/* 
+	http://www.tidbits.com.br/customizando-a-barra-de-scroll-so-com-css 
+	https://pt.stackoverflow.com/questions/68928/como-estilizar-a-barra-de-rolagem
+	
+	#para IE
+	scrollbar-base-color: #C0C0C0;
+	scrollbar-base-color: #C0C0C0;
+	scrollbar-3dlight-color: #C0C0C0;
+	scrollbar-highlight-color: #C0C0C0;
+	scrollbar-track-color: #EBEBEB;
+	scrollbar-arrow-color: black;
+	scrollbar-shadow-color: #C0C0C0;
+	scrollbar-dark-shadow-color: #C0C0C0;
+	
+	#para outros
+	::-webkit-scrollbar              
+	::-webkit-scrollbar-button       
+	::-webkit-scrollbar-track        
+	::-webkit-scrollbar-track-piece  
+	::-webkit-scrollbar-thumb        
+	::-webkit-scrollbar-corner       
+	::-webkit-resizer                
+*/
+span[ed-class="ElementString"]::-webkit-scrollbar { width:3px; height:3px; background:#e3e0d6; }
+span[ed-class="ElementString"]::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+span[ed-class="ElementString"]::-webkit-scrollbar-thumb { border-radius:3px; background:#8b8778;  }
+/*IE*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	span[ed-class="ElementString"] {
+		overflow: visible; /*hidden*/
+	}
+}

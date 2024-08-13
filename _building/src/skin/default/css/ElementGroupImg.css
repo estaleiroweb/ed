@@ -1,0 +1,52 @@
+/*.groupimg div,*/.groupimg span {
+	border: none!important;
+	padding: 0!important;
+}
+.ElementGroupImg_Control {
+	display: inline;
+	overflow-y: auto;
+	width: 550px;
+	height: 100%;
+	border: 1px solid #000000;
+	background-color: #ffffff;
+	vertical-align: bottom;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+.ElementGroupImg_fileBar {}
+.ElementGroupImg_fileBar input {
+	width: 100%;
+}
+#ElementGroupImg_Table {
+	display: inline;
+	margin-right: 20px;
+	margin-bottom: 5px;
+	vertical-align: top;
+	background-color:#FFFFFF;
+	vertical-align: baseline;
+}
+#ElementGroupImg_Table td {
+	text-align: center;
+}
+#ElementGroupImg_Edit {
+}
+#ElementGroupImg_Foto {
+	border: 1px dashed #000000;
+	padding: 2px;
+	cursor: pointer;
+	/*cursor:  url(zoom.cur),url(lupa.cur),pointer;*/
+}
+#ElementGroupImg_Img {}
+
+#ElementGroupImg_Foto.over img {
+	FILTER: progid:DXImageTransform.Microsoft.Alpha( style=0,opacity=25);
+}
+.ElementGroupImg_Nome {
+	width: 100%;
+}
+.ElementGroupImg_ButtonDelete, .ElementGroupImg_ButtonNome, .ElementGroupImg_ButtonDescr {
+	font-family: Venrdana;
+	font-size: 6pt;
+	width: 14px;
+	height: 16px;
+}

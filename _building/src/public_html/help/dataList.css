@@ -1,0 +1,36 @@
+.img-dataList                 { background: url("img/dataList.jpg") no-repeat; }
+.img-dataList.dl-item         { display:inline-block;}
+.img-dataList.dl-resume       { width: 1078px; height: 401px;}
+.img-dataList.dl-btn          { width: 43px;   height: 42px; }
+.img-dataList.dl-nav          { width: 43px;   height: 38px; }
+.img-dataList.dl-grd          { width: 100%;   height: 42px; }
+.img-dataList.dl-grdItem      { width: 180px;  height: 35px; display:inline-block;}
+.img-dataList.dl-pgItem       { width: 40px;   height: 42px; display:inline-block;}
+.img-dataList.dl-btnbar       { background-position: -4px   -2px;  width: 216px;}
+.img-dataList.dl-btn-menu     { background-position: -4px   -2px;}
+.img-dataList.dl-btn-add      { background-position: -48px  -2px;}
+.img-dataList.dl-btn-order    { background-position: -91px  -2px;}
+.img-dataList.dl-btn-fields   { background-position: -136px -2px;}
+.img-dataList.dl-btn-filter   { background-position: -174px -2px;}
+.img-dataList.dl-btn-records  { background-position: -500px -2px;  width: 190px;}
+.img-dataList.dl-btn-limit    { background-position: -710px -2px;  width: 123px;}
+.img-dataList.dl-navbar       { background-position: -711px -40px; width: 327px;}
+.img-dataList.dl-nav-navFisrt { background-position: -711px -40px; }
+.img-dataList.dl-nav-navPrev  { background-position: -754px -40px; }
+.img-dataList.dl-nav-navGo    { background-position: -799px -40px; width: 150px; }
+.img-dataList.dl-nav-navNext  { background-position: -950px -40px; }
+.img-dataList.dl-nav-navLast  { background-position: -993px -40px; }
+.img-dataList.dl-ordbar       { background-position: -40px  -84px; }
+.img-dataList.dl-ord1         { background-position: -40px  -95px;  width: 90px;}
+.img-dataList.dl-ord2         { background-position: -490px -95px;  width: 150px;}
+.img-dataList.dl-ord3         { background-position: -130px -95px;}
+.img-dataList.dl-fltbar       { background-position: -40px  -130px; }
+.img-dataList.dl-flt          { background-position: -130px -134px;}
+.img-dataList.dl-linebar      { background-position: -4px   -262px; }
+.img-dataList.dl-action       { background-position: -4px   -172px; width: 40px;}
+.img-dataList.dl-copy         { background-position: -130px -262px; width: 50px;}
+.img-dataList.dl-pgbar        { background-position: -770px -357px; width: 270px;}
+.img-dataList.dl-pgPrev       { background-position: -770px -357px;}
+.img-dataList.dl-pg1          { background-position: -810px -357px;}
+.img-dataList.dl-pgN          { background-position: -850px -357px;}
+.img-dataList.dl-pgNext       { background-position: -998px -357px;}

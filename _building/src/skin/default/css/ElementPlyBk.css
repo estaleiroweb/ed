@@ -1,0 +1,46 @@
+.PlayBack {
+}
+.PlayBack td {
+	margin: 0; padding: 0;
+}
+.PlayBackTL,.PlayBackTC,.PlayBackTR,
+.PlayBackML,.PlayBackMC,.PlayBackMR,
+.PlayBackBL,.PlayBackBC,.PlayBackBR {}
+.PlayBackTL {background: url('../img/playBack/btn_PlBk1_ltBlue.gif');}
+.PlayBackTC {background: url('../img/playBack/btn_PlBk2_ltBlue.gif');height:3px;}
+.PlayBackTR {background: url('../img/playBack/btn_PlBk3_ltBlue.gif');}
+.PlayBackML {background: url('../img/playBack/btn_PlBk4_ltBlue.gif');width:12px;}
+.PlayBackMC {background: url('../img/playBack/btn_PlBk5_ltBlue.gif');white-space:nowrap;}
+.PlayBackMR {background: url('../img/playBack/btn_PlBk6_ltBlue.gif');width:13px;}
+.PlayBackBL {background: url('../img/playBack/btn_PlBk7_ltBlue.gif');}
+.PlayBackBC {background: url('../img/playBack/btn_PlBk8_ltBlue.gif');height:2px;}
+.PlayBackBR {background: url('../img/playBack/btn_PlBk9_ltBlue.gif');}
+.PlayBack .pBkPlay,
+.PlayBack .pBkPause,
+.PlayBack .pBkStop,
+.PlayBack .pBkRew,
+.PlayBack .pBkBox,
+.PlayBack .pBkFF {
+	background: url('../img/playBack/btn_PlBk5_ltBlue.gif') no-repeat top left;
+	width:20px;height:20px;
+	display: inline;
+	cursor: pointer;
+	overflow:hidden;
+	vertical-align:middle;
+	border: none;
+}
+.PlayBack .pBkPlay{background: url('../img/playBack/btn_Play_ltBlue.gif');}
+.PlayBack .pBkPause{background: url('../img/playBack/btn_Pause_ltBlue.gif');}
+.PlayBack .pBkStop{background: url('../img/playBack/btn_Stop_ltBlue.gif');}
+.PlayBack .pBkRew{background: url('../img/playBack/btn_Rew_ltBlue.gif');}
+.PlayBack .pBkFF{background: url('../img/playBack/btn_FF_ltBlue.gif');}
+.PlayBack .pBkBox {
+	background: none #99ccff;
+	width:35px;height: 16px;
+	margin-left:2px;
+	margin-right:2px;
+	text-align: center;
+	font-size: 10pt;
+	overflow:visible;
+	white-space:nowrap;
+}

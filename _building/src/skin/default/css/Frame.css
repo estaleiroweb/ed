@@ -1,0 +1,37 @@
+/*Estilos Gerais*/
+#FrameMain {
+	display: table-cell;
+	background-color: #eeeeee;
+}
+#FrameTitleBar {
+	background-color: #333333;
+}
+#FrameButtom {
+	float: left;
+	margin-left: 2px;
+	width: 10px; height: 10px;
+	cursor: hand;
+	font-family: Marlett;
+	font-size: 16px;
+	background: url('../img/FrameButton.gif') no-repeat center center scroll;
+/*	content:expression(this.innerHTML="6");*/
+}
+#FrameTitle {
+	margin-left: 5px;
+	margin-right: 5px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+#FrameMain.closed #FrameTitleBar {
+}
+#FrameMain.closed #FrameTitle {
+}
+#FrameMain.closed #FrameButtom {
+	background-image: url('../img/FrameButtonClosed.gif');
+/*	content:expression(this.innerHTML="8");*/
+}
+#FrameMain.closed #FrameContent {
+	display:none;
+}
+
+

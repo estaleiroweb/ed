@@ -1,0 +1,48 @@
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="Hilite()" />
+<PUBLIC:ATTACH EVENT="onmouseout"  ONEVENT="Restore()" />
+<PUBLIC:ATTACH EVENT="onmousedown" ONEVENT="Downer()" />
+<PUBLIC:ATTACH EVENT="onmouseup" ONEVENT="Upper()" />
+<SCRIPT LANGUAGE="JScript">
+var normalClass;
+
+function Hilite()
+{
+   if (event.srcElement == element)
+   { 
+     normalClass = className;  
+     className  = "bartonover";
+     style.cursor = "hand";
+   }
+}
+
+function Restore()
+{
+   if (event.srcElement == element)
+   {
+      className  = normalClass;
+	  className  = "barton";
+      style.cursor = "";
+   }
+}
+
+function Downer()
+{
+   if (event.srcElement == element)
+   {
+      className  = "bartondown";
+	  className  = "barton";
+      style.cursor = "hand";
+   }
+}
+
+function Upper()
+{
+   if (event.srcElement == element)
+   {
+      className  = "barton";
+	  className  = "bartonover";
+      style.cursor = "hand";
+   }
+}
+
+</SCRIPT>

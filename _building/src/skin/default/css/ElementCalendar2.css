@@ -1,0 +1,15 @@
+span.datetime span, span.date span, span.time span {
+	background-color:#FFFFFF;
+	white-space:nowrap;
+}
+span.datetime button, span.date button, span.time button { 
+	width:19px;
+	height: 19px;
+	cursor: pointer;
+	background-image: url(../img/element/calendar/button.gif); 
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: none;
+	margin-left: -1px;
+	padding-top: 2px;
+}

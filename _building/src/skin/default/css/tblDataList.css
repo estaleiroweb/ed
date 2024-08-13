@@ -1,0 +1,104 @@
+.ellipsis { text-overflow : ellipsis; overflow: hidden; width:inherit; }
+.vertical-center { height:100%; vertical-align: middle; display:table-cell; }
+
+.dataList {
+	--min-col-width: 50px;
+	--max-col-width: 400px;
+}
+.dataList > div > table{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/*.dataList > div > table colgroup col { min-width: 20px; }*/
+.dataList > div > table > thead > tr > th { cursor: pointer; }
+.dataList > div > table > thead > tr > th > nobr{ 
+	width:inherit;
+	text-overflow : ellipsis; 
+	overflow: hidden; 
+	display: inline-block;
+	min-width: var(--min-col-width);
+	max-width: var(--max-col-width);
+}
+
+.dataList > div > table > thead > tr.dataList-fieldsNorder > th, 
+.dataList > div > table > thead > tr.dataList-filter > td {
+	min-width: var(--min-col-width);
+	max-width: var(--max-col-width);
+}
+.dataList > div > table > thead > tr.dataList-filter > td input { padding-right: 2px; padding-left: 2px;  width:100%; }
+.dataList-btn-menu li .glyphicon { margin-right: 5px; }
+.dataList-showHide label{ font-weight:normal; }
+/*
+	.dataList-status{}
+	.dataList-records{}
+	.dataList-quantLines{}
+	.dataList-navBar{}
+	.dataList-pagination{}
+	.dataList-pagination-num{}
+	.dataList-btn-new{}
+	.dataList-btn-filter{}
+	.dataList-btn-showHide{}
+*/
+.dataList > div > table > tbody > tr > td { 
+	height: 2rem; 
+	padding: 0px;
+	min-width: var(--min-col-width);
+	max-width: var(--max-col-width);
+}
+.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"] { 
+	/*text-overflow : ellipsis; 
+	overflow: hidden; 
+	*/
+	width:inherit;
+	height: 3rem; 
+	overflow: auto;
+	padding: 5px;
+	min-width: var(--min-col-width);
+	max-width: var(--max-col-width);
+	white-space: pre;
+}
+.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"] > nobr { 
+	white-space: pre;
+}
+.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"] > nobr > xmp { 
+	margin: 0;
+	font-family: inherit;
+	white-space: inherit;
+}
+.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"]::-webkit-scrollbar { width:4px; height:4px; background:rgba(227,224,214,.1); } /*#e3e0d6;*/
+.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"]::-webkit-scrollbar-track { background: rgba(255,255,255,.1); }
+.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"]::-webkit-scrollbar-thumb { border-radius:2px; background:rgba(139,135,120,.2); } /*#8b8778;*/
+
+.dataList-field-dec{ text-align:right; }
+.dataList-field-int{ text-align:right; }
+
+/*
+	.dataList-field {}
+	.dataList-fieldHead {}
+	.dataList-field-date{}
+	.dataList-field-char{}
+	.dataList-field-text{}
+*/
+.dataList-field-action{
+	padding:0!important; 
+	vertical-align:middle!important;
+}
+.dataList-field-action div.btn-group{
+	position: absolute;
+	margin-top: -16px;
+}
+.dataList a {
+	cursor: pointer;
+}
+.dataList nav.dataList-pagination .pagination{
+	margin-top: 0;
+	margin-bottom: 2px;
+}
+/*IE*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"] {
+		text-overflow : ellipsis; 
+		overflow: hidden; 
+	}
+}

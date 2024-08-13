@@ -1,0 +1,78 @@
+/*GERAL:*/
+@import url(Common.css); 
+
+body { overflow: hidden; }
+
+/*ESPECÍFICAS: #headBody, #headBody_upBar, #headBody_logo, #headBody_title*/
+#Layout_header, #Layout_bar, #Layout_logo, #Layout_title{
+}
+#Layout{
+	width: 100%;
+	height: 100%;
+}
+#Layout_header{
+	height: 54px;
+}
+#Layout_bar {
+	background-image: url(../img/layout/bar.gif);
+	background-repeat: repeat-x;
+	width: 100%; height: 100%;
+}
+#Layout_logo {
+	position: absolute;
+	width: 147px; height: 80px;
+	background-image: url(../img/layout/logo.gif);
+	background-repeat: no-repeat;
+	z-index:255;
+}
+#Layout_title {
+	position: absolute;
+	left: 180px; top:2px;
+	font-family: Arial;
+	font-size: 28;
+	font-style: normal;
+	color: #FFFFFF;
+	white-space: nowrap;
+}
+#Layout_logon {
+	float:right;
+	padding-top:20px;
+	padding-right:5px;
+	font-family: Arial;
+	font-size: 8pt;
+	font-style: normal;
+	color: #FFFFFF;
+	white-space: nowrap;
+}
+#Layout_logon a {
+	color:#fff;
+	text-decoration:none;
+}
+#Layout_logon a:hover {
+	text-decoration:underline;
+	font-size: 11pt;
+}
+#Layout_body{
+	vertical-align: top;
+	height: 100%;
+}
+#Layout_main{
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	position: absolute;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+@media print {
+	#MainMenu { overflow: visible; }
+	#nav_bar {
+		display: none;
+		visibility: hidden;
+	}
+	#Layout_header {
+		display: none;
+		visibility: hidden;
+	}
+}

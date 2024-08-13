@@ -1,0 +1,18 @@
+.makeBox { border: 1px solid #00D; color: #00D; background-color: #DDF; margin: 0; margin-bottom: 2px; margin-left: 10px; margin-right: 10px; }
+.makeBox h3, .makeBox pre { margin: 0; padding: 2px; }
+.makeBox h3 { font-weight:bold; color: #DDF; background-color: #00D; }
+.makeBox span { font-style:italic; text-decoration: underline; }
+
+.errorBox { color: #FFF; font-weight:bold; margin-left: 10px; margin-right: 10px; }
+
+.message_error  { border-color: #000000; background-color:#DDD;    color: #999; }
+.warning_error  { border-color: #A68500; background-color:#FFC;    color: #A68500; }
+.normal_error   { border-color: #069;    background-color:#9BBCFF; color: #069; }
+.critical_error { border-color: #F90;    background-color:#FFDCA8; color: #CA7900; }
+.fatal_error    { border-color: #900;    background-color:#FDF;    color: #C00; }
+
+.message_error  h3 { background-color:#999;    color: #FFF; }
+.warning_error  h3 { background-color:#A68500; color: #FFF; }
+.normal_error   h3 { background-color:#069;    color: #FFF; }
+.critical_error h3 { background-color:#CA7900; color: #FFF; }
+.fatal_error    h3 { background-color:#C00;    color: #FFF; }

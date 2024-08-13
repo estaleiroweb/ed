@@ -1,0 +1,101 @@
+/*Estilos Gerais*/
+#Tree {
+	background-color: #FFFFFF;
+	width: 100%;
+	border-collapse:0;
+	border-spacing:0;
+}
+#Tree th {
+	width: 16px;;
+	background-image: none;
+	background-repeat: repeat-y;
+	background-position: center 2;
+	background-attachment: scroll;
+	vertical-align: top;
+	margin:0;
+	padding:0;
+}
+#Tree td {
+	background-image: none;
+	background-repeat: no-repeat;
+	background-position: left top;
+	background-attachment: scroll;
+	vertical-align: top;
+	margin:0;
+	padding:0;
+}
+
+/*Texto*/
+#Tree td span {
+	height: 22px;
+	background-color: #FFFFFF;
+	background-image: none;
+	cursor: pointer;
+	display: block;
+	border:1px none #666666;
+	margin-left: 25px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+#Tree td span.over {
+	background-color: #CCCCCC;
+	border-style: solid;
+}
+#Tree td span.select {
+	background-color: #BBCCFF;
+	border-style: solid;
+	border-color: #0000FF;
+}
+
+/*background node*/
+#Tree tr.NRB th, #Tree tr.PRB th, #Tree tr.RB th {
+	background-image: url('../img/tree/button/nodeB.gif');
+}
+#Tree tr.NR th, #Tree tr.PR th, #Tree tr.R th {
+/*	background-image: none;*/
+}
+
+/*node*/
+#Tree th div {
+	width: 16px;;
+	height: 22px;
+	background-color: #FFFFFF;
+	background-image: none;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: scroll;
+	overflow: hidden;
+	cursor: pointer;
+}
+#Tree tr.NR th div {
+	background-image: url('../img/tree/button/nodeNR.gif');
+}
+#Tree tr.NRB th div {
+	background-image: url('../img/tree/button/nodeNRB.gif');
+}
+#Tree tr.PR th div {
+	background-image: url('../img/tree/button/nodePR.gif');
+}
+#Tree tr.PRB th div {
+	background-image: url('../img/tree/button/nodePRB.gif');
+}
+#Tree tr.R th div {
+	background-image: url('../img/tree/button/nodeR.gif');
+	cursor: default;
+}
+#Tree tr.RB th div {
+	background-image: url('../img/tree/button/nodeRB.gif');
+	cursor: default;
+}
+
+
+/*child*/
+#Tree td div {
+	background-image: none;
+}
+#Tree tr.NRB td div, #Tree tr.NR td div {
+	display: block;
+}
+#Tree tr.PRB td div, #Tree tr.RB td div ,#Tree tr.PR td div, #Tree tr.R td div {
+	display: none;
+}

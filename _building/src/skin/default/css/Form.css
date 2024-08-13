@@ -1,0 +1,25 @@
+#FormCellFirst, #FormCell {
+	width: 1px;
+	vertical-align:top;
+	padding-top: 3px;
+	padding-left: 3px;
+}
+#FormWarning, #FormSucess, #FormError {
+	font-size: x-small;
+	padding: 4px;
+}
+#FormWarning {
+	border: 1px solid #999999;
+	background-color:#CCCCCC;
+	color:#999999;
+}
+#FormSucess { 
+	border: 1px solid #009900;
+	background-color:#CEFFCE;
+	color:#009900;
+}
+#FormError { 
+	border: 1px solid #993300;
+	background-color:#FFC9B7;
+	color:#993300;
+}

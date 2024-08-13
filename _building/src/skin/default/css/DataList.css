@@ -1,0 +1,161 @@
+#DataList, #DataList table { 
+	font-family: verdana;
+	font-size: xx-small;
+}
+
+#DataList_Flt {}
+#DataList_FltHead, #DataList_FltField {	white-space:nowrap; }
+#DataList_FltHead div, #DataList_FltField div { display: inline; }
+#DataList_FltHead div {
+	color: #ffffff;
+	text-overflow : ellipsis;
+	overflow: hidden;
+	font-weight: bold;
+	cursor: pointer;
+}
+#DataList_FltHead div.active {
+	padding-left: 12px;
+	color: #FFFFFF;
+	background-image:url(../img/dataList/filter/group.gif);
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+#DataList_FltHead div, #DataList_FltField div {
+	margin-right: 8px;
+}
+#DataList_FltField input {
+	border: 1px solid #E6F4FF;
+	padding-right: 4px;
+	background-image:url(../img/dataList/filter/inputShadow.gif);
+	padding-left: 4px;
+	width: 100%;
+}
+#DataList_FltField input.active { background-image:url(../img/dataList/filter/inputShadowAct.gif); }
+#DataList_FltField .key input { background-image:url(../img/dataList/filter/inputShadowKey.gif); }
+#DataList_FltField .key input.active { background-image:url(../img/dataList/filter/inputShadowActKey.gif); }
+
+#DataList_Nav { 
+	white-space:nowrap;
+	margin-bottom: -6px;
+	position: relative;
+}
+#DataList_NavLeft, #DataList_NavMiddle, #DataList_NavRight {
+	display: inline;
+	height: 30px;
+	vertical-align: top;
+}
+#DataList_NavLeft {
+	width: 6px;
+	overflow: hidden;
+	background-image:url(../img/dataList/nav/left.gif);
+	background-repeat: no-repeat;
+}
+#DataList_NavMiddle {
+	overflow-x: visible;
+	overflow-y: hidden;
+	background-image:url(../img/dataList/nav/middle.gif);
+	background-repeat: repeat;
+}
+#DataList_NavRight {
+	width: 33px;
+	overflow: hidden;
+	background-image:url(../img/dataList/nav/right.gif);
+	background-repeat: no-repeat;
+}
+#DataList_NavGoFirstAct, #DataList_NavGoPreviousAct, #DataList_NavGoNextAct, #DataList_NavGoLastAct,
+#DataList_NavGoFirst, #DataList_NavGoPrevious, #DataList_NavGoNext, #DataList_NavGoLast, #DataList_NavText {
+	margin-top: 5px;
+	width: 35px;
+	height: 17px;
+	overflow: hidden;
+	display: inline;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+#DataList_NavText { overflow-x: visible; }
+#DataList_NavText input {
+	margin: 0;
+	padding: 0;
+	padding-left: 3px;
+	padding-right: 3px;
+	width: 120px;
+	text-align: center;
+	position: relative;
+	top: -3px;
+}
+#DataList_NavGoFirstAct		{ background-image:url(../img/dataList/nav/actFst.gif); }
+#DataList_NavGoPreviousAct	{ background-image:url(../img/dataList/nav/actPrv.gif); }
+#DataList_NavGoNextAct		{ background-image:url(../img/dataList/nav/actNxt.gif); }
+#DataList_NavGoLastAct		{ background-image:url(../img/dataList/nav/actLst.gif); }
+#DataList_NavGoFirstAct.over	{ background-image:url(../img/dataList/nav/actFstOvr.gif); }
+#DataList_NavGoPreviousAct.over	{ background-image:url(../img/dataList/nav/actPrvOvr.gif); }
+#DataList_NavGoNextAct.over		{ background-image:url(../img/dataList/nav/actNxtOvr.gif); }
+#DataList_NavGoLastAct.over		{ background-image:url(../img/dataList/nav/actLstOvr.gif); }
+
+#DataList_NavGoFirst	{ background-image:url(../img/dataList/nav/desFst.gif); }
+#DataList_NavGoPrevious	{ background-image:url(../img/dataList/nav/desPrv.gif); }
+#DataList_NavGoNext		{ background-image:url(../img/dataList/nav/desNxt.gif); }
+#DataList_NavGoLast		{ background-image:url(../img/dataList/nav/desLst.gif); }
+
+#DataList_DtdHead th {
+	padding-right: 3px;
+	padding-left: 3px;
+	border-right: 1px solid #445D86;
+	border-left: 1px solid #A4BDF6;
+	white-space: nowrap;
+	padding: 0;
+}
+#DataList_DtdHead div{
+	color: #ffffff;
+	text-align: left;
+	text-overflow : ellipsis;
+	overflow: hidden;
+	font-weight: bold;
+	cursor: pointer;
+}
+#DataList_DtdHeadLineasc div ,#DataList_DtdHeadLinedesc div { 
+	padding-left: 7px; 
+}
+#DataList_DtdHeadLineasc { background:url(../img/dataList/dtd/up.gif) no-repeat left center; }
+#DataList_DtdHeadLinedesc { background:url(../img/dataList/dtd/dn.gif) no-repeat left center; }
+
+#DataList_DtdHeadLine div.over, #DataList_DtdHeadLineasc div.over, #DataList_DtdHeadLinedesc div.over { color: #cccccc; }
+
+#DataList_DtdBodyLine0, #DataList_DtdBodyLine1 {
+}
+#DataList_DtdBodyLine0 { background-color: #DDDBCE; }
+#DataList_DtdBodyLine1 { background-color: #EDEBDE; }
+#DataList_DtdBodyLine0.over { background-color: #E6E7EE; }
+#DataList_DtdBodyLine1.over { background-color: #E6E7EE; }
+
+#DataList_DtdBodyLine0 td, #DataList_DtdBodyLine1 td { 
+	padding-right: 3px;
+	padding-left: 3px;
+	border-right: 1px solid #ACA899;
+	border-left: 1px solid #FFFFFF;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #ACA899;
+}
+
+
+
+/*
+.DataList_Lbl {
+	font-weight: bold;
+}
+.DataList_Fld {
+}
+.DataList_FldTxt {
+	vertical-align: middle;
+}
+.DataList_FldBnt {
+	font-size:	8px;
+	width: 10px;
+	height: 21px;
+	vertical-align: middle;
+	text-align: center;
+	padding: 0;
+	margin-left: -2px;
+}
+
+*/

@@ -1,0 +1,19 @@
+/*Context Menu*/
+#easyContextMenu {
+	position: absolute;
+	width:1px;
+	top: 1px;
+}
+#easyContextMenu .Box_mc #options div {
+	width:100%;
+	color:#FFFFFF;
+	cursor: pointer;
+	text-align: left;
+	white-space: nowrap;
+}
+#easyContextMenu .Box_mc #options div.over {
+	background-color: #0000CC;
+}
+@media print {
+	#easyContextMenu { display: none; }
+}

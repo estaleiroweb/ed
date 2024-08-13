@@ -1,0 +1,8 @@
+span.user select {
+	font-size:12px;
+}
+span.user span {
+	width: 150px;
+	white-space:nowrap;
+	background-color:#FFFFFF;
+}
