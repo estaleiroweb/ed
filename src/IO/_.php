@@ -210,8 +210,9 @@ class _ {
 			if ($showKey) $line[$showKey] = $idx++;
 			foreach ($head['length'] as $k => $len) {
 				$v = @$line[$k];
-				if (is_object($v)) $v = $line[$k] = ($v instanceof Field) ? $v() : json_encode($v);
-				elseif (is_array($v)) $v = $line[$k] = json_encode($v);
+				if (is_object($v)) $v = ($v instanceof Field || $v instanceof Raw) ? $v() : json_encode($v);
+				elseif (is_array($v)) $v = json_encode($v);
+				$line[$k] = $v;
 				$head['length'][$k] = min(max($len, strlen($v)), $maxLength);
 				if ($v && !is_numeric($v)) $head['align'][$k] = STR_PAD_RIGHT;
 			}
