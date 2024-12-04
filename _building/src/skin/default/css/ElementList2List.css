@@ -6,10 +6,3 @@ div[ed-class="ElementList2List"] {
 div[ed-class="ElementList2List"]::-webkit-scrollbar { width:3px; height:3px; background:#e3e0d6; }
 div[ed-class="ElementList2List"]::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
 div[ed-class="ElementList2List"]::-webkit-scrollbar-thumb { border-radius:3px; background:#8b8778;  }
-/*IE*/
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-	span[ed-class="ElementList2List"] {
-		text-overflow : ellipsis; 
-		overflow: hidden; /*visible*/
-	}
-}

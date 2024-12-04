@@ -95,10 +95,3 @@
 	margin-top: 0;
 	margin-bottom: 2px;
 }
-/*IE*/
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-	.dataList > div > table > tbody > tr > td > div[data-type="DataList-cell"] {
-		text-overflow : ellipsis; 
-		overflow: hidden; 
-	}
-}
